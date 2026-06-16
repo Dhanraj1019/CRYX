@@ -1,0 +1,94 @@
+/* TERMINAL WINDOW */
+#terminal {
+  width: min(90%, 1200px);
+  margin: 40px auto;
+
+  border: 1px solid #10b95c;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0,255,136,0.15);
+}
+
+/* TOP BAR */
+.topbar {
+  background: #111720;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #1f3f23;
+
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  gap: 8px;
+  margin-right: 15px;
+}
+
+.btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #10b95c; }
+
+.title {
+  color: #10b95c;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* BODY */
+.body {
+  padding: 15px;
+  background: #0b0f14;
+  min-height: 400px;
+}
+.terminalText{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  color: rgb(207, 207, 207);
+}
+
+/* INPUT */
+.input-line {
+  display: flex;
+  margin-top: 10px;
+  color: #10b95c;
+}
+
+.prompt {
+  margin-right: 10px;
+}
+
+input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #d4d4d4;
+  width: 100%;
+  font-family: monospace;
+  font-size: large  ;
+}
+
+/* OUTPUT */
+.output {
+  white-space: pre-line;
+  color: #10b95c;
+}
+
+.line {
+  margin: 5px 0;
+}
+
+/* HIDDEN */
+/* .hidden {
+  display: none;
+} */
