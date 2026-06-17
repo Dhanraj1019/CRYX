@@ -1,5 +1,9 @@
 @import "tailwindcss";
-html, body, #root {
+/* html, body, #root {
   margin: 0;
   background: #000;
+} */
+
+*{
+  font-family: monospace;
 }
