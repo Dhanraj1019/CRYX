@@ -46,7 +46,7 @@ function BinaryBg() {
 
         const dx = mouseRef.current.x - x, dy = mouseRef.current.y - y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        const radius = 150;
+        const radius = 130;
         let alpha = 0.15, size = 14, color = '#1d4a3a';
 
         if (dist < radius) {
