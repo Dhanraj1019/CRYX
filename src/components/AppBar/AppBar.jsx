@@ -22,7 +22,7 @@ export default function AppBar(){
     },
   ]
   return (
-    <div className="items-center pl-5 pr-5 pt-2 pb-2 flex justify-between bg-blue-800 font-medium text-green-400 text-2xl">
+    <div className="z-100 fixed top-0 w-full items-center pl-5 pr-5 pt-2 pb-2 flex justify-between bg-blue-800 font-medium text-green-400 text-2xl">
       <Logo/>
       <div>
         {

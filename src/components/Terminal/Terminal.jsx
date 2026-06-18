@@ -53,7 +53,7 @@ function Terminal() {
   }
 
   return (
-    <div id="terminal" className="terminal">
+    <div id="terminal" className="terminal h-100 w-3/4">
 
       {/* TOP BAR */}
       <div className="topbar">

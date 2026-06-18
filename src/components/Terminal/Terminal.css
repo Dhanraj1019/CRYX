@@ -1,6 +1,6 @@
 /* TERMINAL WINDOW */
 #terminal {
-  width: min(90%, 1200px);
+  /* width: min(90%, 1200px); */
   margin: 40px auto;
 
   border: 1px solid #10b95c;

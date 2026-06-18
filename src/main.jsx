@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { path } from 'motion/react-client'
-import Terminal from './components/Terminal/Terminal.jsx'
 import Login from './components/Login/Login.jsx'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import Home from './Pages/Home.jsx'
 const router=createBrowserRouter([
   {
     path:"/",
@@ -13,11 +13,21 @@ const router=createBrowserRouter([
     children:[
       {
         path:"/home",
-        element:<h1 className='text-white'>Hello </h1>
+        element:<>
+          <Home/>
+        </>
       },
       {
         path:"/login",
         element:<Login/>
+      },
+      {
+        path:"/contect-us",
+        element:<h1 className="text-white">contect-us</h1>
+      },
+      {
+        path:"/about-us",
+        element:<h1>helo</h1>
       }
     ]
   }

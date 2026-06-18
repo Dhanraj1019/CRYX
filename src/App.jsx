@@ -11,11 +11,12 @@ function App() {
   return (
     <>
       <BinaryBg/>
-      {/* <NavBar/> */}
       <AppBar/>
+      <div className='h-18'></div>
       <div>
         <Outlet/>
       </div>
+      <div className='h-18'></div>
       <Footer/>
     </>
   )
