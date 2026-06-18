@@ -40,7 +40,7 @@ export default function Home(){
             <HorizontalLine title="CRYX EVENT ARCHIVE..." status="Keep Eye"/>
             <MarqueeImage images={images} speed="10"/>
             <HorizontalLine title="Future Events..." status="Keep Eye"/>
-            <div className='text-gray-500'>Comming soon...</div>
+            <h1 className='text-gray-500 '>Comming soon...</h1>
             <HorizontalLine title="CRYX TEAM ARCHIVE..." status="Keep Eye"/>
             <div className='flex flex-wrap gap-4'>
                 {team.map((t)=><TeamCard data={t}/>)}
