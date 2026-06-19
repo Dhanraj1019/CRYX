@@ -2,38 +2,53 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { path } from 'motion/react-client'
 import Login from './components/Login/Login.jsx'
-import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Home from './Pages/Home.jsx'
-const router=createBrowserRouter([
+import UnderDevelopment from './components/UnderDevelopment.jsx'
+import SignUp from './components/Login/SignUp.jsx'
+import { Provider } from 'react-redux'
+import { store } from '../store/store.js'
+const router = createBrowserRouter([
   {
-    path:"/",
-    element:<App/>,
-    children:[
+    path: "/",
+    element: <App />,
+    children: [
       {
-        path:"/home",
-        element:<>
-          <Home/>
-        </>
+        index: true,
+        element: <Navigate to="/home" replace />
       },
       {
-        path:"/login",
-        element:<Login/>
+        path: "/home",
+        element: <Home />
       },
       {
-        path:"/contect-us",
-        element:<h1 className="text-white">contect-us</h1>
+        path: "/login",
+        element: <Login />
       },
       {
-        path:"/about-us",
-        element:<h1>helo</h1>
+        path: "/contect-us",
+        element: (
+            <UnderDevelopment header="CONTECT US"/>
+        )
+      },
+      {
+        path: "/about-us",
+        element: (
+            <UnderDevelopment header="ABOUT US"/>
+        )
+      },
+      {
+        path:"/signup",
+        element:<SignUp/>
       }
     ]
   }
 ])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )

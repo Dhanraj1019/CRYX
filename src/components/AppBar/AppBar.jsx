@@ -1,35 +1,117 @@
+import { useState } from 'react'
 import Button from '../Button/Button'
 import Logo from '../Logo/Logo'
-import {Link,useNavigate} from 'react-router-dom'
-export default function AppBar(){
-  const navigate=useNavigate();
-  const navitems=[
-    {
-      title:"home",
-      href:"/home"
-    },
-    {
-      title:"about us",
-      href:"/about-us"
-    },
-    {
-      title:"contect us",
-      href:"/contect-us"
-    },
-    {
-      title:"login",
-      href:"/login"
-    },
+import { href, Link, useNavigate } from 'react-router-dom'
+import {logout as stateLogout} from '../../../store/AuthSclice'
+import { useDispatch, useSelector } from 'react-redux'
+import AuthObj from '../../../Supabase/auth'
+
+export default function AppBar() {
+
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const navigate = useNavigate();
+  const dispatch=useDispatch();
+  const loginstatus=useSelector((state)=>state.auth.status);
+  const navitems = [
+    { title: 'home', href: '/home' },
+    { title: 'about us', href: '/about-us' },
+    { title: 'contact us', href: '/contect-us' },
+    { title: "login", href: '/login' },
+    { title:"signup", href:"/signup"}
   ]
+
+  const logout=async()=>{
+    const result = await AuthObj.signOut();
+    console.log("result in logoout = ");
+    console.log("logout clicked");
+    if(result){
+      // dispatch(stateLogout());
+      navigate("/login")
+    }
+  }
+
   return (
-    <div className="z-100 fixed top-0 w-full items-center pl-5 pr-5 pt-2 pb-2 flex justify-between bg-blue-800 font-medium text-green-400 text-2xl">
-      <Logo/>
-      <div>
-        {
-          // navitems.map((item)=><button className="cursor-pointer">{item.title}</button>)
-          navitems.map((item)=><Button onClick={()=>navigate(item.href)} key={item.title} children={item.title}/>)
-        }
+    <nav className="fixed top-0 left-0 w-full z-50 glass-strong border-b border-border-subtle shadow-[0_1px_12px_rgba(0,255,136,0.15)] animate-slide-down">
+      <div className="flex items-center justify-between px-6 py-3 max-w-7xl mx-auto">
+        {/* Logo */}
+        <Link to="/home" className="shrink-0">
+          <Logo />
+        </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-2">
+          {navitems.map((item) => (
+            (item.title=="login" || item.title=="signup") ? !loginstatus ?
+            <Button
+              key={item.title}
+              onClick={() => navigate(item.href)}
+            >
+              {item.title}
+            </Button> :null:<Button
+              key={item.title}
+              onClick={() => navigate(item.href)}
+              children={item.title}
+            />
+          ))}
+          {loginstatus && <Button
+              key="logout"
+              children="logout"
+              onClick={() => logout()}
+            />}
+        </div>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden flex flex-col justify-center items-center gap-1.25 w-10 h-10 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          aria-label="Toggle navigation menu"
+        >
+          <span
+            className={`block w-5 h-0.5 bg-neon-green rounded-full transition-all duration-300 ${
+              mobileOpen ? 'rotate-45 translate-y-1.75' : ''
+            }`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-neon-green rounded-full transition-all duration-300 ${
+              mobileOpen ? 'opacity-0 scale-x-0' : ''
+            }`}
+          />
+          <span
+            className={`block w-5 h-0.5 bg-neon-green rounded-full transition-all duration-300 ${
+              mobileOpen ? '-rotate-45 -translate-y-1.75' : ''
+            }`}
+          />
+        </button>
       </div>
-    </div>
+
+      {/* Mobile Dropdown */}
+      {mobileOpen && (
+        <div className="md:hidden animate-slide-down border-t border-border-subtle glass-strong px-6 py-4">
+          <div className="flex flex-col gap-2">
+            {navitems.map((item) => (
+              <Button
+                key={item.title}
+                onClick={() => {
+                  navigate(item.href)
+                  setMobileOpen(false)
+                }}
+                children={item.title}
+              />
+                
+              ))
+            }
+            {loginstatus && <Button
+              key="logout"
+              children="Logout"
+              onClick={() => {
+                logout
+                setMobileOpen(false)
+              }}
+            />}
+          </div>
+        </div>
+      )}
+      
+    </nav>
   )
 }

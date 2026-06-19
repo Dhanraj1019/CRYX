@@ -3,30 +3,25 @@ import Input from '../Input'
 import Button from '../Button/Button'
 import AuthObj from '../../../Supabase/auth';
 import { useDispatch } from 'react-redux';
-import {login as statelogin} from '../../../store/AuthSclice'
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function SignUp() {
   const { handleSubmit, register } = useForm();
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
-  const login = async (data) => {
+    const diapatch=useDispatch();
+    const navigate=useNavigate();
+  const signUp = async (data) => {
     if(data){
-      console.log("data in login.jsx = ",data);
-      const result=await AuthObj.signIn({email:data.email,password:data.password});
-      if(result){
-        const reduxData={user:result.user,session:result.session};
-        // dispatch(statelogin(reduxData));
+        console.log("data in signup.jsx file = ",data);
+        const result=await AuthObj.saveProfile(data);
+        console.log("result in signup.jsx = ",result);
         navigate("/home");
-      }
-      console.log("result in login.jsx = ",result);
     }
   }
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
       <div className="w-full max-w-md">
-        {/* Login Card */}
+        {/* Signup Card */}
         <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
           style={{
             boxShadow: "0 0 30px rgba(0,255,136,0.08), 0 0 60px rgba(0,255,136,0.03)",
@@ -40,7 +35,7 @@ export default function Login() {
               <span className="w-3 h-3 rounded-full bg-neon-green"></span>
             </div>
             <span className="text-text-muted font-mono text-xs tracking-wider">
-              secure_login.sh
+              secure_signup.sh
             </span>
           </div>
 
@@ -74,18 +69,41 @@ export default function Login() {
             </p>
 
             {/* Form */}
-            <form onSubmit={handleSubmit(login)} className="space-y-5">
+            <form onSubmit={handleSubmit(signUp)} className="space-y-5">
               <Input
-                label="Username"
+                label="Email"
                 placeholder="agent@cryx"
                 {...register("email", { required: true })}
               />
 
+                <Input
+                    label="UserName"
+                    placeholder="enter password..."
+                    {...register("username",{required:true})}
+                />
               <Input
                 label="Password"
                 type="password"
                 placeholder="••••••••"
                 {...register("password", { required: true })}
+              />
+              <Input
+                label="PhoneNumber"
+                type="text"
+                placeholder="1234567890"
+                {...register("phone")}
+              />
+              <Input
+                label="InstagramId"
+                type="text"
+                placeholder="user_23"
+                {...register("instagramid")}
+              />
+              <Input
+                label="LinkdinId"
+                type="text"
+                placeholder="user_23"
+                {...register("linkdinid")}
               />
 
               <Button
@@ -93,7 +111,7 @@ export default function Login() {
                 variant="filled"
                 className="w-full py-3 mt-2 font-semibold tracking-widest text-base"
               >
-                AUTHENTICATE
+                SIGN_UP
               </Button>
             </form>
 
