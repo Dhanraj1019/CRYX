@@ -24,6 +24,12 @@ const router = createBrowserRouter([
       //   element: <Navigate to="/home" replace />
       // },
       {
+        path:"/",
+        element: <UserProtect authentication={false}>
+           <Home />
+        </UserProtect>
+      },
+      {
         path: "/home",
         element: <UserProtect authentication={false}>
            <Home />
