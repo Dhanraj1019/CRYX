@@ -9,38 +9,70 @@ import UnderDevelopment from './components/UnderDevelopment.jsx'
 import SignUp from './components/Login/SignUp.jsx'
 import { Provider } from 'react-redux'
 import { store } from '../store/store.js'
+import AddMember from './components/Forms/AddMember.jsx'
+import AddEvent from './components/Forms/AddEvent.jsx'
+import Loader from './components/Loader.jsx'
+import AdminProtect from './components/Protected/AdminProtect.jsx'
+import UserProtect from './components/Protected/UserProtect.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        index: true,
-        element: <Navigate to="/home" replace />
-      },
+      // {
+      //   index: true,
+      //   element: <Navigate to="/home" replace />
+      // },
       {
         path: "/home",
-        element: <Home />
+        element: <UserProtect authentication={false}>
+           <Home />
+        </UserProtect>
       },
       {
         path: "/login",
-        element: <Login />
+        element: <UserProtect authentication={false}>
+          <Login />
+        </UserProtect>
       },
       {
         path: "/contect-us",
         element: (
-            <UnderDevelopment header="CONTECT US"/>
+            <UserProtect authentication={false}>
+              <UnderDevelopment header="CONTECT US"/>
+            </UserProtect>
         )
       },
       {
         path: "/about-us",
         element: (
-            <UnderDevelopment header="ABOUT US"/>
+            <UserProtect authentication={false}>
+              <UnderDevelopment header="ABOUT US"/>
+            </UserProtect>
         )
       },
       {
         path:"/signup",
-        element:<SignUp/>
+        element:<UserProtect authentication={true}>
+          <SignUp/>
+        </UserProtect>
+      },{
+        path:"/add-member",
+        element:<AdminProtect authentication={true}>
+          <AddMember/>
+        </AdminProtect>
+      },
+      {
+        path:"/add-event",
+        element:<AdminProtect authentication={true}>
+          <AddEvent/>
+        </AdminProtect>
+      },
+      {
+        path:"/loader",
+        element:<div className="flex justify-center items-center min-h-lvh">
+            <Loader />
+          </div>
       }
     ]
   }

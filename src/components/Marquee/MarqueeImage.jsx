@@ -47,9 +47,9 @@ export default function MarqueeImage({ images = [], speed = 30 }) {
         className="flex gap-5"
         style={{ width: "max-content", willChange: "transform" }}
       >
-        {doubled.map((src, idx) => (
+        {doubled.map((i,idx) => (
           <div
-            key={`${src}-${idx}`}
+            key={`${idx}-${i.imageurl}`}
             className="relative shrink-0 overflow-hidden rounded-sm border border-border-subtle group/img hover:border-neon-cyan/60 transition-all duration-500"
             style={{
               boxShadow: "0 0 0 rgba(6,182,212,0)",
@@ -64,7 +64,7 @@ export default function MarqueeImage({ images = [], speed = 30 }) {
             }}
           >
             <img
-              src={src}
+              src={i.publicUrl}
               alt=""
               aria-hidden={idx >= images.length}
               className="h-40 md:h-52 w-auto object-cover shrink-0 transition-transform duration-700 hover:scale-105"

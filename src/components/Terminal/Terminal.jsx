@@ -7,7 +7,7 @@ function Terminal() {
   const outputRef = useRef(null);
 
   const commands = {
-    help: "Available commands: about, mission, status, team, ls, pwd, clear",
+    help: "Available commands: whoami,about, mission, status, team, ls, pwd, clear",
     about: "CRYX is the premier Cybersecurity Club — where code meets defense.",
     mission: ">> Learn. Hack. Build. Secure. <<",
     status: "[SYSTEMS ONLINE] — All nodes operational. Threat level: LOW",
@@ -91,7 +91,7 @@ function Terminal() {
   return (
     <div
       id="terminal"
-      className="h-[400px] w-full max-w-4xl mx-auto border border-neon-green/30 overflow-hidden flex flex-col animate-fade-in"
+      className="h-100 w-full max-w-4xl mx-auto border border-neon-green/30 overflow-hidden flex flex-col animate-fade-in"
       style={{
         boxShadow: "0 0 25px rgba(0,255,136,0.1), 0 0 50px rgba(0,255,136,0.05)",
       }}

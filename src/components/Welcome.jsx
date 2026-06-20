@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const FULL_TEXT = "WELCOME TO CRYX CLUB";
+const FULL_TEXT = "WELCOME TO CRYX : THE INFOSEC CLUB";
 const SUBTITLE = "// Learn. Hack. Build. Secure.";
 
 export default function Welcome() {

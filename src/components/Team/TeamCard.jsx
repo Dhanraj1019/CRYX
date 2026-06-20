@@ -1,6 +1,6 @@
 import Button from '../Button/Button'
 
-export default function TeamCard({ data }) {
+export default function TeamCard({ data,idx }) {
   return (
     <div className="group w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)] relative overflow-hidden border border-neon-cyan/20 bg-bg-surface/80 backdrop-blur-sm transition-all duration-500 hover:border-neon-cyan/50 rounded-sm"
       style={{
@@ -17,7 +17,7 @@ export default function TeamCard({ data }) {
     >
       <div className="flex justify-between items-center border-b border-neon-cyan/15 px-5 py-3">
         <span className="text-text-muted font-mono text-xs tracking-wider">
-          ID: {data.id}
+          ID: {`00${idx}`}
         </span>
         <span className="flex items-center gap-2 border border-neon-green/40 px-2.5 py-1 text-neon-green text-xs font-mono tracking-wider">
           <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-glow-pulse"></span>
@@ -28,15 +28,15 @@ export default function TeamCard({ data }) {
       <div className="p-5 flex gap-5 items-center">
         <div className="shrink-0 overflow-hidden rounded-sm border border-neon-cyan/20">
           <img
-            src={data.url}
-            alt={data.name}
+            src={data.publicurl}
+            alt={data.username}
             className="h-44 w-36 object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
           />
         </div>
 
         <div className="flex flex-col min-w-0">
           <h2 className="text-xl md:text-2xl font-bold font-mono text-neon-cyan tracking-wider truncate">
-            {data.name}
+            {data.username}
           </h2>
 
           <p className="mt-1.5 text-text-muted font-mono text-xs tracking-[3px] uppercase">

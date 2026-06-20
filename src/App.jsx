@@ -11,13 +11,32 @@ import supabase from '../Supabase/Supabase'
 function App() {
   const dispatch=useDispatch();
   useEffect(()=>{
-  const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event, session)
-      
+  const { data } = supabase.auth.onAuthStateChange(async(event, session) => {      
       if (event === 'INITIAL_SESSION') {
-        // handle initial session
+        const data = await supabase
+                    .from("userprofile")
+                    .select("*")
+                    .eq("id", session.user.id)
+                    .single();
+        // console.log("data = ",data);
+        if(!data.data){
+          console.log("profile not found");
+          return;
+        }
+        const redux_data={user:session.user,session:session,role:data.data.role};
+        dispatch(stateLogin(redux_data));
       } else if (event === 'SIGNED_IN') {
-        const redux_data={user:session.user,session:session};
+        const data = await supabase
+          .from("userprofile")
+          .select("*")
+          .eq("id", session.user.id)
+          .single();
+        if(!data.data){
+          console.log("profile not found");
+          return;
+        }
+        // console.log("data = ",data);
+        const redux_data={user:session.user,session:session,role:data.data.role};
         dispatch(stateLogin(redux_data));
       } else if (event === 'SIGNED_OUT') {
         dispatch(stateLogout());

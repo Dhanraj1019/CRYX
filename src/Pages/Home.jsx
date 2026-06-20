@@ -5,41 +5,49 @@ import MarqueeImage from '../components/Marquee/MarqueeImage'
 import HorizontalLine from '../components/HorizontalLine'
 import TeamCard from '../components/Team/TeamCard'
 import UnderDevelopment from '../components/UnderDevelopment'
-
+import { useSelector } from "react-redux";
+import DatabaseObj from '../../Supabase/database'
+import { useEffect, useState } from 'react'
+import StorageObj from '../../Supabase/storage'
+StorageObj
 export default function Home() {
-  const images = [
-    "https://solutionsreview.com/security-information-event-management/files/2025/12/Cybersecurity-Predictions-from-Industry-Experts-for-2026.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnbqHiFR1QJd8xAgGy1NAkn_dgPdhQENTHgw&s",
-    "https://solutionsreview.com/security-information-event-management/files/2025/12/Cybersecurity-Predictions-from-Industry-Experts-for-2026.jpg",
-  ]
-
-  const team = [
-    {
-      id: "001",
-      url: "https://static.vecteezy.com/system/resources/thumbnails/021/702/425/small/hacker-programmer-modern-spy-illegal-data-search-ai-generated-image-photo.jpg",
-      name: "Dhanraj Choudhary",
-      role: "// EXICUTIVE"
-    },
-    {
-      id: "002",
-      url: "https://static.vecteezy.com/system/resources/thumbnails/021/702/425/small/hacker-programmer-modern-spy-illegal-data-search-ai-generated-image-photo.jpg",
-      name: "Abhishek Saini",
-      role: "// EXICUTIVE"
-    },
-    {
-      id: "003",
-      url: "https://static.vecteezy.com/system/resources/thumbnails/021/702/425/small/hacker-programmer-modern-spy-illegal-data-search-ai-generated-image-photo.jpg",
-      name: "Manish Jatav",
-      role: "// RESEARCHER"
-    },
-    {
-      id: "004",
-      url: "https://static.vecteezy.com/system/resources/thumbnails/021/702/425/small/hacker-programmer-modern-spy-illegal-data-search-ai-generated-image-photo.jpg",
-      name: "Nishu Yadav",
-      role: "// OPERATIVE"
+  const [pastEvent,setPastEvent]=useState([]);
+  const [member,setmember]=useState([]);
+  const [futureEvent,setFutureEvent]=useState([]);
+  useEffect(()=>{
+    const getEvents=async()=>{
+      const result=(await DatabaseObj.getAllRows({table:"event"})).data;
+      const nowtime= Date.now();
+      const future=result.filter((e)=>{
+        const eventtime=new Date(
+          `${e.date}T${e.time}`
+        ).getTime();
+        return eventtime>nowtime;
+      })
+      const past=result.filter((e)=>{
+        const eventtime=new Date(
+          `${e.date}T${e.time}`
+        ).getTime();
+        return eventtime<nowtime;
+      })
+      // console.log("past = ",past);
+      // console.log("future = ",future);
+      setPastEvent(past);
+      setFutureEvent(future);
+      // console.log("result in home page = ",result);
     }
-  ]
 
+    const getMember=async()=>{
+      const result = await DatabaseObj.getAllRows({table:"memberprofile"});
+      setmember(result.data);
+    }
+    getMember();
+    getEvents();
+  },[])
+
+  // console.log("members = ",member);
+  const role=useSelector((state)=>state.auth.role);
+  // console.log("role = ",role);
   return (
     <div className='max-w-7xl mx-auto px-4 md:px-8'>
       <Welcome />
@@ -50,21 +58,21 @@ export default function Home() {
       <div className='h-px gradient-line my-12 md:my-16 opacity-30'></div>
 
       <section>
-        <HorizontalLine title="CRYX EVENT ARCHIVE..." status="Keep Eye" />
+        <HorizontalLine title="CRYX EVENT ARCHIVE..." status= "Keep Eye" />
         <div className="py-4">
-          <MarqueeImage images={images} speed="10" />
+          <MarqueeImage images={pastEvent} speed="10" />
         </div>
       </section>
 
       <section>
-        <HorizontalLine title="Future Events..." status="Keep Eye" />
-        <UnderDevelopment header="UPCOMMING EVENTS"/>
+        <HorizontalLine title="Future Events..." status={role?.trim()==="admin" && "Add Event" || "Keep Eye"} />
+        <MarqueeImage images={futureEvent} speed="10" />
       </section>
 
-      <section>
-        <HorizontalLine title="CRYX TEAM ARCHIVE..." status="Keep Eye" />
+      <section id='about-us'>
+        <HorizontalLine title="CRYX TEAM ARCHIVE..." status={role?.trim()==="admin" && "Add Member" || "Keep Eye"} />
         <div className='flex flex-wrap gap-4'>
-          {team.map((t) => <TeamCard key={t.id} data={t} />)}
+          {member.map((t,idx) => <TeamCard key={t.id} data={t} idx={idx} />)}
         </div>
       </section>
 

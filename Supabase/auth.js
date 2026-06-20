@@ -39,25 +39,26 @@ class Auth{
                 console.log("error in login function = ",result.error);
                 return false;
             }
-            return result.data;
+            return result;
         }catch(e){
             console.log("error in signin function = ",e);
             return false;
         }
     }
 
-    async saveProfile(data){
+    async saveProfile({data}){
         try{
             const id_data=await this.signup({email:data.email,password:data.password});
             console.log("id_data in auth.js = ",id_data);
             if(id_data && id_data.user){
                 const result=await supabase
-                .from('profile')
-                .insert({phone:data.phone, email:data.email,username:email.username,instagramid:data.instagramid,linkdinid:data.linkdinid,id:id_data.user.id })
+                .from('userprofile')
+                .insert({phone:data.phone, email:data.email,username:data.username,instagramid:data.instagramid?.trim() || null,linkdinid:data.linkdinid?.trim() || null,id:id_data.user.id })
                 if(result && result.error){
                     console.log("error during profile save = ",result.error);
                     return false;
                 }
+                console.log("data save in profile table : ",result);
                 return true;
             }
             else{

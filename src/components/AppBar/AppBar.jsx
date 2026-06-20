@@ -3,21 +3,19 @@ import Button from '../Button/Button'
 import Logo from '../Logo/Logo'
 import { href, Link, useNavigate } from 'react-router-dom'
 import {logout as stateLogout} from '../../../store/AuthSclice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import AuthObj from '../../../Supabase/auth'
 
 export default function AppBar() {
-
   const [mobileOpen, setMobileOpen] = useState(false)
   const navigate = useNavigate();
-  const dispatch=useDispatch();
   const loginstatus=useSelector((state)=>state.auth.status);
   const navitems = [
-    { title: 'home', href: '/home' },
-    { title: 'about us', href: '/about-us' },
-    { title: 'contact us', href: '/contect-us' },
-    { title: "login", href: '/login' },
-    { title:"signup", href:"/signup"}
+    { title: 'home', href: '/home',scroll:false },
+    { title: 'about us', href: '/about-us' ,scroll:true,target:"about-us"},
+    { title: 'contact us', href: '/contect-us' ,scroll:true,target:"contect-us"},
+    { title: "login", href: '/login' ,scroll:false},
+    { title:"signup", href:"/signup",scroll:false}
   ]
 
   const logout=async()=>{
@@ -25,7 +23,6 @@ export default function AppBar() {
     console.log("result in logoout = ");
     console.log("logout clicked");
     if(result){
-      // dispatch(stateLogout());
       navigate("/login")
     }
   }
@@ -88,8 +85,16 @@ export default function AppBar() {
       {mobileOpen && (
         <div className="md:hidden animate-slide-down border-t border-border-subtle glass-strong px-6 py-4">
           <div className="flex flex-col gap-2">
-            {navitems.map((item) => (
-              <Button
+            {navitems.map((item) => {
+              if(item.scroll){
+                return <Button key={item.title} children={item.title} onClick={()=>{
+                    document.getElementById(item.target)?.scrollIntoView({ behavior: "smooth" })
+                    setMobileOpen(false)
+                  }}
+                />
+              }
+              else{
+                return <Button
                 key={item.title}
                 onClick={() => {
                   navigate(item.href)
@@ -97,8 +102,9 @@ export default function AppBar() {
                 }}
                 children={item.title}
               />
+              }
                 
-              ))
+              })
             }
             {loginstatus && <Button
               key="logout"

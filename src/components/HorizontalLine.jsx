@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+import Button from "./Button/Button";
+
 export default function HorizontalLine({ title, status }) {
+  const navigate=useNavigate();
   return (
     <div className="flex items-center gap-4 my-10 md:my-14 animate-fade-in">
       <h2 className="text-neon-green font-mono text-sm md:text-base tracking-wider uppercase whitespace-nowrap text-glow-green">
@@ -12,9 +16,11 @@ export default function HorizontalLine({ title, status }) {
 
       <div className="flex items-center gap-2 border border-neon-red/50 px-3 py-1.5 rounded-sm whitespace-nowrap group hover:border-neon-red transition-colors duration-300">
         <span className="w-1.5 h-1.5 rounded-full bg-neon-red animate-glow-pulse"></span>
-        <span className="text-neon-red font-mono text-xs tracking-wider uppercase">
+        {status==="Keep Eye" ? <span className="text-neon-red font-mono text-xs tracking-wider uppercase">
           {status}
-        </span>
+        </span> : 
+          <button onClick={()=>navigate(`/${status.replace(/\s+/g, "-").toLowerCase()}`)} className="cursor-pointer text-neon-red font-bold ">{status}</button>
+        }
       </div>
     </div>
   );

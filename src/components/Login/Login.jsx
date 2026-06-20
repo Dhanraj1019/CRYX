@@ -5,25 +5,28 @@ import AuthObj from '../../../Supabase/auth';
 import { useDispatch } from 'react-redux';
 import {login as statelogin} from '../../../store/AuthSclice'
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
+import Loader from '../Loader';
 export default function Login() {
   const { handleSubmit, register } = useForm();
   const dispatch=useDispatch();
   const navigate=useNavigate();
+  const [loader,setLoader]=useState(false);
   const login = async (data) => {
     if(data){
+      setLoader(true);
       console.log("data in login.jsx = ",data);
       const result=await AuthObj.signIn({email:data.email,password:data.password});
+      console.log("result after login = ",result);
       if(result){
-        const reduxData={user:result.user,session:result.session};
-        // dispatch(statelogin(reduxData));
+        setLoader(false);
         navigate("/home");
       }
       console.log("result in login.jsx = ",result);
     }
   }
 
-  return (
+  return !loader && (
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Login Card */}
@@ -107,5 +110,7 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  ) || <div className="flex justify-center items-center min-h-lvh">
+          <Loader />
+        </div>
 }

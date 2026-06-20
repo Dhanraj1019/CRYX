@@ -23,7 +23,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative z-20 bg-bg-surface">
+    <footer id='contect-us' className="relative z-20 bg-bg-surface">
       {/* Neon gradient top line */}
       <div className="mb-2 gradient-line h-px w-full" />
       <div className="flex flex-col gap-2 items-center">

@@ -4,21 +4,25 @@ import Button from '../Button/Button'
 import AuthObj from '../../../Supabase/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function SignUp() {
   const { handleSubmit, register } = useForm();
     const diapatch=useDispatch();
     const navigate=useNavigate();
+  const [loader,setLoader] = useState(false);
   const signUp = async (data) => {
     if(data){
-        console.log("data in signup.jsx file = ",data);
-        const result=await AuthObj.saveProfile(data);
-        console.log("result in signup.jsx = ",result);
-        navigate("/home");
+      setLoader(true);
+        // console.log("data in signup.jsx file = ",data);
+        const result=await AuthObj.saveProfile({data});
+        // console.log("result in signup.jsx = ",result);
+        setLoader(false);
+        navigate("/login");
     }
   }
 
-  return (
+  return !loader && (
     <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Signup Card */}
@@ -125,5 +129,7 @@ export default function SignUp() {
         </div>
       </div>
     </div>
-  )
+  ) || <div className="flex justify-center items-center min-h-lvh">
+          <Loader />
+        </div>
 }
