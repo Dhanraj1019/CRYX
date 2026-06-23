@@ -11,6 +11,7 @@ import { Provider } from 'react-redux'
 import { store } from '../store/store.js'
 import AddMember from './components/Forms/AddMember.jsx'
 import AddEvent from './components/Forms/AddEvent.jsx'
+import AddLab from './components/Forms/AddLab.jsx'
 import Loader from './components/Loader.jsx'
 import AdminProtect from './components/Protected/AdminProtect.jsx'
 import UserProtect from './components/Protected/UserProtect.jsx'
@@ -76,6 +77,12 @@ const router = createBrowserRouter([
         path:"/add-event",
         element:<AdminProtect authentication={true}>
           <AddEvent/>
+        </AdminProtect>
+      },
+      {
+        path:"/add-lab",
+        element:<AdminProtect authentication={true}>
+          <AddLab/>
         </AdminProtect>
       },
       {

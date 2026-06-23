@@ -36,7 +36,7 @@ export default function Avatar() {
       {/* Avatar Button */}
       <button
         onClick={() => setDroverOpen((prev) => !prev)}
-        className="relative cursor-pointer w-15 h-15 rounded-full overflow-hidden border-2 border-neon-red/40 hover:border-neon-red transition-all duration-300 hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus:outline-none focus:border-neon-green"
+        className="relative cursor-pointer w-13 h-13 rounded-full overflow-hidden border-2 border-neon-red/40 hover:border-neon-red transition-all duration-300 hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus:outline-none focus:border-neon-green"
         aria-label="Open user menu"
         aria-expanded={droverOpen}
       >

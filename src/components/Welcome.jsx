@@ -39,16 +39,15 @@ export default function Welcome() {
 
       {/* Main heading */}
       <h1
-        className="font-mono text-center text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider text-neon-green"
+        className="font-mono text-center text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-transparent"
         style={{
-          textShadow:
-            "0 0 4px rgba(52,211,153,0.35), 0 0 8px rgba(52,211,153,0.2), 0 0 14px rgba(52,211,153,0.08)",
+          filter: "drop-shadow(0 0 10px rgba(103,232,249,0.2))",
         }}
       >
         {typed}
         <span
           aria-hidden="true"
-          className="inline-block ml-1"
+          className="inline-block ml-1 text-neon-cyan"
           style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
         >
           _
@@ -57,11 +56,15 @@ export default function Welcome() {
 
       {/* Subtitle */}
       <p
-        className={`mt-6 font-mono text-sm sm:text-base md:text-lg tracking-[4px] text-neon-cyan transition-all duration-700 ${
+        className={`mt-6 font-mono text-sm sm:text-base md:text-lg tracking-[2px] sm:tracking-[4px] transition-all duration-700 select-none ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
-        {SUBTITLE}
+        <span className="text-text-muted">// </span>
+        <span className="text-neon-cyan font-bold transition-all duration-300">Learn. </span>
+        <span className="text-neon-red font-bold transition-all duration-300">Hack. </span>
+        <span className="text-neon-green font-bold transition-all duration-300">Build. </span>
+        <span className="text-neon-purple font-bold transition-all duration-300">Secure.</span>
       </p>
 
       {/* Decorative bottom element */}
@@ -69,7 +72,7 @@ export default function Welcome() {
         showSubtitle ? "opacity-100" : "opacity-0"
       }`}>
         <div className="h-px w-20 md:w-32 gradient-line"></div>
-        <div className="w-2 h-2 bg-neon-green rounded-full animate-glow-pulse"></div>
+        <div className="w-2.5 h-2.5 bg-neon-cyan rounded-full animate-glow-pulse shadow-[0_0_10px_#67e8f9]"></div>
         <div className="h-px w-20 md:w-32 gradient-line"></div>
       </div>
 

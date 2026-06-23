@@ -6,6 +6,7 @@ import supabase from "../../../Supabase/Supabase";
 import { useNavigate } from "react-router-dom";
 import DatabaseObj from "../../../Supabase/database";
 import Loader from '../Loader'
+import { useSelector } from "react-redux";
 export default function AddMember(){
     const navigate=useNavigate();
     const [searchLoader,setSearchLoader]=useState(false);
@@ -13,6 +14,7 @@ export default function AddMember(){
     const [searched,setSearched] = useState(false);
     const { handleSubmit, register ,getValues,reset } = useForm();
     const [loader,setLoader] = useState(false);
+    const userid=useSelector((state)=>state.auth.user.id);
     const publicUrl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/hacker.jpg";
 
     const add = async(data)=>{
@@ -73,23 +75,23 @@ export default function AddMember(){
     }
 
     return !loader && (
-        <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-4 animate-fade-in">
+        <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Add Member Card */}
-        <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
-          style={{
-            boxShadow: "0 0 20px rgba(52,211,153,0.05), 0 0 40px rgba(52,211,153,0.02)",
-          }}
-        >
+        <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
+          {/* Top Scanline Glow */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-5 py-3 bg-bg-elevated border-b border-border-subtle">
+          <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
-              <span className="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-              <span className="w-3 h-3 rounded-full bg-neon-green"></span>
+              <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ff5f56] transition-all duration-300"></span>
+              <span className="w-3 h-3 rounded-full bg-[#ffbd2e] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ffbd2e] transition-all duration-300"></span>
+              <span className="w-3 h-3 rounded-full bg-neon-green opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#34d399] transition-all duration-300"></span>
             </div>
-            <span className="text-text-muted font-mono text-xs tracking-wider">
-              add_member.sh
+            <span className="text-text-muted font-mono text-xs tracking-widest flex items-center gap-1.5 select-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-ping"></span>
+              add_member.sh //
             </span>
           </div>
 
@@ -97,7 +99,9 @@ export default function AddMember(){
           <div className="p-6 md:p-8">
             {/* Lock Icon */}
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full border-2 border-neon-green/40 flex items-center justify-center animate-border-glow">
+              <div className="w-16 h-16 rounded-full border border-neon-green/30 flex items-center justify-center animate-border-glow shadow-[0_0_15px_rgba(52,211,153,0.1)]"
+                style={{ filter: "drop-shadow(0 0 8px rgba(52,211,153,0.15))" }}
+              >
                 <svg
                   className="w-8 h-8 text-neon-green"
                   fill="none"
@@ -116,10 +120,10 @@ export default function AddMember(){
 
             {/* Title */}
             <h1 className="text-center font-mono text-xl md:text-2xl font-bold text-neon-green tracking-wider mb-1 text-glow-green">
-              ACCESS TERMINAL
+              AGENT ENROLLMENT
             </h1>
             <p className="text-center text-text-muted font-mono text-xs tracking-wider mb-8">
-              // Enter credentials to add member
+              // Enroll and set clearance levels for cyber agents
             </p>
 
             {/* Form */}
@@ -136,20 +140,20 @@ export default function AddMember(){
                         <input
                             id="userid"
                             type="text"
-                            placeholder="agent_123"
-                            className="flex-1 h-11 bg-black border border-neon-green/25 rounded-md
-                                    px-3.5 text-sm text-gray-200 font-mono outline-none
+                            placeholder="e.g. agent_123"
+                            className="flex-1 h-11 bg-[#0d1117]/80 border border-[#1e2d3d] rounded-sm
+                                    px-3.5 text-sm text-text-primary font-mono outline-none
                                     focus:border-neon-green focus:ring-1 focus:ring-neon-green
-                                    transition-colors"
+                                    transition-all duration-300 focus:shadow-[0_0_10px_#00ff8833]"
                             {...register("username", { required: true })}
                         />
 
                         <button
                             type="button"
-                            className="shrink-0 h-11 px-5 bg-transparent border-[1.5px] border-neon-green
-                                    rounded-md text-neon-green text-xs font-semibold tracking-widest
-                                    uppercase cursor-pointer transition-colors
-                                    hover:bg-neon-green hover:text-black"
+                            className="shrink-0 h-11 px-5 bg-neon-green/5 border border-neon-green/30
+                                    rounded-sm text-neon-green text-xs font-semibold tracking-widest
+                                    uppercase cursor-pointer transition-all duration-300
+                                    hover:bg-neon-green/15 hover:border-neon-green/80 hover:shadow-[0_0_10px_rgba(52,211,153,0.25)] active:scale-95"
                             onClick={togalSearchResult}
                         >
                             Search
@@ -157,38 +161,64 @@ export default function AddMember(){
                     </div>
                 </div>
                 {
-                    searched && <div className="flex">
+                    searched && <div className="flex w-full">
                         {
-                            loader && <p>Loading...</p> || searchData && 
+                            loader && (
+                              <div className="flex w-full items-center justify-center p-3 border border-border-subtle bg-bg-surface/50 rounded-sm">
+                                <p className="text-text-muted font-mono text-xs animate-pulse">
+                                  [i] QUERYING TELEMETRY REGISTRY...
+                                </p>
+                              </div>
+                            ) || searchData && 
                              (
-                                <div onClick={()=>setSearched(false)} className="flex flex-col w-full justify-center items-center border border-neon-green rounded-md cursor-pointer p-2">
-                                    <p className="text-neon-green font-mono">
-                                        Username: {searchData.username}
-                                    </p>
-
-                                    <p className="text-gray-300 text-sm">
-                                        Role: {searchData.role}
-                                    </p>
+                                <div onClick={()=>setSearched(false)} className="flex flex-col w-full border border-neon-green/30 bg-neon-green/5 hover:border-neon-green/70 hover:bg-neon-green/10 rounded-sm cursor-pointer p-4 gap-2 transition-all duration-300 group shadow-[0_0_15px_rgba(52,211,153,0.02)]">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-neon-green font-mono text-xs font-bold tracking-wider uppercase">
+                                            [+] TARGET PROFILE FOUND
+                                        </span>
+                                        <span className="text-text-muted font-mono text-[10px] group-hover:text-neon-green/60 transition-colors">
+                                            Click to close ×
+                                        </span>
+                                    </div>
+                                    <div className="h-[1px] bg-neon-green/20 w-full"></div>
+                                    <div className="grid grid-cols-2 gap-2 font-mono text-xs mt-1">
+                                        <div className="text-text-muted">AGENT ID:</div>
+                                        <div className="text-text-primary text-right font-semibold">{searchData.username}</div>
+                                        <div className="text-text-muted">CLEARANCE LEVEL:</div>
+                                        <div className="text-neon-cyan text-right uppercase tracking-wider font-bold">{searchData.role}</div>
+                                    </div>
                                 </div>
-                            ) || <p>something went wrong</p>
+                            ) || (
+                              <div className="flex w-full items-center justify-center border border-neon-red/30 bg-neon-red/5 p-3 rounded-sm font-mono text-xs text-neon-red shadow-[0_0_10px_rgba(248,113,113,0.05)] select-none">
+                                <span className="font-bold">[!] ERROR: TARGET AGENT NOT FOUND</span>
+                              </div>
+                            )
                         }
                     </div>
 
                 }
 
-              <select className="w-full cursor-pointer text-neon-green bg-black p-2 border-2 rounded-bl-lg rounded-tr-lg hover:shadow-md" {...register("role",{required:true})}>
-                <option value="user" name="user">user</option>
-                {/* <option value="admin" name="user">admin</option> */}
-                <option value="exicutive" name="user">exicutive</option>
-                <option value="member" name="user">member</option>
-              </select>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold tracking-widest uppercase text-neon-green">
+                  Clearance Role
+                </label>
+                <select 
+                  className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[right_0.75rem_center] bg-[length:1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]" 
+                  {...register("role",{required:true})}
+                >
+                  <option value="user" className="bg-[#0a0e17] text-text-primary">user</option>
+                  <option value="exicutive" className="bg-[#0a0e17] text-text-primary">executive</option>
+                  <option value="member" className="bg-[#0a0e17] text-text-primary">member</option>
+                </select>
+              </div>
 
               <Button
                 type="submit"
                 variant="filled"
-                className="w-full py-3 mt-2 font-semibold tracking-widest text-base"
+                className={`w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 active:scale-[0.98] ${searchData?.id===userid ? "cursor-not-allowed opacity-50 bg-[#ff5f56]/10 border-[#ff5f56]/30 text-[#ff5f56] hover:shadow-none" : "hover:shadow-[0_0_18px_rgba(52,211,153,0.35)]" }`}
+                disabled={searchData ? searchData.id===userid : false}
               >
-                ADD
+                {searchData?.id===userid?"ACTION PROHIBITED":"ENROLL MEMBER"}
               </Button>
             </form>
 

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export default function Drover({ isOpen, onClose }) {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-
+  const tempurl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   const handleLogout = async () => {
     const result = await AuthObj.signOut();
     if (result) {
@@ -76,7 +76,7 @@ export default function Drover({ isOpen, onClose }) {
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden border border-neon-green/30 shrink-0">
               <img
-                src="/hacker.png"
+                src={user.publicurl || tempurl}
                 alt="User"
                 className="w-full h-full object-cover"
               />
@@ -86,7 +86,7 @@ export default function Drover({ isOpen, onClose }) {
                 {user?.email?.split("@")[0] || "agent"}
               </p>
               <p className="text-text-dim font-mono text-[10px] tracking-wider uppercase">
-                // online
+                // {user.role}
               </p>
             </div>
           </div>

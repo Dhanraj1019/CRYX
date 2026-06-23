@@ -39,23 +39,23 @@ export default function AddEvent(){
     }
 
     return !loader && (
-    <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-4 animate-fade-in">
+    <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
       <div className="w-full max-w-xl">
         {/* Add Event Card */}
-        <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
-          style={{
-            boxShadow: "0 0 20px rgba(52,211,153,0.05), 0 0 40px rgba(52,211,153,0.02)",
-          }}
-        >
+        <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
+          {/* Top Scanline Glow */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-5 py-3 bg-bg-elevated border-b border-border-subtle">
+          <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
             <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
-              <span className="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-              <span className="w-3 h-3 rounded-full bg-neon-green"></span>
+              <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ff5f56] transition-all duration-300"></span>
+              <span className="w-3 h-3 rounded-full bg-[#ffbd2e] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ffbd2e] transition-all duration-300"></span>
+              <span className="w-3 h-3 rounded-full bg-neon-green opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#34d399] transition-all duration-300"></span>
             </div>
-            <span className="text-text-muted font-mono text-xs tracking-wider">
-              add_event.sh
+            <span className="text-text-muted font-mono text-xs tracking-widest flex items-center gap-1.5 select-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-ping"></span>
+              add_event.sh //
             </span>
           </div>
 
@@ -63,7 +63,9 @@ export default function AddEvent(){
           <div className="p-6 md:p-8">
             {/* Lock Icon */}
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full border-2 border-neon-green/40 flex items-center justify-center animate-border-glow">
+              <div className="w-16 h-16 rounded-full border border-neon-green/30 flex items-center justify-center animate-border-glow shadow-[0_0_15px_rgba(52,211,153,0.1)]"
+                style={{ filter: "drop-shadow(0 0 8px rgba(52,211,153,0.15))" }}
+              >
                 <svg
                   className="w-8 h-8 text-neon-green"
                   fill="none"
@@ -82,66 +84,76 @@ export default function AddEvent(){
 
             {/* Title */}
             <h1 className="text-center font-mono text-xl md:text-2xl font-bold text-neon-green tracking-wider mb-1 text-glow-green">
-              ACCESS TERMINAL
+              EVENT CREATION ACCESS
             </h1>
             <p className="text-center text-text-muted font-mono text-xs tracking-wider mb-8">
-              // Enter credentials to add Event
+              // Initialize parameters for the new cyber event
             </p>
 
             {/* Form */}
             <form onSubmit={handleSubmit(add)} className="space-y-5">
               <Input
                 label="Title"
-                placeholder="event1"
+                placeholder="e.g. Cyber Security Summit"
                 {...register("title", { required: true })}
               />
 
-              <Input
-                label="Date"
-                type="date"
-                placeholder="02-1-2026"
-                {...register("date")}
-              />
-              <Input
-                label="Time"
-                type="time"
-                placeholder="03:56"
-                {...register("time")}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label="Date"
+                  type="date"
+                  placeholder="02-1-2026"
+                  {...register("date")}
+                />
+                <Input
+                  label="Time"
+                  type="time"
+                  placeholder="03:56"
+                  {...register("time")}
+                />
+              </div>
+
               <Input
                 label="Place"
                 type="text"
-                placeholder="VLTC L-006"
+                placeholder="e.g. VLTC L-006"
                 {...register("place")}
               />
-              <label className="mb-2 font-mono text-sm uppercase tracking-wider text-neon-green" htmlFor="discription">Discription</label>
-              <textarea 
-                className="w-full rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
-                id="discription" 
-                name="discription" 
-                rows="4" 
-                placeholder="Type here..."
-                {...register("discription")}
+
+              <div className="flex flex-col">
+                <label className="mb-2 font-mono text-sm uppercase tracking-wider text-neon-green" htmlFor="discription">
+                  Description
+                </label>
+                <textarea 
+                  className="w-full rounded-sm border border-[#1e2d3d] bg-[#0d1117]/80 px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833] resize-none"
+                  id="discription" 
+                  name="discription" 
+                  rows="4" 
+                  placeholder="Enter details of the event..."
+                  {...register("discription")}
                 ></textarea>
+              </div>
+
               <Input
-                label="Image"
+                label="Image Banner"
                 type="file"
-                // placeholder="02-1-2026"
+                className="file:mr-4 file:py-1.5 file:px-4 file:rounded-sm file:border file:border-neon-green/20 file:text-xs file:font-mono file:bg-neon-green/5 file:text-neon-green hover:file:bg-neon-green/15 hover:file:border-neon-green/60 file:cursor-pointer file:transition-all duration-300 text-text-muted text-sm border-dashed"
                 {...register("image",{required:true})}
               />
+
               <Input
-                label="Hight Lights"
+                label="Highlights"
                 type="text"
-                placeholder="importent...."
+                placeholder="e.g. Hands-on labs, CTF competitions..."
                 {...register("heighlight")}
               />
 
               <Button
                 type="submit"
                 variant="filled"
-                className="w-full py-3 mt-2 font-semibold tracking-widest text-base"
+                className="w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
               >
-                ADD EVENT
+                DEPLOY EVENT
               </Button>
             </form>
 
