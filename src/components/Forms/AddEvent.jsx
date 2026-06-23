@@ -30,7 +30,7 @@ export default function AddEvent(){
             setLoader(false);
             if(saveResult.success){
                 reset();
-                navigate("/add-event");
+                navigate("/home");
             }
         }else{
           console.log("error ",result.error);
@@ -44,7 +44,7 @@ export default function AddEvent(){
         {/* Add Event Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
@@ -103,13 +103,13 @@ export default function AddEvent(){
                   label="Date"
                   type="date"
                   placeholder="02-1-2026"
-                  {...register("date")}
+                  {...register("date",{required:true})}
                 />
                 <Input
                   label="Time"
                   type="time"
                   placeholder="03:56"
-                  {...register("time")}
+                  {...register("time",{required:true})}
                 />
               </div>
 
@@ -117,7 +117,7 @@ export default function AddEvent(){
                 label="Place"
                 type="text"
                 placeholder="e.g. VLTC L-006"
-                {...register("place")}
+                {...register("place",{required:true})}
               />
 
               <div className="flex flex-col">

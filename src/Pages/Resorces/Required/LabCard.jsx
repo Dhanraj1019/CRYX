@@ -8,7 +8,9 @@ export default function LabCard({ lab, platform }) {
     Medium: { color: "#f59e0b", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.3)" },
     Hard: { color: "#f87171", bg: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.3)" },
   };
-  const user_role=useSelector((stat)=>stat.auth.user?.role);
+
+  const user_role=useSelector((state=>state.auth.user?.role));
+  const loginStatus=useSelector((stat)=>stat.auth.status);
 
   const diff = difficultyConfig[lab.difficulty] || difficultyConfig["Easy"];
   const [hovered, setHovered] = useState(false);
@@ -71,7 +73,8 @@ export default function LabCard({ lab, platform }) {
           >
             {lab.difficulty}
           </span>
-          <Button className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">Delete </Button>
+
+          {loginStatus && user_role==="admin" && <Button className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">Delete </Button>}
         </div>
 
         {/* Title */}

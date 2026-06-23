@@ -1,11 +1,13 @@
 import LabCard from '../Required/LabCard'
 import { useState } from 'react';
 import { motion, AnimatePresence } from "motion/react";
+import { useSelector } from 'react-redux';
 
 export default function PlatformSection({ platform, index, onAddLab }) {
   const [filterDiff, setFilterDiff] = useState("All");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  
+  const user_role=useSelector((state=>state.auth.user?.role));
+  const loginStatus=useSelector((stat)=>stat.auth.status);
   // Form fields
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -98,7 +100,7 @@ export default function PlatformSection({ platform, index, onAddLab }) {
                 {platform.labs.length} Labs
               </span>
               
-              <button
+              {loginStatus && user_role==="admin" && <button
                 onClick={() => setIsAddModalOpen(true)}
                 className="w-8 h-8 rounded-full border flex items-center justify-center cursor-pointer transition-all duration-300 font-mono text-lg font-bold"
                 style={{
@@ -119,7 +121,7 @@ export default function PlatformSection({ platform, index, onAddLab }) {
                 }}
               >
                 +
-              </button>
+              </button>}
             </div>
             <p className="font-mono text-xs text-text-muted tracking-wider mt-0.5">
               {platform.tagline}
