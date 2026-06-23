@@ -27,7 +27,7 @@ export default function Footer() {
       {/* Neon gradient top line */}
       <div className="mb-2 gradient-line h-px w-full" />
       <div className="flex flex-col gap-2 items-center">
-        <h2 className="text-3xl font-bold text-neon-green text-glow-green mb-4 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-neon-green text-glow-green mb-3 sm:mb-4 tracking-tight">
           CRYX
         </h2>
         <div className="border-t border-border-subtle">

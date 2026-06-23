@@ -22,7 +22,7 @@ export default function Home() {
         const eventtime=new Date(
           `${e.date}T${e.time}`
         ).getTime();
-        return eventtime>nowtime;
+        return eventtime>=nowtime;
       })
       const past=result.filter((e)=>{
         const eventtime=new Date(
@@ -49,7 +49,7 @@ export default function Home() {
   const role=useSelector((state)=>state.auth.role);
   // console.log("role = ",role);
   return (
-    <div className='max-w-7xl mx-auto px-4 md:px-8'>
+    <div className='max-w-7xl mx-auto px-3 sm:px-4 md:px-8'>
       <Welcome />
       <section className="py-6">
         <Terminal />
@@ -71,8 +71,8 @@ export default function Home() {
 
       <section id='about-us'>
         <HorizontalLine title="CRYX TEAM ARCHIVE..." status={role?.trim()==="admin" && "Add Member" || "Keep Eye"} />
-        <div className='flex flex-wrap gap-4'>
-          {member.map((t,idx) => <TeamCard key={t.id} data={t} idx={idx} />)}
+        <div className='flex flex-wrap gap-4 justify-center sm:justify-start'>
+          {member?.map((t,idx) => <TeamCard key={t.id} data={t} idx={idx} />)}
         </div>
       </section>
 

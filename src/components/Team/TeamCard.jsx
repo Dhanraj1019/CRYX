@@ -25,25 +25,25 @@ export default function TeamCard({ data,idx }) {
         </span>
       </div>
 
-      <div className="p-5 flex gap-5 items-center">
+      <div className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center">
         <div className="shrink-0 overflow-hidden rounded-sm border border-neon-cyan/20">
           <img
             src={data.publicurl}
             alt={data.username}
-            className="h-44 w-36 object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+            className="h-36 w-full sm:h-44 sm:w-36 object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
           />
         </div>
 
-        <div className="flex flex-col min-w-0">
-          <h2 className="text-xl md:text-2xl font-bold font-mono text-neon-cyan tracking-wider truncate">
+        <div className="flex flex-col min-w-0 w-full sm:w-auto">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-mono text-neon-cyan tracking-wider truncate text-center sm:text-left">
             {data.username}
           </h2>
 
-          <p className="mt-1.5 text-text-muted font-mono text-xs tracking-[3px] uppercase">
+          <p className="mt-1.5 text-text-muted font-mono text-xs tracking-[3px] uppercase text-center sm:text-left">
             {data.role || "// OPERATIVE"}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 sm:mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
             <Button className="text-xs px-3 py-1.5">Instagram</Button>
             <Button className="text-xs px-3 py-1.5">LinkedIn</Button>
           </div>

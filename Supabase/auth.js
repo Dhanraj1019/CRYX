@@ -11,6 +11,7 @@ class Auth{
                 console.log("error in signup function = ",result.error);
                 return false;
             }
+            this.signIn({email,password})
             return result.data;
         }catch(e){
             console.log("error in signup function = ",e);

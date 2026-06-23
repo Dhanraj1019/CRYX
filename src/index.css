@@ -8,18 +8,18 @@
   --color-bg-elevated: #1a2332;
   --color-bg-glass: rgba(17, 24, 39, 0.6);
 
-  --color-neon-green: #00ff88;
-  --color-neon-cyan: #06b6d4;
-  --color-neon-red: #ff3e3e;
+  --color-neon-green: #34d399;
+  --color-neon-cyan: #67e8f9;
+  --color-neon-red: #f87171;
   --color-neon-purple: #a855f7;
   --color-neon-amber: #f59e0b;
 
-  --color-text-primary: #e2e8f0;
+  --color-text-primary: #cbd5e1;
   --color-text-muted: #64748b;
   --color-text-dim: #334155;
 
-  --color-border-subtle: rgba(0, 255, 136, 0.15);
-  --color-border-glow: rgba(0, 255, 136, 0.4);
+  --color-border-subtle: rgba(52, 211, 153, 0.1);
+  --color-border-glow: rgba(52, 211, 153, 0.25);
 
   /* Fonts */
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
@@ -71,16 +71,16 @@
 }
 
 @keyframes border-glow {
-  0%, 100% { border-color: rgba(0, 255, 136, 0.2); }
-  50% { border-color: rgba(0, 255, 136, 0.6); }
+  0%, 100% { border-color: rgba(52, 211, 153, 0.15); }
+  50% { border-color: rgba(52, 211, 153, 0.35); }
 }
 
 @keyframes text-glow {
   from {
-    text-shadow: 0 0 4px rgba(0, 255, 136, 0.5), 0 0 8px rgba(0, 255, 136, 0.3);
+    text-shadow: 0 0 4px rgba(52, 211, 153, 0.3), 0 0 8px rgba(52, 211, 153, 0.15);
   }
   to {
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.8), 0 0 20px rgba(0, 255, 136, 0.5), 0 0 40px rgba(0, 255, 136, 0.2);
+    text-shadow: 0 0 6px rgba(52, 211, 153, 0.4), 0 0 14px rgba(52, 211, 153, 0.2), 0 0 28px rgba(52, 211, 153, 0.08);
   }
 }
 
@@ -117,7 +117,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #0a0e17;
-  color: #e2e8f0;
+  color: #cbd5e1;
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -139,30 +139,30 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00ff88;
+  background: #34d399;
 }
 
 /* ── Selection ── */
 ::selection {
-  background: rgba(0, 255, 136, 0.3);
-  color: #00ff88;
+  background: rgba(52, 211, 153, 0.2);
+  color: #34d399;
 }
 
 /* ── Utility Classes ── */
 .glow-green {
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3), 0 0 30px rgba(0, 255, 136, 0.1);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.15), 0 0 20px rgba(52, 211, 153, 0.05);
 }
 
 .glow-cyan {
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), 0 0 30px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 10px rgba(103, 232, 249, 0.15), 0 0 20px rgba(103, 232, 249, 0.05);
 }
 
 .text-glow-green {
-  text-shadow: 0 0 4px rgba(0, 255, 136, 0.7), 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3);
+  text-shadow: 0 0 4px rgba(52, 211, 153, 0.35), 0 0 8px rgba(52, 211, 153, 0.2), 0 0 14px rgba(52, 211, 153, 0.08);
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 4px rgba(6, 182, 212, 0.7), 0 0 10px rgba(6, 182, 212, 0.5);
+  text-shadow: 0 0 4px rgba(103, 232, 249, 0.35), 0 0 8px rgba(103, 232, 249, 0.2);
 }
 
 .glass {
@@ -178,9 +178,9 @@ body {
 }
 
 .gradient-line {
-  background: linear-gradient(90deg, transparent, #00ff88, #06b6d4, transparent);
+  background: linear-gradient(90deg, transparent, #34d399, #67e8f9, transparent);
 }
 
 .gradient-line-red {
-  background: linear-gradient(90deg, transparent, #ff3e3e, #f59e0b, transparent);
+  background: linear-gradient(90deg, transparent, #f87171, #fbbf24, transparent);
 }

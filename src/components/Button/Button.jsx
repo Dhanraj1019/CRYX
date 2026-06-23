@@ -4,9 +4,9 @@ export default function Button({ children, className = "", variant, ...props }) 
 
   const variants = {
     filled:
-      "bg-[#00ff88] text-black font-bold border border-[#00ff88] hover:shadow-[0_0_14px_#00ff88] hover:scale-105",
+      "bg-[#34d399] text-black font-bold border border-[#34d399] hover:shadow-[0_0_10px_rgba(52,211,153,0.4)] hover:scale-105",
     default:
-      "bg-transparent text-[#00ff88] border border-[#00ff88] hover:shadow-[0_0_14px_#00ff88] hover:scale-105 hover:bg-[#00ff8810]",
+      "bg-transparent text-[#34d399] border border-[#34d399] hover:shadow-[0_0_10px_rgba(52,211,153,0.3)] hover:scale-105 hover:bg-[#34d39910]",
   };
 
   const classes = `${base} ${variants[variant] || variants.default} ${className}`;

@@ -13,25 +13,42 @@ export default function AddMember(){
     const [searched,setSearched] = useState(false);
     const { handleSubmit, register ,getValues,reset } = useForm();
     const [loader,setLoader] = useState(false);
+    const publicUrl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/hacker.jpg";
+
     const add = async(data)=>{
         if(!searchData){
             alert("search username first");
             return;
         }
         setLoader(true);
-        const publicUrl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/avtarlogo.jpg";
-        // console.log("role in data after add click ",data);
-        // console.log("searchdata ",searchData);
-        const result=await supabase.from("userprofile").update({"role":data.role}).eq("id",searchData.id)
-        const updated=(await supabase.from("userprofile").select("*").eq("id",searchData.id)).data[0];
-        const fnfupdated={...updated,imageurl:"avtarlogo.jpg",publicurl:publicUrl};
-        const fnf=await DatabaseObj.insertData({table:"memberprofile",data:fnfupdated});
-        // console.log("updated data = ",fnfupdated);
-        // console.log(fnf);
+        if(searchData.role==="user" && data.role!=="user"){
+          const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
+          // console.log("data updated")
+          const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
+          // console.log("getrow ",updated);
+          // console.log("updated row find")
+          const fnfupdated={...updated,publicurl:publicUrl};
+          const fnf=await DatabaseObj.insertData({table:"memberprofile",data:fnfupdated});
+          // console.log("inserted data = ",fnf);
+        }
+        else if(searchData.role!=="user" && searchData.role!==data.role){
+          const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
+          const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
+          const member_id=await DatabaseObj.getRow({bucket:"memberprofile",chake:["username",searchData.username]})
+          // console.log("member_id=",member_id);
+          if(data.role==="user"){
+            const deleteMember=await DatabaseObj.deleteRow({bucket:"memberprofile",id:member_id.id});
+            // console.log("deleted row ",deleteMember);
+          }
+          else{
+            const memUpdate=await DatabaseObj.updateData({table:"memberprofile",data:{"role":data.role},id:member_id.id});
+            // console.log("data update in memupdate ",memUpdate);
+          }
+        }
         reset()
         setLoader(false);
         setSearched(false);
-        navigate("/add-member");
+        // navigate("/add-member");
     }
 
     const togalSearchResult=async()=>{
@@ -56,12 +73,12 @@ export default function AddMember(){
     }
 
     return !loader && (
-        <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
+        <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Add Member Card */}
         <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
           style={{
-            boxShadow: "0 0 30px rgba(0,255,136,0.08), 0 0 60px rgba(0,255,136,0.03)",
+            boxShadow: "0 0 20px rgba(52,211,153,0.05), 0 0 40px rgba(52,211,153,0.02)",
           }}
         >
           {/* Header Bar */}
@@ -161,8 +178,9 @@ export default function AddMember(){
 
               <select className="w-full cursor-pointer text-neon-green bg-black p-2 border-2 rounded-bl-lg rounded-tr-lg hover:shadow-md" {...register("role",{required:true})}>
                 <option value="user" name="user">user</option>
-                <option value="admin" name="user">admin</option>
+                {/* <option value="admin" name="user">admin</option> */}
                 <option value="exicutive" name="user">exicutive</option>
+                <option value="member" name="user">member</option>
               </select>
 
               <Button

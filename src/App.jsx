@@ -20,10 +20,10 @@ function App() {
                     .single();
         // console.log("data = ",data);
         if(!data.data){
-          console.log("profile not found");
+          // console.log("profile not found");
           return;
         }
-        const redux_data={user:session.user,session:session,role:data.data.role};
+        const redux_data={user:data.data,session:session,role:data.data.role};
         dispatch(stateLogin(redux_data));
       } else if (event === 'SIGNED_IN') {
         const data = await supabase
@@ -32,11 +32,11 @@ function App() {
           .eq("id", session.user.id)
           .single();
         if(!data.data){
-          console.log("profile not found");
+          // console.log("profile not found");
           return;
         }
         // console.log("data = ",data);
-        const redux_data={user:session.user,session:session,role:data.data.role};
+        const redux_data={user:data.data,session:session,role:data.data.role};
         dispatch(stateLogin(redux_data));
       } else if (event === 'SIGNED_OUT') {
         dispatch(stateLogout());

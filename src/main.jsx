@@ -14,6 +14,10 @@ import AddEvent from './components/Forms/AddEvent.jsx'
 import Loader from './components/Loader.jsx'
 import AdminProtect from './components/Protected/AdminProtect.jsx'
 import UserProtect from './components/Protected/UserProtect.jsx'
+import UpdateProfile from './components/Forms/UpdateProfile.jsx'
+import ResorcesIndex from './Pages/Resorces/ResorcsIndex.jsx'
+import CybersecurityRoadmap from './Pages/pagex/CybersecurityRoadmap.jsx'
+import WeeklyLabs from './Pages/pagex/WeeklyLabs.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/signup",
-        element:<UserProtect authentication={true}>
+        element:<UserProtect authentication={false}>
           <SignUp/>
         </UserProtect>
       },{
@@ -79,6 +83,26 @@ const router = createBrowserRouter([
         element:<div className="flex justify-center items-center min-h-lvh">
             <Loader />
           </div>
+      },
+      {
+        path:"/update-profile",
+        element:<UserProtect authentication={true}>
+          <UpdateProfile/>
+        </UserProtect>
+      },
+      {
+        path:"/appearance",
+        element:<UserProtect authentication={true}>
+          <UnderDevelopment header="APPEARANCE" content="// Theme customization coming soon..." />
+        </UserProtect>
+      },
+      {
+        path:"/roadmap",
+        element:<CybersecurityRoadmap/>
+      },
+      {
+        path:"/weeklylabs",
+        element:<WeeklyLabs/>
       }
     ]
   }

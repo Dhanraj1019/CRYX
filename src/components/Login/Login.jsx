@@ -27,12 +27,12 @@ export default function Login() {
   }
 
   return !loader && (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
+    <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Login Card */}
         <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
           style={{
-            boxShadow: "0 0 30px rgba(0,255,136,0.08), 0 0 60px rgba(0,255,136,0.03)",
+            boxShadow: "0 0 20px rgba(52,211,153,0.05), 0 0 40px rgba(52,211,153,0.02)",
           }}
         >
           {/* Header Bar */}

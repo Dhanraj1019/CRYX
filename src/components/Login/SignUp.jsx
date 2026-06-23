@@ -5,30 +5,33 @@ import AuthObj from '../../../Supabase/auth';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
+import Loader from '../Loader';
 export default function SignUp() {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register,formState: { errors } } = useForm();
     const diapatch=useDispatch();
     const navigate=useNavigate();
+    const tempPublicUrl="";
+    const tempPath="";
   const [loader,setLoader] = useState(false);
   const signUp = async (data) => {
     if(data){
       setLoader(true);
-        // console.log("data in signup.jsx file = ",data);
-        const result=await AuthObj.saveProfile({data});
-        // console.log("result in signup.jsx = ",result);
+        console.log("data in signup.jsx file = ",data);
+        const data2={...data,imageurl:tempPath,publicurl:tempPublicUrl};
+        const result=await AuthObj.saveProfile({data:data2});
+        console.log("result in signup.jsx = ",result);
         setLoader(false);
-        navigate("/login");
+        navigate("/home");
     }
   }
 
   return !loader && (
-    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] px-4 animate-fade-in">
+    <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Signup Card */}
         <div className="border border-border-subtle bg-bg-surface/60 backdrop-blur-md rounded-sm overflow-hidden"
           style={{
-            boxShadow: "0 0 30px rgba(0,255,136,0.08), 0 0 60px rgba(0,255,136,0.03)",
+            boxShadow: "0 0 20px rgba(52,211,153,0.05), 0 0 40px rgba(52,211,153,0.02)",
           }}
         >
           {/* Header Bar */}
@@ -91,12 +94,31 @@ export default function SignUp() {
                 placeholder="••••••••"
                 {...register("password", { required: true })}
               />
-              <Input
+              {/* <Input
                 label="PhoneNumber"
                 type="text"
                 placeholder="1234567890"
                 {...register("phone")}
-              />
+              /> */}
+              <Input label="phone" placeholder="1234567890"  {...register("phone",{ 
+                    // required: "Phone number is required",
+                    pattern: {
+                      value: /^[0-9]+$/, // Regex that only allows numbers 0-9
+                      message: "Please enter only numbers"
+                    },
+                    minLength: {
+                      value: 10,
+                      message: "Phone number must be exactly 10 digits"
+                    },
+                    maxLength: {
+                      value: 10,
+                      message: "Phone number must be exactly 10 digits"
+                    }
+                  })}/>
+                  {errors.phone && (
+                    <p className="text-neon-red text-xs mt-1 font-mono tracking-wider" role="alert">{errors.phone.message}</p>
+                  )}
+
               <Input
                 label="InstagramId"
                 type="text"

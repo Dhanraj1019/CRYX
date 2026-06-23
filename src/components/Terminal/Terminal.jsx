@@ -57,7 +57,7 @@ function Terminal() {
   // Boot screen
   if (boot) {
     return (
-      <div className="flex items-center justify-center h-64 w-3/4 mx-auto animate-fade-in">
+      <div className="flex items-center justify-center h-48 sm:h-64 w-full sm:w-3/4 mx-auto px-4 animate-fade-in">
         <div className="text-center font-mono">
           <div className="text-neon-green text-lg animate-glow-pulse text-glow-green">
             ⟡ Booting system...
@@ -91,9 +91,9 @@ function Terminal() {
   return (
     <div
       id="terminal"
-      className="h-100 w-full max-w-4xl mx-auto border border-neon-green/30 overflow-hidden flex flex-col animate-fade-in"
+      className="h-72 sm:h-80 md:h-100 w-full max-w-full sm:max-w-2xl md:max-w-4xl mx-auto border border-neon-green/30 overflow-hidden flex flex-col animate-fade-in"
       style={{
-        boxShadow: "0 0 25px rgba(0,255,136,0.1), 0 0 50px rgba(0,255,136,0.05)",
+        boxShadow: "0 0 15px rgba(52,211,153,0.06), 0 0 30px rgba(52,211,153,0.03)",
       }}
     >
       {/* TOP BAR */}

@@ -64,10 +64,10 @@ export default function MarqueeImage({ images = [], speed = 30 }) {
             }}
           >
             <img
-              src={i.publicUrl}
+              src={i.publicurl}
               alt=""
               aria-hidden={idx >= images.length}
-              className="h-40 md:h-52 w-auto object-cover shrink-0 transition-transform duration-700 hover:scale-105"
+              className="h-32 sm:h-40 md:h-52 w-auto object-cover shrink-0 transition-transform duration-700 hover:scale-105"
               draggable={false}
             />
             {/* Scanline overlay */}
