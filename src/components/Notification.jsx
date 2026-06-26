@@ -2,33 +2,49 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeNotification } from "../../store/Notifucation";
 import { useEffect, useState } from "react";
 
+/* ── Theme config — matches site token colours exactly ── */
 const CYBER_CONFIG = {
   success: {
-    tag: "ACCESS GRANTED",
-    color: "text-[#00ff88]",
-    border: "border-[rgba(0,255,136,0.4)]",
-    bg: "bg-[rgba(0,255,136,0.08)]",
-    iconBg: "bg-[rgba(0,255,136,0.12)]",
-    tagBg: "bg-[rgba(0,255,136,0.12)]",
-    bar: "bg-[#00ff88]",
-    cornerColor: "border-[#00ff88]",
-    icon: "✦",
+    label:       "ACCESS GRANTED",
+    accentColor: "#34d399",                          // --color-neon-green
+    borderColor: "rgba(52, 211, 153, 0.35)",
+    bgColor:     "rgba(52, 211, 153, 0.06)",
+    glowColor:   "rgba(52, 211, 153, 0.18)",
+    tagBg:       "rgba(52, 211, 153, 0.10)",
+    barColor:    "#34d399",
+    textShadow:  "0 0 8px rgba(52,211,153,0.6)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2"
+           strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+    ),
   },
   error: {
-    tag: "THREAT DETECTED",
-    color: "text-[#ff3b5c]",
-    border: "border-[rgba(255,59,92,0.4)]",
-    bg: "bg-[rgba(255,59,92,0.08)]",
-    iconBg: "bg-[rgba(255,59,92,0.12)]",
-    tagBg: "bg-[rgba(255,59,92,0.12)]",
-    bar: "bg-[#ff3b5c]",
-    cornerColor: "border-[#ff3b5c]",
-    icon: "✕",
+    label:       "THREAT DETECTED",
+    accentColor: "#f87171",                          // --color-neon-red
+    borderColor: "rgba(248, 113, 113, 0.35)",
+    bgColor:     "rgba(248, 113, 113, 0.06)",
+    glowColor:   "rgba(248, 113, 113, 0.18)",
+    tagBg:       "rgba(248, 113, 113, 0.10)",
+    barColor:    "#f87171",
+    textShadow:  "0 0 8px rgba(248,113,113,0.6)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2"
+           strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6"  y1="6" x2="18" y2="18" />
+      </svg>
+    ),
   },
 };
 
+/* Auto-dismiss timing (ms) */
+const TOTAL_MS   = 5000;
+const HIDE_AT_MS = 4700;
+
 export default function Notification() {
-  const dispatch = useDispatch();
+  const dispatch         = useDispatch();
   const notificationData = useSelector((state) => state.notification);
   const [hiding, setHiding] = useState(false);
 
@@ -36,90 +52,177 @@ export default function Notification() {
     if (!notificationData?.status) return;
     setHiding(false);
 
-    const hideTimer = setTimeout(() => setHiding(true), 8750);
-    const removeTimer = setTimeout(() => dispatch(removeNotification()), 9000);
+    const hideTimer   = setTimeout(() => setHiding(true),              HIDE_AT_MS);
+    const removeTimer = setTimeout(() => dispatch(removeNotification()), TOTAL_MS);
 
     return () => {
       clearTimeout(hideTimer);
       clearTimeout(removeTimer);
     };
-  }, [notificationData.status, dispatch]);
+  }, [notificationData.status, notificationData.message, dispatch]);
 
   if (!notificationData?.status) return null;
 
   const type = notificationData.type === "success" ? "success" : "error";
-  const cfg = CYBER_CONFIG[type];
+  const cfg  = CYBER_CONFIG[type];
 
   return (
     <div
-      className={`
-        fixed top-5 right-5 z-2000 w-88
-        flex items-start gap-3 p-4 rounded overflow-hidden
-        border font-mono
-        ${cfg.bg} ${cfg.border}
-        transition-all duration-200
-        ${hiding ? "opacity-0 translate-x-10" : "opacity-100 translate-x-0"}
-      `}
-      style={{ fontFamily: "'Share Tech Mono', monospace" }}
+      style={{
+        position:       "fixed",
+        top:            "80px",           /* below the fixed AppBar */
+        right:          "20px",
+        zIndex:         9999,
+        width:          "340px",
+        fontFamily:     "'JetBrains Mono', 'Fira Code', ui-monospace, monospace",
+        /* glassmorphism panel */
+        background:     "rgba(10, 14, 23, 0.82)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border:         `1px solid ${cfg.borderColor}`,
+        borderRadius:   "4px",
+        boxShadow:      `0 0 0 1px rgba(0,0,0,0.4),
+                         0 8px 32px rgba(0,0,0,0.55),
+                         0 0 24px ${cfg.glowColor}`,
+        overflow:       "hidden",
+        /* slide in / out */
+        transition:     "opacity 0.3s ease, transform 0.3s ease",
+        opacity:        hiding ? 0   : 1,
+        transform:      hiding ? "translateX(24px) scale(0.97)" : "translateX(0) scale(1)",
+      }}
     >
-      {/* corner accents */}
-      <span
-        className={`absolute top-0 left-0 w-2 h-2 border-t border-l opacity-50 ${cfg.cornerColor}`}
-      />
-      <span
-        className={`absolute bottom-0.5 right-0 w-2 h-2 border-b border-r opacity-50 ${cfg.cornerColor}`}
-      />
+      {/* ── Corner bracket accents ── */}
+      <span style={{
+        position:"absolute", top:0, left:0,
+        width:10, height:10,
+        borderTop:`1.5px solid ${cfg.accentColor}`,
+        borderLeft:`1.5px solid ${cfg.accentColor}`,
+        opacity:0.7,
+      }} />
+      <span style={{
+        position:"absolute", bottom:4, right:0,
+        width:10, height:10,
+        borderBottom:`1.5px solid ${cfg.accentColor}`,
+        borderRight:`1.5px solid ${cfg.accentColor}`,
+        opacity:0.7,
+      }} />
 
-      {/* icon */}
-      <div
-        className={`
-          hrink-0 w-8 h-8 rounded-full
-          flex items-center justify-center
-          border text-sm
-          ${cfg.iconBg} ${cfg.border} ${cfg.color}
-        `}
-      >
-        {cfg.icon}
-      </div>
+      {/* ── Top accent line (scanline) ── */}
+      <div style={{
+        position:"absolute", top:0, left:0, right:0, height:"1.5px",
+        background:`linear-gradient(90deg, transparent, ${cfg.accentColor}, transparent)`,
+        opacity:0.7,
+      }} />
 
-      {/* content */}
-      <div className="flex-1 min-w-0">
-        <span
-          className={`
-            inline-block text-[9px] tracking-[0.15em] uppercase
-            px-1.5 py-0.5 rounded-sm mb-1 border
-            ${cfg.color} ${cfg.tagBg} ${cfg.border}
-          `}
+      {/* ── Main content row ── */}
+      <div style={{ display:"flex", alignItems:"flex-start", gap:"12px", padding:"14px 14px 18px 14px" }}>
+
+        {/* Icon bubble */}
+        <div style={{
+          flexShrink: 0,
+          width:      32,
+          height:     32,
+          borderRadius:"50%",
+          border:     `1px solid ${cfg.borderColor}`,
+          background: cfg.tagBg,
+          display:    "flex",
+          alignItems: "center",
+          justifyContent:"center",
+          boxShadow:  `0 0 10px ${cfg.glowColor}`,
+        }}>
+          {cfg.icon}
+        </div>
+
+        {/* Text block */}
+        <div style={{ flex:1, minWidth:0 }}>
+
+          {/* Status tag */}
+          <span style={{
+            display:       "inline-block",
+            fontSize:      "9px",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            padding:       "2px 6px",
+            marginBottom:  "5px",
+            borderRadius:  "2px",
+            border:        `1px solid ${cfg.borderColor}`,
+            background:    cfg.tagBg,
+            color:         cfg.accentColor,
+            textShadow:    cfg.textShadow,
+          }}>
+            {cfg.label}
+          </span>
+
+          {/* Title */}
+          <p style={{
+            margin:        "0 0 3px 0",
+            fontSize:      "13px",
+            fontWeight:    700,
+            letterSpacing: "0.06em",
+            color:         cfg.accentColor,
+            textShadow:    cfg.textShadow,
+            whiteSpace:    "nowrap",
+            overflow:      "hidden",
+            textOverflow:  "ellipsis",
+          }}>
+            {notificationData.title}
+          </p>
+
+          {/* Message */}
+          <p style={{
+            margin:     "0",
+            fontSize:   "11px",
+            lineHeight: 1.55,
+            color:      "#94a3b8",          /* --color-text-muted-ish */
+            fontFamily: "inherit",
+          }}>
+            {notificationData.message}
+          </p>
+        </div>
+
+        {/* Close button */}
+        <button
+          onClick={() => dispatch(removeNotification())}
+          aria-label="Dismiss notification"
+          style={{
+            flexShrink:  0,
+            width:       20,
+            height:      20,
+            background:  "transparent",
+            border:      "none",
+            cursor:      "pointer",
+            color:       "#475569",
+            fontSize:    "14px",
+            lineHeight:  1,
+            padding:     0,
+            display:     "flex",
+            alignItems:  "center",
+            justifyContent:"center",
+            transition:  "color 0.2s",
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = cfg.accentColor}
+          onMouseLeave={e => e.currentTarget.style.color = "#475569"}
         >
-          {cfg.tag}
-        </span>
-        <p className={`text-[13px] font-semibold tracking-wide m-0 mb-0.5 ${cfg.color}`}>
-          {notificationData.title}
-        </p>
-        <p className="text-[11px] m-0 leading-relaxed text-[#8899aa]">
-          {notificationData.message}
-        </p>
+          ✕
+        </button>
       </div>
 
-      {/* close */}
-      <button
-        onClick={() => dispatch(removeNotification())}
-        aria-label="Dismiss"
-        className="shrink-0 w-5 h-5 flex items-center justify-center
-          bg-transparent border-none cursor-pointer text-sm
-          text-gray-500 hover:text-gray-200 transition-colors"
-      >
-        ✕
-      </button>
+      {/* ── Progress bar ── */}
+      <div style={{
+        position:   "absolute",
+        bottom:     0,
+        left:       0,
+        height:     "2px",
+        width:      "100%",
+        transformOrigin: "left",
+        background: `linear-gradient(90deg, ${cfg.accentColor}, ${cfg.accentColor}88)`,
+        boxShadow:  `0 0 6px ${cfg.accentColor}`,
+        animation:  `cryx-shrink ${TOTAL_MS}ms linear forwards`,
+      }} />
 
-      {/* progress bar */}
-      <div
-        className={`absolute bottom-0 left-0 h-0.5 w-full origin-left ${cfg.bar}`}
-        style={{ animation: "scanShrink 3s linear forwards" }}
-      />
-
+      {/* ── Keyframe (scoped inline) ── */}
       <style>{`
-        @keyframes scanShrink {
+        @keyframes cryx-shrink {
           from { transform: scaleX(1); }
           to   { transform: scaleX(0); }
         }

@@ -6,9 +6,12 @@ import { useState } from "react";
 import Loader from '../Loader';
 import DatabaseObj from "../../../Supabase/database";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../../../store/Notifucation";
 export default function AddLab() {
   
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
   const {state}=useLocation();
   const name=state?.name || "tryhackme";
@@ -35,16 +38,21 @@ export default function AddLab() {
       date: data.date.trim() || "New",
     };
     const result = await DatabaseObj.insertData({table:"WeaklyLabs",data:newLab});
-    if(result.error){
-      console.log("error = ",result.error);
-      
-    }
-    console.log("data saved ",result)
-    navigate("/weaklylabs")
-
     setLoader(false);
-    reset();
-    navigate("/weeklylabs");
+    if(!result){
+      dispatch(setNotification({type:"error",message:"Failed to add lab, please try again",title:"Add Lab"}));
+    }
+    else if(result.error){
+      // console.log("error = ",result.error);
+      dispatch(setNotification({type:"error",message:"Failed to add lab, please try again",title:"Add Lab"}));
+    }
+    else {
+      console.log("data saved ",result);
+      dispatch(setNotification({type:"success",message:"Lab added successfully",title:"Add Lab"}));
+      reset();
+      navigate("/weeklylabs");
+    }
+    setLoader(false);
   };
 
   return !loader ? (

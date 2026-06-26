@@ -6,12 +6,14 @@ import supabase from "../../../Supabase/Supabase";
 import { useNavigate } from "react-router-dom";
 import DatabaseObj from "../../../Supabase/database";
 import Loader from '../Loader'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import StorageObj from "../../../Supabase/storage";
+import { setNotification } from "../../../store/Notifucation";
 export default function AddMember({data}){
     
     const userData=useSelector((state)=>state.auth.user);
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const {handleSubmit,register,formState: { errors }} = useForm({
       values:{
         title: data?.title || "",
@@ -46,6 +48,10 @@ export default function AddMember({data}){
                 data2={title:data1.title,date:data1.date,time:data1.time,place:data1.place,discription:data1.discription,heighlight:data1.heightlight,...fnfImage};
                 console.log("data2 at image ",data2);
               }
+            } else {
+              dispatch(setNotification({type:"error",message:"Failed to upload image banner",title:"Update Event"}));
+              setLoader(false);
+              return;
             }
           }
           else{
@@ -55,7 +61,12 @@ export default function AddMember({data}){
           console.log("data2 at last = ",data2);
           const fnf=await DatabaseObj.updateData({table:"event",data:data2,id:data.id})
           console.log("saved database in userprofile = ",fnf);
-          navigate("/");
+          if(fnf && !fnf.error){
+            dispatch(setNotification({type:"success",message:"Event updated successfully",title:"Update Event"}));
+            navigate("/");
+          } else {
+            dispatch(setNotification({type:"error",message:"Failed to update event, please try again",title:"Update Event"}));
+          }
         }
     }
 

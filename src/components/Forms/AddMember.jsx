@@ -6,9 +6,11 @@ import supabase from "../../../Supabase/Supabase";
 import { useNavigate } from "react-router-dom";
 import DatabaseObj from "../../../Supabase/database";
 import Loader from '../Loader'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setNotification } from "../../../store/Notifucation";
 export default function AddMember(){
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const [searchLoader,setSearchLoader]=useState(false);
     const [searchData,setSearchData]=useState(null);
     const [searched,setSearched] = useState(false);
@@ -19,33 +21,36 @@ export default function AddMember(){
 
     const add = async(data)=>{
         if(!searchData){
-            alert("search username first");
+            dispatch(setNotification({type:"error",message:"Please search and select a username first",title:"Add Member"}));
             return;
         }
         setLoader(true);
-        if(searchData.role==="user" && data.role!=="user"){
-          const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
-          // console.log("data updated")
-          const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
-          // console.log("getrow ",updated);
-          // console.log("updated row find")
-          const fnfupdated={...updated,publicurl:publicUrl};
-          const fnf=await DatabaseObj.insertData({table:"memberprofile",data:fnfupdated});
-          // console.log("inserted data = ",fnf);
-        }
-        else if(searchData.role!=="user" && searchData.role!==data.role){
-          const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
-          const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
-          const member_id=await DatabaseObj.getRow({bucket:"memberprofile",chake:["username",searchData.username]})
-          // console.log("member_id=",member_id);
-          if(data.role==="user"){
-            const deleteMember=await DatabaseObj.deleteRow({bucket:"memberprofile",id:member_id.id});
-            // console.log("deleted row ",deleteMember);
+        try{
+          if(searchData.role==="user" && data.role!=="user"){
+            const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
+            const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
+            const fnfupdated={...updated,publicurl:publicUrl};
+            const fnf=await DatabaseObj.insertData({table:"memberprofile",data:fnfupdated});
+            dispatch(setNotification({type:"success",message:`Agent "${searchData.username}" enrolled as ${data.role} successfully`,title:"Add Member"}));
           }
-          else{
-            const memUpdate=await DatabaseObj.updateData({table:"memberprofile",data:{"role":data.role},id:member_id.id});
-            // console.log("data update in memupdate ",memUpdate);
+          else if(searchData.role!=="user" && searchData.role!==data.role){
+            const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
+            const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
+            const member_id=await DatabaseObj.getRow({bucket:"memberprofile",chake:["username",searchData.username]})
+            if(data.role==="user"){
+              const deleteMember=await DatabaseObj.deleteRow({bucket:"memberprofile",id:member_id.id});
+              dispatch(setNotification({type:"success",message:`Agent "${searchData.username}" demoted to user and removed from member list`,title:"Add Member"}));
+            }
+            else{
+              const memUpdate=await DatabaseObj.updateData({table:"memberprofile",data:{"role":data.role},id:member_id.id});
+              dispatch(setNotification({type:"success",message:`Agent "${searchData.username}" role updated to ${data.role}`,title:"Add Member"}));
+            }
+          } else {
+            dispatch(setNotification({type:"error",message:"No role change detected. Select a different role.",title:"Add Member"}));
           }
+        } catch(err){
+          console.log("error in add member = ",err);
+          dispatch(setNotification({type:"error",message:"An error occurred while updating member role",title:"Add Member"}));
         }
         reset()
         setLoader(false);
@@ -180,11 +185,11 @@ export default function AddMember(){
                                             Click to close ×
                                         </span>
                                     </div>
-                                    <div className="h-[1px] bg-neon-green/20 w-full"></div>
+                                    <div className="h-px bg-neon-green/20 w-full"></div>
                                     <div className="grid grid-cols-2 gap-2 font-mono text-xs mt-1">
-                                        <div className="text-text-muted">AGENT ID:</div>
+                                        <div className="text-text-muted">AGENT USERNAME:</div>
                                         <div className="text-text-primary text-right font-semibold">{searchData.username}</div>
-                                        <div className="text-text-muted">CLEARANCE LEVEL:</div>
+                                        <div className="text-text-muted">CLEARANCE ROLE:</div>
                                         <div className="text-neon-cyan text-right uppercase tracking-wider font-bold">{searchData.role}</div>
                                     </div>
                                 </div>
@@ -203,12 +208,12 @@ export default function AddMember(){
                   Clearance Role
                 </label>
                 <select 
-                  className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[right_0.75rem_center] bg-[length:1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]" 
+                  className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-position[right_0.75rem_center] bg-size[1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]" 
                   {...register("role",{required:true})}
                 >
-                  <option value="user" className="bg-[#0a0e17] text-text-primary">user</option>
-                  <option value="exicutive" className="bg-[#0a0e17] text-text-primary">executive</option>
-                  <option value="member" className="bg-[#0a0e17] text-text-primary">member</option>
+                  <option value="user" className="bg-bg-primary text-text-primary">user</option>
+                  <option value="exicutive" className="bg-bg-primary text-text-primary">executive</option>
+                  <option value="member" className="bg-bg-primary text-text-primary">member</option>
                 </select>
               </div>
 

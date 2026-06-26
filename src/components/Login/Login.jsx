@@ -88,7 +88,7 @@ export default function Login() {
             {/* Form */}
             <form onSubmit={handleSubmit(login)} className="space-y-5">
               <Input
-                label="Username / Email"
+                label=" Email"
                 placeholder="agent@cryx"
                 {...register("email", { required: true })}
               />

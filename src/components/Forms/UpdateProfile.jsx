@@ -6,11 +6,13 @@ import supabase from "../../../Supabase/Supabase";
 import { useNavigate } from "react-router-dom";
 import DatabaseObj from "../../../Supabase/database";
 import Loader from '../Loader'
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import StorageObj from "../../../Supabase/storage";
+import { setNotification } from "../../../store/Notifucation";
 export default function AddMember(){
     const [data,setdata]=useState({});
     const redux_data=useSelector((state)=>state.auth.user);
+    const dispatch=useDispatch();
     
     useEffect(()=>{
       setdata(redux_data);
@@ -33,40 +35,38 @@ export default function AddMember(){
           const file=data1.image;
           let data2=data;
           let fnfImage={imageurl:data.imageurl,publicurl:data.publicurl};
-          // console.log("data1=",data1);
           if(file){
             const f=file[0];
-            // console.log("f=",f);
             const path=`${data.id}/${f.name}`;
-            // console.log("final path = ",path);
             const result=await StorageObj.uploadFile({bucket:"userimage",file:f,path});
-            // console.log("result = ",result);
             if(result){
               const publicurl=await StorageObj.getPublicUrl({bucket:"userimage",path})
-              // console.log(publicurl);
               if(publicurl){
                 fnfImage={imageurl:path,publicurl:publicurl.publicUrl};
                 data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
-                // console.log("data2 at image ",data2);
               }
+            } else {
+              dispatch(setNotification({type:"error",message:"Failed to upload profile image",title:"Update Profile"}));
+              setLoader(false);
+              return;
             }
           }
           else{
             data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
-            // console.log("in else image not ",data2);
           }
           if(redux_data.publicurl){
             const result = await StorageObj.deleteFile({bucket:"userimage",path:redux_data.imageurl});
-            // console.log("delete result = ",result);
           }
-          // console.log("data2 at last = ",data2);
           const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
           if(redux_data.role==="admin"){
             const result = await DatabaseObj.updateData({table:"memberprofile",data:data2,id:data.id});
-            // console.log("updated in member table",result);
           }
-          // console.log("saved database in userprofile = ",fnf);
-          navigate("/");
+          if(fnf && !fnf.error){
+            dispatch(setNotification({type:"success",message:"Profile updated successfully",title:"Update Profile"}));
+            navigate("/");
+          } else {
+            dispatch(setNotification({type:"error",message:"Failed to update profile, please try again",title:"Update Profile"}));
+          }
         }
     }
 

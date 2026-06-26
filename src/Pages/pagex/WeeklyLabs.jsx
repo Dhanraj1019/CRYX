@@ -6,9 +6,11 @@ import Sticky from '../Resorces/Required/Sticky';
 import DatabaseObj from "../../../Supabase/database";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { setNotification } from "../../../store/Notifucation";
 export default function WeeklyLabs() {
   const navigate=useNavigate();
+  const dispatch=useDispatch();
   const user_status=useSelector((state)=>state.auth?.user?.role);
   const [tryhackmeLabs,settryhackmeLabs] = useState([]);
   const [hacktheboxLabs,setHacktheboxLabs] = useState([]);
@@ -26,6 +28,10 @@ export default function WeeklyLabs() {
       else{
         setPicoCTFLabs((pre)=>pre.filter((p)=>p.id!==id));
       }
+      dispatch(setNotification({title:"Delete Lab",message:"Lab deleted !"}))
+    }
+    else{
+      dispatch(setNotification({title:"Delete Lab",message:"error during delete Lab please try again"}));
     }
   }
 

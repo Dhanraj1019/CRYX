@@ -1,16 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import AuthObj from "../../../Supabase/auth";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { setNotification } from "../../../store/Notifucation";
 
 export default function Drover({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const tempurl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   const handleLogout = async () => {
     const result = await AuthObj.signOut();
     if (result) {
       onClose();
+      dispatch(setNotification({title:"logout",message:"logout sussecc",type:"success"}))
       navigate("/login");
+    }
+    else{
+      onClose()
+      dispatch(setNotification({title:"logout",message:"error during logout",type:"error"}));
+      navigate("/home");
     }
   };
 

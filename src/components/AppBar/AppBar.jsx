@@ -22,15 +22,19 @@ export default function AppBar() {
   ]
   const tempurl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   const logout=async()=>{
+    console.log("in logour")
     const result = await AuthObj.signOut();
+    console.log("after db logout");
     if(result){
       dispatch(setNotification({
-        type:"success",messgae:"logout successfuly ",title:"logout"
+        type:"success",message:"Logged out successfully",title:"Logout"
       }))
+      console.log("notification dispatched ");
+      dispatch(stateLogout());
       navigate("/home")
     }else{
       dispatch(setNotification({
-        type:"error",messgae:"logout not done correct ",title:"logout"
+        type:"error",message:"Logout failed, please try again",title:"Logout"
       }))
       navigate("/home")
     }
