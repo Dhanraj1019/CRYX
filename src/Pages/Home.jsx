@@ -31,7 +31,7 @@ export default function Home() {
         return eventtime<nowtime;
       })
       // console.log("past = ",past);
-      // console.log("future = ",future);
+      console.log("future = ",future);
       setPastEvent(past);
       setFutureEvent(future);
       // console.log("result in home page = ",result);

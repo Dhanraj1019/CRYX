@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-const LINE1 = "WELCOME TO CRYX:";
-const LINE2 = "THE INFOSEC CLUB";
-const FULL_TEXT = LINE1 + " " + LINE2;
+const FIRST_LINE = "WELCOME TO CRYX : THE";
+const SECOND_LINE = " INFOSEC CLUB";
+const FULL_TEXT = `${FIRST_LINE} ${SECOND_LINE}`;
 
 export default function Welcome() {
   const [typed, setTyped] = useState("");
@@ -27,16 +27,8 @@ export default function Welcome() {
     return () => clearInterval(id);
   }, []);
 
-  // Split typed text into line1 and line2 portions
-  const typedLine1 = typed.slice(0, LINE1.length);
-  const typedLine2 = typed.length > LINE1.length + 1
-    ? typed.slice(LINE1.length + 1)
-    : "";
-  const showCursorOnLine1 = typed.length <= LINE1.length;
-
   return (
     <div className="flex flex-col items-center justify-center w-full px-3 sm:px-4 py-10 md:py-20 animate-fade-in">
-
       {/* Decorative top line */}
       <div className="flex items-center gap-3 mb-6">
         <div className="h-px w-12 bg-neon-green/30"></div>
@@ -46,56 +38,37 @@ export default function Welcome() {
         <div className="h-px w-12 bg-neon-green/30"></div>
       </div>
 
-      {/* Main heading — two lines */}
-      <h1 className="font-mono text-center flex flex-col items-center gap-1 sm:gap-2">
-
-        {/* Line 1: WELCOME TO CRYX: */}
-        <span
-          className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-transparent"
-          style={{ filter: "drop-shadow(0 0 10px rgba(103,232,249,0.2))" }}
-        >
-          {typedLine1}
-          {showCursorOnLine1 && (
-            <span
-              aria-hidden="true"
-              className="inline-block ml-1 text-neon-cyan"
-              style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
-            >
-              _
-            </span>
-          )}
+      {/* Main heading */}
+      <h1
+        className="font-mono text-center text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-transparent"
+        style={{
+          filter: "drop-shadow(0 0 10px rgba(103,232,249,0.2))",
+        }}
+      >
+        <span className="block whitespace-nowrap">{typed.slice(0, FIRST_LINE.length)}</span>
+        <span className="block whitespace-nowrap">
+          {typed.slice(FIRST_LINE.length + 1)}
+          <span
+            aria-hidden="true"
+            className="inline-block ml-1 text-neon-cyan"
+            style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
+          >
+            _
+          </span>
         </span>
-
-        {/* Line 2: THE INFOSEC CLUB */}
-        <span
-          className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider bg-gradient-to-r from-neon-purple via-neon-cyan to-neon-green bg-clip-text text-transparent"
-          style={{ filter: "drop-shadow(0 0 10px rgba(103,232,249,0.2))" }}
-        >
-          {typedLine2}
-          {!showCursorOnLine1 && (
-            <span
-              aria-hidden="true"
-              className="inline-block ml-1 text-neon-cyan"
-              style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
-            >
-              _
-            </span>
-          )}
-        </span>
-
       </h1>
 
       {/* Subtitle */}
       <p
-        className={`mt-6 font-mono text-sm sm:text-base md:text-lg tracking-[2px] sm:tracking-[4px] transition-all duration-700 select-none ${
+        className={`mt-6 whitespace-nowrap font-mono text-xs sm:text-base md:text-lg tracking-[1px] sm:tracking-[4px] transition-all duration-700 select-none ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
         <span className="text-text-muted">// </span>
-        <span className="text-neon-cyan font-bold">Learn. </span>
-        <span className="text-neon-red font-bold">Hack. </span>
-        <span className="text-neon-green font-bold">Build. </span>
-        <span className="text-neon-purple font-bold">Secure.</span>
+        <span className="text-neon-cyan font-bold transition-all duration-300">Learn. </span>
+        <span className="text-neon-red font-bold transition-all duration-300">Hack. </span>
+        <span className="text-neon-green font-bold transition-all duration-300">Build. </span>
+        <span className="text-neon-purple font-bold transition-all duration-300">Secure.</span>
       </p>
 
       {/* Decorative bottom element */}
@@ -107,15 +80,16 @@ export default function Welcome() {
         <div className="h-px w-20 md:w-32 gradient-line"></div>
       </div>
 
-      {/* CTA Buttons */}
+      {/* ── CTA Buttons ─────────────────────────────────────────── */}
       <div
         className={`mt-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 transition-all duration-700 delay-500 ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        {/* Button 1 — Explore Roadmap */}
-        
+        {/* Button 1 — Explore Roadmap (gradient fill + scan sweep) */}
+        <a
           href="/roadmap"
+          id="cta-roadmap"
           className="group relative overflow-hidden font-mono text-xs sm:text-sm font-bold uppercase tracking-[3px] px-7 py-3 rounded-sm text-black"
           style={{
             background: "linear-gradient(135deg, #34d399 0%, #10b981 50%, #34d399 100%)",
@@ -124,23 +98,27 @@ export default function Welcome() {
             animation: "ctaBgShift 3s ease infinite",
           }}
         >
+          {/* Scan sweep overlay */}
           <span
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             style={{
-              background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)",
+              background:
+                "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%)",
               backgroundSize: "200% 100%",
               animation: "ctaScan 1.2s linear infinite",
             }}
           />
+          {/* Icon + label */}
           <span className="relative flex items-center gap-2">
             <span className="text-base">🗺️</span>
             Explore Roadmap
           </span>
         </a>
 
-        {/* Button 2 — Weekend Labs */}
-        
+        {/* Button 2 — Weekend Labs (dashed animated border + corner accents) */}
+        <a
           href="/weeklylabs"
+          id="cta-labs"
           className="group relative font-mono text-xs sm:text-sm font-bold uppercase tracking-[3px] px-7 py-3 rounded-sm text-neon-cyan"
           style={{
             background: "rgba(103,232,249,0.04)",
@@ -157,10 +135,13 @@ export default function Welcome() {
             e.currentTarget.style.background = "rgba(103,232,249,0.04)";
           }}
         >
+          {/* Animated corner accents */}
           <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-neon-cyan opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
           <span className="absolute top-0 right-0 w-2 h-2 border-t border-r border-neon-cyan opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
           <span className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-neon-cyan opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
           <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Blinking status dot */}
           <span className="relative flex items-center gap-2">
             <span
               className="inline-block w-1.5 h-1.5 rounded-full bg-neon-cyan animate-glow-pulse"
@@ -172,6 +153,7 @@ export default function Welcome() {
         </a>
       </div>
 
+      {/* Inline keyframes for the gradient button */}
       <style>{`
         @keyframes ctaBgShift {
           0%   { background-position: 0% 50%; }
