@@ -7,7 +7,7 @@ export default function Avatar() {
   const avatarRef = useRef(null);
   const userProfileLogo=useSelector((state)=>state.auth.user.publicurl);
   // Close drover when clicking outside
-  console.log("userProfileLogo = ",userProfileLogo);
+  // console.log("userProfileLogo = ",userProfileLogo);
   useEffect(() => {
     function handleClickOutside(e) {
       if (avatarRef.current && !avatarRef.current.contains(e.target)) {

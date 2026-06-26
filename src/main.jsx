@@ -19,15 +19,16 @@ import UpdateProfile from './components/Forms/UpdateProfile.jsx'
 import ResorcesIndex from './Pages/Resorces/ResorcsIndex.jsx'
 import CybersecurityRoadmap from './Pages/pagex/CybersecurityRoadmap.jsx'
 import WeeklyLabs from './Pages/pagex/WeeklyLabs.jsx'
+import Notification from './components/Notification.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      // {
-      //   index: true,
-      //   element: <Navigate to="/home" replace />
-      // },
+      {
+        path:"/add-lab",
+        element: <AddLab/>
+      },
       {
         path:"/",
         element: <UserProtect authentication={false}>
@@ -98,18 +99,16 @@ const router = createBrowserRouter([
         </UserProtect>
       },
       {
-        path:"/appearance",
-        element:<UserProtect authentication={true}>
-          <UnderDevelopment header="APPEARANCE" content="// Theme customization coming soon..." />
-        </UserProtect>
-      },
-      {
         path:"/roadmap",
         element:<CybersecurityRoadmap/>
       },
       {
         path:"/weeklylabs",
         element:<WeeklyLabs/>
+      },
+      {
+        path:"/*",
+        element:<UnderDevelopment header="Modal" content="// Theme customization coming soon..." />
       }
     ]
   }
@@ -117,6 +116,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
+      <Notification/>
       <RouterProvider router={router} />
     </Provider>
   </StrictMode>,

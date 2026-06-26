@@ -21,7 +21,7 @@ class Auth{
     async signOut(){
         try{
             const result = await supabase.auth.signOut({scope:"local"})
-            if(result && result.error){
+            if(result.error){
                 return false;
             }
             return true;
@@ -64,6 +64,7 @@ class Auth{
             }
             else{
                 console.log("id_data.user not find in auth.js file");
+                return false;
             }
         }catch(e){
             console.log("error during profile save = ",e);

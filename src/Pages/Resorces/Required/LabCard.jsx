@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Button from '../../../components/Button/Button'
-export default function LabCard({ lab, platform }) {
-
+import DatabaseObj from "../../../../Supabase/database";
+export default function LabCard({ lab, platform,onDelete }) {
+  console.log("lab ",lab);
+  console.log("platform ",platform)
   const difficultyConfig = {
     Easy: { color: "#34d399", bg: "rgba(52,211,153,0.1)", border: "rgba(52,211,153,0.3)" },
     Medium: { color: "#f59e0b", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.3)" },
@@ -19,9 +21,11 @@ export default function LabCard({ lab, platform }) {
     window.open(lab.url, "_blank", "noopener,noreferrer");
   };
 
+  // const labdate=new Date(lab.date);
+  // const today=Date.now();
   return (
     <div
-      className="group relative overflow-hidden border bg-bg-surface/50 backdrop-blur-sm rounded-sm cursor-pointer transition-all duration-500 flex flex-col"
+      className="group relative overflow-hidden border bg-bg-surface/50 backdrop-blur-sm rounded-sm transition-all duration-500 flex flex-col"
       style={{
         borderColor: hovered ? `${platform.color}50` : "rgba(52,211,153,0.1)",
         boxShadow: hovered ? `0 0 24px ${platform.color}18, 0 4px 20px rgba(0,0,0,0.3)` : "0 2px 8px rgba(0,0,0,0.2)",
@@ -29,7 +33,6 @@ export default function LabCard({ lab, platform }) {
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleClick()}
@@ -73,8 +76,13 @@ export default function LabCard({ lab, platform }) {
           >
             {lab.difficulty}
           </span>
-
-          {loginStatus && user_role==="admin" && <Button className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">Delete </Button>}
+            
+          {
+            loginStatus && user_role==="admin" && 
+            <Button onClick={()=>onDelete(lab.id,lab.platform)} className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">
+              Delete 
+            </Button>
+          }
         </div>
 
         {/* Title */}
@@ -95,9 +103,9 @@ export default function LabCard({ lab, platform }) {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5 mb-4">
-          {lab.tags.map((tag) => (
+          {lab.tags.map((tag,idx) => (
             <span
-              key={tag}
+              key={`${tag}-${idx}`}
               className="font-mono text-xs px-2 py-0.5 rounded-sm"
               style={{
                 color: platform.color,
@@ -112,8 +120,9 @@ export default function LabCard({ lab, platform }) {
 
         {/* CTA */}
         <div
-          className="flex items-center gap-2 font-mono text-xs tracking-wider uppercase transition-all duration-300"
+          className="flex cursor-pointer items-center gap-2 font-mono text-xs tracking-wider uppercase transition-all duration-300"
           style={{ color: platform.color }}
+          onClick={handleClick}
         >
           <span
             className="transition-transform duration-300"

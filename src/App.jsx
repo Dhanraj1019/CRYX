@@ -16,7 +16,7 @@ function App() {
         const data = await supabase
                     .from("userprofile")
                     .select("*")
-                    .eq("id", session.user.id)
+                    .eq("id", session?.user?.id)
                     .single();
         // console.log("data = ",data);
         if(!data.data){

@@ -3,15 +3,16 @@ import Button from '../Button/Button'
 import Logo from '../Logo/Logo'
 import { href, Link, useNavigate } from 'react-router-dom'
 import {logout as stateLogout} from '../../../store/AuthSclice'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import AuthObj from '../../../Supabase/auth'
 import Avatar from '../Avatar/Avatar'
+import { setNotification } from '../../../store/Notifucation'
 export default function AppBar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const navigate = useNavigate();
   const loginstatus=useSelector((state)=>state.auth.status);
   const profileData=useSelector((state)=>state.auth.user);
-  // console.log(profileData)
+  const dispatch=useDispatch();
   const navitems = [
     { title: "login", href: '/login' ,scroll:false},
     { title:"signup", href:"/signup",scroll:false},
@@ -22,10 +23,16 @@ export default function AppBar() {
   const tempurl="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   const logout=async()=>{
     const result = await AuthObj.signOut();
-    // console.log("result in logoout = ");
-    // console.log("logout clicked");
     if(result){
-      navigate("/login")
+      dispatch(setNotification({
+        type:"success",messgae:"logout successfuly ",title:"logout"
+      }))
+      navigate("/home")
+    }else{
+      dispatch(setNotification({
+        type:"error",messgae:"logout not done correct ",title:"logout"
+      }))
+      navigate("/home")
     }
   }
 

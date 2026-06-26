@@ -45,7 +45,7 @@ class Database{
             console.log("error during delete row in databse.js",result.error);
             return false;
         }
-        console.log("user deleted");
+        console.log("row deleted");
         return true;
     }
 }

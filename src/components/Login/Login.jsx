@@ -7,6 +7,7 @@ import {login as statelogin} from '../../../store/AuthSclice'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Loader from '../Loader';
+import { setNotification } from '../../../store/Notifucation';
 export default function Login() {
   const { handleSubmit, register } = useForm();
   const dispatch=useDispatch();
@@ -15,14 +16,20 @@ export default function Login() {
   const login = async (data) => {
     if(data){
       setLoader(true);
-      console.log("data in login.jsx = ",data);
+      // console.log("data in login.jsx = ",data);
       const result=await AuthObj.signIn({email:data.email,password:data.password});
-      console.log("result after login = ",result);
+      // console.log("result after login = ",result);
       if(result){
+        dispatch(setNotification({title:"Login",message:"login succesfuly",type:"success"}));
         setLoader(false);
         navigate("/home");
       }
-      console.log("result in login.jsx = ",result);
+      else{
+        dispatch(setNotification({title:"Login",message:"login not correct",type:"error"}));
+        setLoader(false);
+        navigate("/login")
+      }
+      // console.log("result in login.jsx = ",result);
     }
   }
 
@@ -32,7 +39,7 @@ export default function Login() {
         {/* Login Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">

@@ -6,11 +6,13 @@ import DatabaseObj from "../../../Supabase/database";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Loader from '../Loader';
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
+import { setNotification } from "../../../store/Notifucation";
 export default function AddEvent(){
   const tempurl="https://www.theclassictemplates.com/cdn/shop/articles/cyber-security-website-templates_95abbf65-cd60-40fb-8969-27337e464740.jpg?v=1772193841&width=1100"
     const {handleSubmit,register,reset}=useForm();
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const userId=useSelector((state)=>state.auth.user.id);
     const [loader,setLoader]=useState(false);
     const add=async(data)=>{
@@ -29,13 +31,15 @@ export default function AddEvent(){
             const saveResult=await DatabaseObj.insertData({table:"event",data:finalData})
             setLoader(false);
             if(saveResult.success){
+                dispatch(setNotification({type:"success",message:"event added",title:"Add Event"}));
                 reset();
                 navigate("/home");
             }
         }else{
+          setLoader(false);
+          dispatch(setNotification({type:"error",message:"error in event add",title:"Add Event"}));
           console.log("error ",result.error);
         }
-        setLoader(false);
     }
 
     return !loader && (

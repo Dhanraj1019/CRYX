@@ -1,88 +1,51 @@
-import { useState } from "react";
-import PlatformSection from '../Resorces/Required/PlatformSection'
-import LabCard from '../Resorces/Required/LabCard'
-import Top from '../Resorces/Required/Top'
-import Bottom from '../Resorces/Required/Bottom'
-import Sticky from '../Resorces/Required/Sticky'
-// ── Platform Data ──────────────────────────────────────────────────────────────
-const tryhackmeLabs = [];
-const hacktheboxLabs = [];
-const picoCTFLabs = [];
-
-// ── Platform Config ─────────────────────────────────────────────────────────────
-const platforms = [
-  {
-    id: "tryhackme",
-    name: "TryHackMe",
-    shortName: "THM",
-    tagline: "// Beginner-friendly guided rooms",
-    color: "#34d399",
-    accentColor: "#10b981",
-    icon: "🟢",
-    borderColor: "rgba(52,211,153,0.25)",
-    bgColor: "rgba(52,211,153,0.05)",
-    labs: tryhackmeLabs,
-    logo: "THM",
-  },
-  {
-    id: "hackthebox",
-    name: "HackTheBox",
-    shortName: "HTB",
-    tagline: "// Real-world pentesting challenges",
-    color: "#9fef00",
-    accentColor: "#a3e635",
-    icon: "🟩",
-    borderColor: "rgba(163,230,53,0.25)",
-    bgColor: "rgba(163,230,53,0.05)",
-    labs: hacktheboxLabs,
-    logo: "HTB",
-  },
-  {
-    id: "picoctf",
-    name: "PicoCTF",
-    shortName: "PICO",
-    tagline: "// CTF challenges for all skill levels",
-    color: "#67e8f9",
-    accentColor: "#22d3ee",
-    icon: "🔵",
-    borderColor: "rgba(103,232,249,0.25)",
-    bgColor: "rgba(103,232,249,0.05)",
-    labs: picoCTFLabs,
-    logo: "CTF",
-  },
-];
-
-
-
+import { useEffect, useState } from "react";
+import PlatformSection from '../Resorces/Required/PlatformSection';
+import Top from '../Resorces/Required/Top';
+import Bottom from '../Resorces/Required/Bottom';
+import Sticky from '../Resorces/Required/Sticky';
+import DatabaseObj from "../../../Supabase/database";
+import Button from "../../components/Button/Button";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 export default function WeeklyLabs() {
-  const [tryhackmeList, setTryhackmeList] = useState(() => {
-    const saved = localStorage.getItem("cryx_labs_tryhackme");
-    return saved ? JSON.parse(saved) : tryhackmeLabs;
-  });
-  const [hacktheboxList, setHacktheboxList] = useState(() => {
-    const saved = localStorage.getItem("cryx_labs_hackthebox");
-    return saved ? JSON.parse(saved) : hacktheboxLabs;
-  });
-  const [picoList, setPicoList] = useState(() => {
-    const saved = localStorage.getItem("cryx_labs_picoctf");
-    return saved ? JSON.parse(saved) : picoCTFLabs;
-  });
-
-  const handleAddLab = (platformId, newLab) => {
-    if (platformId === "tryhackme") {
-      const updated = [...tryhackmeList, newLab];
-      setTryhackmeList(updated);
-      localStorage.setItem("cryx_labs_tryhackme", JSON.stringify(updated));
-    } else if (platformId === "hackthebox") {
-      const updated = [...hacktheboxList, newLab];
-      setHacktheboxList(updated);
-      localStorage.setItem("cryx_labs_hackthebox", JSON.stringify(updated));
-    } else if (platformId === "picoctf") {
-      const updated = [...picoList, newLab];
-      setPicoList(updated);
-      localStorage.setItem("cryx_labs_picoctf", JSON.stringify(updated));
+  const navigate=useNavigate();
+  const user_status=useSelector((state)=>state.auth?.user?.role);
+  const [tryhackmeLabs,settryhackmeLabs] = useState([]);
+  const [hacktheboxLabs,setHacktheboxLabs] = useState([]);
+  const [picoCTFLabs,setPicoCTFLabs] = useState([]);
+  const handelDelete=async(id,platform)=>{
+    const result = await DatabaseObj.deleteRow({bucket:"WeaklyLabs",id:id});
+    if(result){
+      // console.log("deleted row in weakly labs.jsx file",id);
+      if(platform==="tryhackme"){
+        settryhackmeLabs((pre)=>pre.filter((p)=>p.id!==id))
+      }
+      else if(platform==="hackthebox"){
+        setHacktheboxLabs((pre)=>pre.filter((p)=>p.id!==id));
+      }
+      else{
+        setPicoCTFLabs((pre)=>pre.filter((p)=>p.id!==id));
+      }
     }
-  };
+  }
+
+  useEffect(()=>{
+      const getData=async()=>{
+        const {data,error}=await DatabaseObj.getAllRows({table:"WeaklyLabs"});
+        if(data){
+          const tryhackme=data.filter((lab)=>lab.platform==="tryhackme");
+          const hack=data.filter((lab)=>lab.platform==="hackthebox");
+          const ctf=data.filter((lab)=>lab.platform==="picoctf");
+          setHacktheboxLabs(hack);
+          settryhackmeLabs(tryhackme)
+          setPicoCTFLabs(ctf);
+        }
+        else{
+          console.log("error = ",error);
+        }
+      }
+      getData();
+    },[]);
 
   const dynamicPlatforms = [
     {
@@ -95,7 +58,7 @@ export default function WeeklyLabs() {
       icon: "🟢",
       borderColor: "rgba(52,211,153,0.25)",
       bgColor: "rgba(52,211,153,0.05)",
-      labs: tryhackmeList,
+      labs: tryhackmeLabs,
       logo: "THM",
     },
     {
@@ -108,7 +71,7 @@ export default function WeeklyLabs() {
       icon: "🟩",
       borderColor: "rgba(163,230,53,0.25)",
       bgColor: "rgba(163,230,53,0.05)",
-      labs: hacktheboxList,
+      labs: hacktheboxLabs,
       logo: "HTB",
     },
     {
@@ -121,22 +84,27 @@ export default function WeeklyLabs() {
       icon: "🔵",
       borderColor: "rgba(103,232,249,0.25)",
       bgColor: "rgba(103,232,249,0.05)",
-      labs: picoList,
+      labs: picoCTFLabs,
       logo: "CTF",
     },
   ];
 
   const features = [
-    { label: "Total Labs", value: `${tryhackmeList.length + hacktheboxList.length + picoList.length}+`, color: "#34d399" },
-    { label: "TryHackMe", value: `${tryhackmeList.length}`, color: "#34d399" },
-    { label: "HackTheBox", value: `${hacktheboxList.length}`, color: "#9fef00" },
-    { label: "PicoCTF", value: `${picoList.length}`, color: "#67e8f9" },
+    { label: "Total Labs", value: `${tryhackmeLabs.length + hacktheboxLabs.length + picoCTFLabs.length}+`, color: "#34d399" },
+    { label: "TryHackMe", value: `${tryhackmeLabs.length}`, color: "#34d399" },
+    { label: "HackTheBox", value: `${hacktheboxLabs.length}`, color: "#9fef00" },
+    { label: "PicoCTF", value: `${picoCTFLabs.length}`, color: "#67e8f9" },
   ];
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 py-6 animate-fade-in">
       <Top features={features} />
-
+      {user_status==="admin" &&
+        <div className="flex justify-center pb-4 gap-6">
+          <Button onClick={()=>navigate("/add-lab")} className="w-1/6 hover:shadow-green-400" children="Add Lab"/>
+          <Button onClick={()=>navigate("/add-platform")} className="w-1/6 text-blue-600 border-blue-600 hover:shadow-blue-500" children="Add Platform"/>
+        </div>
+      }
       {/* Gradient divider */}
       <div className="h-px gradient-line opacity-40 mb-8" />
 
@@ -149,7 +117,7 @@ export default function WeeklyLabs() {
             key={platform.id}
             platform={platform}
             index={index}
-            onAddLab={handleAddLab}
+            onDelete={handelDelete}
           />
         ))}
       </div>

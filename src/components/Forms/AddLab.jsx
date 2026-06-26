@@ -4,43 +4,43 @@ import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Loader from '../Loader';
-
+import DatabaseObj from "../../../Supabase/database";
+import { useLocation } from "react-router-dom";
 export default function AddLab() {
-  const { handleSubmit, register, reset } = useForm();
+  
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  const {state}=useLocation();
+  const name=state?.name || "tryhackme";
+
+  const { handleSubmit, register, reset } = useForm();
 
   const add = async (data) => {
     setLoader(true);
-    
+    console.log(data);
     // Process tags (comma separated string -> array of trimmed strings)
     const tags = data.tags
       ? data.tags.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
       : ["Lab"];
 
     const platformId = data.platform; // e.g. "tryhackme"
-    const storageKey = `cryx_labs_${platformId}`;
 
     const newLab = {
-      id: `${platformId}-${Date.now()}`,
       title: data.title.trim(),
       description: data.description.trim(),
       difficulty: data.difficulty,
       url: data.url.trim(),
-      tags,
+      tags:tags,
+      platform:data.platform,
       date: data.date.trim() || "New",
     };
-
-    // Read existing list from localStorage
-    const saved = localStorage.getItem(storageKey);
-    let currentList = [];
-    if (saved) {
-      currentList = JSON.parse(saved);
+    const result = await DatabaseObj.insertData({table:"WeaklyLabs",data:newLab});
+    if(result.error){
+      console.log("error = ",result.error);
+      
     }
-    
-    // Append and save
-    const updated = [...currentList, newLab];
-    localStorage.setItem(storageKey, JSON.stringify(updated));
+    console.log("data saved ",result)
+    navigate("/weaklylabs")
 
     setLoader(false);
     reset();
@@ -53,7 +53,7 @@ export default function AddLab() {
         {/* Add Lab Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
@@ -109,11 +109,11 @@ export default function AddLab() {
                 <select
                   required
                   {...register("platform", { required: true })}
-                  className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[right_0.75rem_center] bg-[length:1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
+                  className=" cursor-pointer w-full appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-position-[right_0.75rem_center] bg-size-[1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
                 >
-                  <option value="tryhackme" className="bg-[#0a0e17] text-text-primary">TryHackMe</option>
-                  <option value="hackthebox" className="bg-[#0a0e17] text-text-primary">HackTheBox</option>
-                  <option value="picoctf" className="bg-[#0a0e17] text-text-primary">PicoCTF</option>
+                  <option value="tryhackme" className="bg-bg-primary text-text-primary">TryHackMe</option>
+                  <option value="hackthebox" className="bg-bg-primary text-text-primary">HackTheBox</option>
+                  <option value="picoctf" className="bg-bg-primary text-text-primary">PicoCTF</option>
                 </select>
               </div>
 
@@ -145,18 +145,19 @@ export default function AddLab() {
                     Difficulty
                   </label>
                   <select
-                    {...register("difficulty")}
-                    className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[right_0.75rem_center] bg-[length:1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
+                    {...register("difficulty",{required:true})}
+                    className="w-full cursor-pointer appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%2334d399%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22M6%208l4%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-position-[right_0.75rem_center] bg-size-[1.25rem_1.25rem] bg-no-repeat pr-10 rounded-sm border border-[#1e2d3d] bg-[#0d1117] px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
                   >
-                    <option value="Easy" className="bg-[#0a0e17] text-text-primary">Easy</option>
-                    <option value="Medium" className="bg-[#0a0e17] text-text-primary">Medium</option>
-                    <option value="Hard" className="bg-[#0a0e17] text-text-primary">Hard</option>
+                    <option value="Easy" className="bg-bg-primary text-text-primary">Easy</option>
+                    <option value="Medium" className="bg-bg-primary text-text-primary">Medium</option>
+                    <option value="Hard" className="bg-bg-primary text-text-primary">Hard</option>
                   </select>
                 </div>
                 <Input
-                  label="Release Date / Week"
+                  label="Release Date"
                   placeholder="e.g. Week 11"
-                  {...register("date")}
+                  type="date"
+                  {...register("date",{required:true})}
                 />
               </div>
 

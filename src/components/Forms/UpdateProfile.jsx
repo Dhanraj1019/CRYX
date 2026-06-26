@@ -27,41 +27,45 @@ export default function AddMember(){
     });
     const [loader,setLoader]=useState(false);
 
-    console.log("user redux data = ",redux_data)
+    // console.log("user redux data = ",redux_data)
     const update=async(data1)=>{
         if(data1){
           const file=data1.image;
           let data2=data;
           let fnfImage={imageurl:data.imageurl,publicurl:data.publicurl};
-          console.log("data1=",data1);
+          // console.log("data1=",data1);
           if(file){
             const f=file[0];
-            console.log("f=",f);
+            // console.log("f=",f);
             const path=`${data.id}/${f.name}`;
-            console.log("final path = ",path);
+            // console.log("final path = ",path);
             const result=await StorageObj.uploadFile({bucket:"userimage",file:f,path});
-            console.log("result = ",result);
+            // console.log("result = ",result);
             if(result){
               const publicurl=await StorageObj.getPublicUrl({bucket:"userimage",path})
-              console.log(publicurl);
+              // console.log(publicurl);
               if(publicurl){
                 fnfImage={imageurl:path,publicurl:publicurl.publicUrl};
                 data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
-                console.log("data2 at image ",data2);
+                // console.log("data2 at image ",data2);
               }
             }
           }
           else{
             data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
-            console.log("in else image not ",data2);
+            // console.log("in else image not ",data2);
           }
           if(redux_data.publicurl){
             const result = await StorageObj.deleteFile({bucket:"userimage",path:redux_data.imageurl});
-            console.log("delete result = ",result);
+            // console.log("delete result = ",result);
           }
-          console.log("data2 at last = ",data2);
+          // console.log("data2 at last = ",data2);
           const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
-          console.log("saved database in userprofile = ",fnf);
+          if(redux_data.role==="admin"){
+            const result = await DatabaseObj.updateData({table:"memberprofile",data:data2,id:data.id});
+            // console.log("updated in member table",result);
+          }
+          // console.log("saved database in userprofile = ",fnf);
           navigate("/");
         }
     }
@@ -73,7 +77,7 @@ export default function AddMember(){
         {/* Add Member Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">

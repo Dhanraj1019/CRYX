@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Loader from '../Loader';
+import { setNotification } from '../../../store/Notifucation';
 export default function SignUp() {
   const { handleSubmit, register,formState: { errors } } = useForm();
     const diapatch=useDispatch();
@@ -16,22 +17,29 @@ export default function SignUp() {
   const signUp = async (data) => {
     if(data){
       setLoader(true);
-        console.log("data in signup.jsx file = ",data);
+        // console.log("data in signup.jsx file = ",data);
         const data2={...data,imageurl:tempPath,publicurl:tempPublicUrl};
         const result=await AuthObj.saveProfile({data:data2});
-        console.log("result in signup.jsx = ",result);
+        // console.log("result in signup.jsx = ",result);
         setLoader(false);
-        navigate("/home");
+        if(result){
+          diapatch(setNotification({message:"signup successful",type:"success",title:"signup"}))
+          navigate("/home");
+        }
+        else{
+          diapatch(setNotification({message:"error during signup",type:"error",title:"signup"}))
+          navigate("/signup")
+        }
     }
   }
-
+ 
   return !loader && (
     <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
       <div className="w-full max-w-xl">
         {/* Signup Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
