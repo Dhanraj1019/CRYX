@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DatabaseObj from "../../../Supabase/database";
 import StorageObj from '../../../Supabase/storage';
+import { useSelector } from "react-redux";
+
 
 const formatEventDate = (date) => {
   if (!date) return "Date TBA";
@@ -24,12 +26,8 @@ const formatEventTime = (time) => {
   }).format(new Date(`2000-01-01T${time}`));
 };
 
-
-const deleteEvent=()=>{
-  console.log("delete event")
-}
-
-export default function MarqueeImage({ images = [], speed = 30,detail_status=false }) {
+export default function MarqueeImage({onDelete, images = [], speed = 30,detail_status=false }) {
+  const userRole=useSelector((state)=>state.auth.role);
   const controls = useAnimationControls();
   const isHovered = useRef(false);
 
@@ -57,6 +55,22 @@ export default function MarqueeImage({ images = [], speed = 30,detail_status=fal
     startAnimation();
   };
 
+
+  const deleteEvent=async(data)=>{
+    const result=await DatabaseObj.deleteRow({bucket:"event",id:data.id});
+    if(result){
+      const result = await StorageObj.deleteFile({bucket:"eventimage",path:[data.imageurl]});
+      if(result.error){
+        // console.log("error in marqueeimage.jsx ",result.error);
+      }
+      else{
+        // console.log("deleted",result.data);
+        const temp=images.filter((it)=>it.id!==data.id);
+        onDelete(temp);
+      }
+    }
+  }
+
   return (
     <div
       className="relative overflow-hidden w-full py-4 group"
@@ -64,10 +78,10 @@ export default function MarqueeImage({ images = [], speed = 30,detail_status=fal
       onMouseLeave={handleHoverEnd}
     >
       {/* Left gradient fade */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-bg-primary to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-liner-to-r from-bg-primary to-transparent z-10 pointer-events-none"></div>
 
       {/* Right gradient fade */}
-      <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-bg-primary to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-liner-to-l from-bg-primary to-transparent z-10 pointer-events-none"></div>
 
       <motion.div
         animate={controls}
@@ -75,10 +89,10 @@ export default function MarqueeImage({ images = [], speed = 30,detail_status=fal
         className="flex gap-5"
         style={{ width: "max-content", willChange: "transform" }}
       >
+        {/* {console.log("i = ")} */}
         {doubled.map((i,idx) => {
           const isDuplicate = idx >= images.length;
           const registrationHref = `/event/${i.id}`;
-
           return (
           <div
             key={`${idx}-${i.imageurl}`}
@@ -99,11 +113,11 @@ export default function MarqueeImage({ images = [], speed = 30,detail_status=fal
             <img
               src={i.publicurl}
               alt={i.title || "CRYX event"}
-              className="h-32 w-64 sm:h-40 sm:w-80 md:h-52 md:w-[26rem] object-cover shrink-0 transition-all duration-700 group-hover/img:scale-105 group-hover/img:brightness-50 group-focus-within/img:scale-105 group-focus-within/img:brightness-50"
+              className="h-32 w-64 sm:h-40 sm:w-80 md:h-52 md:w-104 object-cover shrink-0 transition-all duration-700 group-hover/img:scale-105 group-hover/img:brightness-50 group-focus-within/img:scale-105 group-focus-within/img:brightness-50"
               draggable={false}
             />
             {/* Scanline overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/65 to-black/80 opacity-0 group-hover/img:opacity-100 group-focus-within/img:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-liner-to-b from-black/20 via-black/65 to-black/80 opacity-0 group-hover/img:opacity-100 group-focus-within/img:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
             <div className="absolute inset-0 flex flex-col justify-end gap-2 p-3 sm:p-4 opacity-0 translate-y-3 group-hover/img:opacity-100 group-hover/img:translate-y-0 group-focus-within/img:opacity-100 group-focus-within/img:translate-y-0 transition-all duration-500">
               <div>
                 <h3 className="font-mono text-sm sm:text-base md:text-lg font-bold uppercase tracking-wider text-neon-green line-clamp-2">
@@ -115,18 +129,18 @@ export default function MarqueeImage({ images = [], speed = 30,detail_status=fal
                   <span>{formatEventTime(i.time)}</span>
                 </div>
               </div>
-              {detail_status && <div className="flex justify-around items-center">
-                <Link
+              <div className="flex justify-around items-center">
+                {detail_status && <Link
                   to={registrationHref}
                   tabIndex={isDuplicate ? -1 : 0}
                   className="w-fit rounded-sm border border-neon-cyan/70 bg-neon-cyan/10 px-3 py-1.5 font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_16px_rgba(103,232,249,0.35)] focus:outline-none focus:ring-1 focus:ring-neon-cyan"
                 >
                   Details
-                </Link>
-                <button onClick={deleteEvent} className="cursor-pointer border-2 text-red-600 border-red-500 rounded-md px-3 py-0.5 hover:shadow-2xs font-bold transition-all duration-300 hover:shadow-red-400 hover:bg-red-500 hover:text-black">
+                </Link>}
+                {userRole==="admin" && <button onClick={()=>{deleteEvent(i)}} className="cursor-pointer border-2 text-red-600 border-red-500 rounded-md px-3 py-0.5 hover:shadow-2xs font-bold transition-all duration-300 hover:shadow-red-400 hover:bg-red-500 hover:text-black">
                   Delete
-                </button>
-              </div>}
+                </button>}
+              </div>
             </div>
           </div>
           );

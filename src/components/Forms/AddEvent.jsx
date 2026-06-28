@@ -22,12 +22,12 @@ export default function AddEvent(){
         const path=`${userId}/${file.name}`;
         // console.log(file);
         const result=await StorageObj.uploadFile({bucket:"eventimage",file,path});
-        console.log(result);
+        // console.log(result);
         if(result){
             const publicurl=await StorageObj.getPublicUrl({bucket:"eventimage",path});
-            console.log(publicurl);
+            // console.log(publicurl);
             const finalData={title:data.title,date:data.date || null,time:data.time || null,discription:data.discription || null,place:data.place || null,highlight:data.highlight || null,imageurl:path,publicurl:publicurl?.publicUrl || tempurl};
-            console.log("finalData = ",finalData);
+            // console.log("finalData = ",finalData);
             const saveResult=await DatabaseObj.insertData({table:"event",data:finalData})
             setLoader(false);
             if(saveResult.success){
@@ -38,7 +38,7 @@ export default function AddEvent(){
         }else{
           setLoader(false);
           dispatch(setNotification({type:"error",message:"error in event add",title:"Add Event"}));
-          console.log("error ",result.error);
+          // console.log("error ",result.error);
         }
     }
 

@@ -47,11 +47,8 @@ export default function Home() {
         ).getTime();
         return eventtime<nowtime;
       })
-      // console.log("past = ",past);
-      // console.log("future = ",future);
       setPastEvent(past);
       setFutureEvent(future);
-      // console.log("result in home page = ",result);
     }
 
     const getMember=async()=>{
@@ -62,9 +59,14 @@ export default function Home() {
     getEvents();
   },[])
 
-  // console.log("members = ",member);
+  const handelPastDelete=(data)=>{
+    setPastEvent(data);
+  }
+  const handelFutureDelete=(data)=>{
+    setFutureEvent(data);
+  }
+
   const role=useSelector((state)=>state.auth.role);
-  // console.log("role = ",role);
   return (
     <div className='max-w-7xl mx-auto px-3 sm:px-4 md:px-8'>
       <Welcome />
@@ -80,7 +82,7 @@ export default function Home() {
           {pastEvent.length === 0 ? (
             <EmptyState icon={CalendarX} message="No past events are available" />
           ) : (
-            <MarqueeImage images={pastEvent} speed="10" />
+            <MarqueeImage onDelete={handelPastDelete} images={pastEvent} speed="10" />
           )}
         </div>
       </section>
@@ -90,7 +92,7 @@ export default function Home() {
         {futureEvent.length === 0 ? (
           <EmptyState icon={CalendarX} message="No future events are available" />
         ) : (
-          <MarqueeImage images={futureEvent} speed="10" detail_status={true} />
+          <MarqueeImage onDelete={handelFutureDelete} images={futureEvent} speed="10" detail_status={true} />
         )}
       </section>
 
