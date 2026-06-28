@@ -9,7 +9,24 @@ import { useSelector } from "react-redux";
 import DatabaseObj from '../../Supabase/database'
 import { useEffect, useState } from 'react'
 import StorageObj from '../../Supabase/storage'
+import { CalendarX, UsersRound } from 'lucide-react'
 StorageObj
+
+function EmptyState({ icon: Icon, message }) {
+  return (
+    <div className="my-4 flex min-h-32 w-full items-center justify-center border border-neon-cyan/20 bg-bg-surface/60 px-4 py-8 text-center">
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex h-11 w-11 items-center justify-center rounded-sm border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan">
+          <Icon size={22} strokeWidth={1.8} />
+        </div>
+        <p className="font-mono text-sm uppercase tracking-wider text-text-muted sm:text-base">
+          {message}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const [pastEvent,setPastEvent]=useState([]);
   const [member,setmember]=useState([]);
@@ -31,7 +48,7 @@ export default function Home() {
         return eventtime<nowtime;
       })
       // console.log("past = ",past);
-      console.log("future = ",future);
+      // console.log("future = ",future);
       setPastEvent(past);
       setFutureEvent(future);
       // console.log("result in home page = ",result);
@@ -60,19 +77,31 @@ export default function Home() {
       <section>
         <HorizontalLine title="CRYX EVENT ARCHIVE..." status= "Keep Eye" />
         <div className="py-4">
-          <MarqueeImage images={pastEvent} speed="10" />
+          {pastEvent.length === 0 ? (
+            <EmptyState icon={CalendarX} message="No past events are available" />
+          ) : (
+            <MarqueeImage images={pastEvent} speed="10" />
+          )}
         </div>
       </section>
 
       <section>
         <HorizontalLine title="Future Events..." status={role?.trim()==="admin" && "Add Event" || "Keep Eye"} />
-        <MarqueeImage images={futureEvent} speed="10" />
+        {futureEvent.length === 0 ? (
+          <EmptyState icon={CalendarX} message="No future events are available" />
+        ) : (
+          <MarqueeImage images={futureEvent} speed="10" detail_status={true} />
+        )}
       </section>
 
       <section id='about-us'>
         <HorizontalLine title="CRYX TEAM ARCHIVE..." status={role?.trim()==="admin" && "Add Member" || "Keep Eye"} />
         <div className='flex flex-wrap gap-4 justify-center sm:justify-start'>
-          {member?.map((t,idx) => <TeamCard key={t.id} data={t} idx={idx} />)}
+          {member.length === 0 ? (
+            <EmptyState icon={UsersRound} message="No members are available" />
+          ) : (
+            member.map((t,idx) => <TeamCard key={t.id} data={t} idx={idx} />)
+          )}
         </div>
       </section>
 

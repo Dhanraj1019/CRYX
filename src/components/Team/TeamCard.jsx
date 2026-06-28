@@ -36,7 +36,7 @@ export default function TeamCard({ data,idx }) {
 
         <div className="flex flex-col min-w-0 w-full sm:w-auto">
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-mono text-neon-cyan tracking-wider truncate text-center sm:text-left">
-            {data.username}
+            {data.firstName && data.lastName ? data.firstName+" "+data.lastName : data.username}
           </h2>
 
           <p className="mt-1.5 text-text-muted font-mono text-xs tracking-[3px] uppercase text-center sm:text-left">

@@ -1,5 +1,9 @@
 import { useRef } from "react";
 import { motion, useAnimationControls } from "framer-motion";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import DatabaseObj from "../../../Supabase/database";
+import StorageObj from '../../../Supabase/storage';
 
 const formatEventDate = (date) => {
   if (!date) return "Date TBA";
@@ -20,7 +24,12 @@ const formatEventTime = (time) => {
   }).format(new Date(`2000-01-01T${time}`));
 };
 
-export default function MarqueeImage({ images = [], speed = 30 }) {
+
+const deleteEvent=()=>{
+  console.log("delete event")
+}
+
+export default function MarqueeImage({ images = [], speed = 30,detail_status=false }) {
   const controls = useAnimationControls();
   const isHovered = useRef(false);
 
@@ -68,7 +77,7 @@ export default function MarqueeImage({ images = [], speed = 30 }) {
       >
         {doubled.map((i,idx) => {
           const isDuplicate = idx >= images.length;
-          const registrationHref = `/event=${i.id}`;
+          const registrationHref = `/event/${i.id}`;
 
           return (
           <div
@@ -106,13 +115,18 @@ export default function MarqueeImage({ images = [], speed = 30 }) {
                   <span>{formatEventTime(i.time)}</span>
                 </div>
               </div>
-              <a
-                href={registrationHref}
-                tabIndex={isDuplicate ? -1 : 0}
-                className="w-fit rounded-sm border border-neon-cyan/70 bg-neon-cyan/10 px-3 py-1.5 font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_16px_rgba(103,232,249,0.35)] focus:outline-none focus:ring-1 focus:ring-neon-cyan"
-              >
-                Registration
-              </a>
+              {detail_status && <div className="flex justify-around items-center">
+                <Link
+                  to={registrationHref}
+                  tabIndex={isDuplicate ? -1 : 0}
+                  className="w-fit rounded-sm border border-neon-cyan/70 bg-neon-cyan/10 px-3 py-1.5 font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_16px_rgba(103,232,249,0.35)] focus:outline-none focus:ring-1 focus:ring-neon-cyan"
+                >
+                  Details
+                </Link>
+                <button onClick={deleteEvent} className="cursor-pointer border-2 text-red-600 border-red-500 rounded-md px-3 py-0.5 hover:shadow-2xs font-bold transition-all duration-300 hover:shadow-red-400 hover:bg-red-500 hover:text-black">
+                  Delete
+                </button>
+              </div>}
             </div>
           </div>
           );

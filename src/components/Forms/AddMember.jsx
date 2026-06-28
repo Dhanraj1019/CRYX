@@ -27,9 +27,10 @@ export default function AddMember(){
         setLoader(true);
         try{
           if(searchData.role==="user" && data.role!=="user"){
+            const img_public_url=data.publicurl ? data.publicurl : publicUrl;
             const result=await DatabaseObj.updateData({table:"userprofile",data:{"role":data.role},id:searchData.id});
             const updated=await DatabaseObj.getRow({bucket:"userprofile",chake:["id",searchData.id]});
-            const fnfupdated={...updated,publicurl:publicUrl};
+            const fnfupdated={...updated,publicurl:img_public_url};
             const fnf=await DatabaseObj.insertData({table:"memberprofile",data:fnfupdated});
             dispatch(setNotification({type:"success",message:`Agent "${searchData.username}" enrolled as ${data.role} successfully`,title:"Add Member"}));
           }

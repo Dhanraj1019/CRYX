@@ -25,6 +25,8 @@ export default function AddMember(){
             phone: data?.phone || "",
             instagramid: data?.instagramid || "",
             linkdinid: data?.linkdinid || "",
+            firstName:data?.firstName || "",
+            lastName:data?.lastName || ""
       }
     });
     const [loader,setLoader]=useState(false);
@@ -43,7 +45,7 @@ export default function AddMember(){
               const publicurl=await StorageObj.getPublicUrl({bucket:"userimage",path})
               if(publicurl){
                 fnfImage={imageurl:path,publicurl:publicurl.publicUrl};
-                data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
+                data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
               }
             } else {
               dispatch(setNotification({type:"error",message:"Failed to upload profile image",title:"Update Profile"}));
@@ -52,7 +54,7 @@ export default function AddMember(){
             }
           }
           else{
-            data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,...fnfImage};
+            data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
           }
           if(redux_data.publicurl){
             const result = await StorageObj.deleteFile({bucket:"userimage",path:redux_data.imageurl});
@@ -138,7 +140,17 @@ export default function AddMember(){
                   readOnly 
                   {...register("email")}
                 />
+                <Input 
+                  label="First Name" 
+                  placeholder="e.g. demo"
+                  {...register("firstName")}
+                />
 
+                <Input 
+                  label="Last Name" 
+                  placeholder="e.g. omed"
+                  {...register("lastName")}
+                />
                 <Input 
                   label="Phone Number" 
                   placeholder="e.g. 9876543210"

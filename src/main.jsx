@@ -20,6 +20,7 @@ import ResorcesIndex from './Pages/Resorces/ResorcsIndex.jsx'
 import CybersecurityRoadmap from './Pages/pagex/CybersecurityRoadmap.jsx'
 import WeeklyLabs from './Pages/pagex/WeeklyLabs.jsx'
 import Notification from './components/Notification.jsx'
+import EventDetails from './components/Marquee/EventDetails.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -105,6 +106,12 @@ const router = createBrowserRouter([
       {
         path:"/weeklylabs",
         element:<WeeklyLabs/>
+      },
+      {
+        path:"/event/:eventId",
+        element:<UserProtect authentication={true}>
+          <EventDetails/>
+        </UserProtect>
       },
       {
         path:"/*",

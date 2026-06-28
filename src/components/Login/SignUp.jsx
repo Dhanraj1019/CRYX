@@ -100,6 +100,19 @@ export default function SignUp() {
                     {...register("username",{required:true})}
                 />
               </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label="First Name"
+                  placeholder="agent"
+                  {...register("firstName", { required: true })}
+                />
+
+                <Input
+                    label="Last Name"
+                    placeholder="e.g. agent"
+                    {...register("lastName",{required:true})}
+                />
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input

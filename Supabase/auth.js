@@ -54,7 +54,7 @@ class Auth{
             if(id_data && id_data.user){
                 const result=await supabase
                 .from('userprofile')
-                .insert({phone:data.phone, email:data.email,username:data.username,instagramid:data.instagramid?.trim() || null,linkdinid:data.linkdinid?.trim() || null,id:id_data.user.id })
+                .insert({phone:data.phone, email:data.email,username:data.username,instagramid:data.instagramid?.trim() || null,linkdinid:data.linkdinid?.trim() || null,id:id_data.user.id,firstName:data.firstName,lastName:data.lastName })
                 if(result && result.error){
                     console.log("error during profile save = ",result.error);
                     return false;
