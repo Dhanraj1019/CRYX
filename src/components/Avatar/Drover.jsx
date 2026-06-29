@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import AuthObj from "../../../Supabase/auth";
 import { useSelector,useDispatch } from "react-redux";
 import { setNotification } from "../../../store/Notifucation";
-
+  
 export default function Drover({ isOpen, onClose }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
