@@ -74,7 +74,7 @@ export default function EventDetails() {
     };
 
     if (eventId) getEvent();
-  }, [eventId]);
+  }, [eventId,user]);
 
   if (loading) {
     return (
@@ -253,7 +253,7 @@ export default function EventDetails() {
           </aside>
         </div>
       </section>
-      {modalStatus && <RegistrationsModal onDelete={handelRegisterUserDelete} data={modalData} onClose={togalModalState}/>}
+      {modalStatus && <RegistrationsModal title="Event Registration" subtitle="Registered Users" onDelete={handelRegisterUserDelete} data={modalData} onClose={togalModalState}/>}
     </main>
   );
 }

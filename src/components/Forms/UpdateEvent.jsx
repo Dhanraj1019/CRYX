@@ -171,10 +171,12 @@ export default function AddMember({data}){
                 {...register("image",{required:true})}
               />
               <Input
-                label="Highlights"
-                type="text"
-                placeholder="important...."
+                  label="Highlights"
+                  type="text"
+                  placeholder="important...."
+                  {...register("heightlight")} // ← was missing
               />
+
 
               <Button
                 type="submit"

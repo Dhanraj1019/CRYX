@@ -1,25 +1,75 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { setNotification } from "../../../../store/Notifucation";
 import Button from '../../../components/Button/Button'
 import DatabaseObj from "../../../../Supabase/database";
+import SolvedModal from '../../../components/Marquee/RegistrationModal';
+import { useNavigate } from "react-router-dom";
 export default function LabCard({ lab, platform,onDelete }) {
-  console.log("lab ",lab);
-  console.log("platform ",platform)
   const difficultyConfig = {
     Easy: { color: "#34d399", bg: "rgba(52,211,153,0.1)", border: "rgba(52,211,153,0.3)" },
     Medium: { color: "#f59e0b", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.3)" },
     Hard: { color: "#f87171", bg: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.3)" },
   };
-
-  const user_role=useSelector((state=>state.auth.user?.role));
+  const navigate=useNavigate();
+  const dispatch=useDispatch()
+  const user=useSelector((state=>state.auth?.user));
   const loginStatus=useSelector((stat)=>stat.auth.status);
-
+  const [mySolvedStatus,setMySolvedStatus]=useState(false);
   const diff = difficultyConfig[lab.difficulty] || difficultyConfig["Easy"];
   const [hovered, setHovered] = useState(false);
+  const [solved,setSolved] = useState([]);
+  const [modalState,setModalStatus] = useState(false);
+  useEffect(()=>{
+    if(user){
+      const alreadySolved = lab.solved?.some(
+        (it) => it?.id === user?.id || it?.username === user?.username
+      );
+      if (alreadySolved) setMySolvedStatus(true);
+    }
+  },[user])
+
+  useEffect(()=>{
+    setSolved(lab.solved);
+  },[])
 
   const handleClick = () => {
     window.open(lab.url, "_blank", "noopener,noreferrer");
   };
+
+const handelSolved=async()=>{
+    if(!user) {
+      dispatch(setNotification({type:"error",title:"Lab Solve",message:"Please Login First"}));
+      navigate("/login");
+      return;
+    }
+    handleClick();
+    if(mySolvedStatus) return;
+    const temp=lab.solved;
+    const t={id:user.id,username:user.username,fullname:user.firstName+ " " +user.lastName,phone:user.phone,email:user.email,date: new Date().toISOString()};
+    let fnf;
+    if(!temp) fnf=[t];
+    else fnf=[...temp,t];
+    const d={...lab,solved:fnf};
+    // console.log("d = ",d);
+    const result = await DatabaseObj.updateData({table:"WeaklyLabs",data:d,id:lab.id});
+    if(result.error){
+      dispatch(setNotification({type:"error",title:"Solve",message:"error during lab solution"}));
+      return;
+    }
+    else{
+      console.log("fnf",fnf);
+      setSolved(fnf);
+      setMySolvedStatus(true);
+      dispatch(setNotification({type:"success",title:"Solve",message:"lab solved successfuly"}));
+      return;
+    }
+  }
+
+  const togalModalState=()=>{
+    setModalStatus((pre)=>!pre);
+    // console.log(lab)
+  }
 
   // const labdate=new Date(lab.date);
   // const today=Date.now();
@@ -78,10 +128,15 @@ export default function LabCard({ lab, platform,onDelete }) {
           </span>
             
           {
-            loginStatus && user_role==="admin" && 
-            <Button onClick={()=>onDelete(lab.id,lab.platform)} className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">
-              Delete 
-            </Button>
+            loginStatus && user?.role==="admin" && 
+            <div className="flex gap-2">
+              <Button onClick={()=>onDelete(lab.id,lab.platform)} className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">
+                Delete 
+              </Button>
+              <Button onClick={()=>togalModalState()} className="text-blue-600 hover:shadow-blue-600 font-bold border-blue-600">
+                Solved
+              </Button>
+            </div>
           }
         </div>
 
@@ -120,9 +175,9 @@ export default function LabCard({ lab, platform,onDelete }) {
 
         {/* CTA */}
         <div
-          className="flex cursor-pointer items-center gap-2 font-mono text-xs tracking-wider uppercase transition-all duration-300"
+          className="flex cursor-pointer items-center gap-2 font-mono text-xs tracking-wider uppercase py-2 px-5 border-b-2 border-t-0.5 border-r-2 border-l-2 border-gray-400/20 rounded-md transition-all duration-300 hover:shadow-sm hover:shadow-gray-600"
           style={{ color: platform.color }}
-          onClick={handleClick}
+          onClick={mySolvedStatus ? handleClick : handelSolved}
         >
           <span
             className="transition-transform duration-300"
@@ -166,6 +221,7 @@ export default function LabCard({ lab, platform,onDelete }) {
           opacity: hovered ? 0.6 : 0.15,
         }}
       />
+      {modalState && <SolvedModal subtitle="Solved Users" title="Lab Solved" deleteStatus={false} onClose={togalModalState} data={solved}/>}
     </div>
   );
 }

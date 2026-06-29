@@ -10,7 +10,7 @@ import DatabaseObj from '../../Supabase/database'
 import { useEffect, useState } from 'react'
 import StorageObj from '../../Supabase/storage'
 import { CalendarX, UsersRound } from 'lucide-react'
-StorageObj
+import CyberNewsLog from '../components/News/News'
 
 function EmptyState({ icon: Icon, message }) {
   return (
@@ -75,6 +75,7 @@ export default function Home() {
       </section>
 
       <div className='h-px gradient-line my-12 md:my-16 opacity-30'></div>
+      {/* <CyberNewsLog/> */}
 
       <section>
         <HorizontalLine title="CRYX EVENT ARCHIVE..." status= "Keep Eye" />
