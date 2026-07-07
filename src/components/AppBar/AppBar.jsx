@@ -16,6 +16,7 @@ export default function AppBar() {
   const navitems = [
     { title: "login", href: '/login' ,scroll:false},
     { title:"signup", href:"/signup",scroll:false},
+    {title:"news",href:"/news",scroll:true,target:"news"},
     { title: 'home', href: '/',scroll:false },
     { title: 'about us', href: '/about-us' ,scroll:true,target:"about-us"},
     { title: 'contact us', href: '/contect-us' ,scroll:true,target:"contect-us"},

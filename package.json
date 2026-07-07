@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "nodemon backend/server.js",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -20,7 +22,9 @@
     "@reduxjs/toolkit": "^2.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.3.1",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "lucide-react": "^1.20.0",
     "motion": "^12.40.0",
     "react": "^19.2.6",
@@ -28,6 +32,7 @@
     "react-hook-form": "^7.79.0",
     "react-redux": "^9.3.0",
     "react-router-dom": "^7.18.0",
+    "rss-parser": "^3.13.0",
     "tailwindcss": "^4.3.1",
     "three": "^0.185.0"
   },
@@ -36,10 +41,12 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^10.0.3",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "nodemon": "^3.1.14",
     "vite": "^8.0.12"
   }
 }

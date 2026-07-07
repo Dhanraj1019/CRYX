@@ -25,7 +25,7 @@ export default function Footer() {
         </div>
         <div className="border-t pt-8 border-border-subtle">
           <div className='flex gap-3 justify-center items-center'>
-            {socials.map((it)=><a href={it.href} ><img className='h-8 w-8 text-neon-green' src={it.src} alt={it.label}></img></a>)}
+            {socials.map((it)=><a href={it.href} ><img key={it.label} className='h-8 w-8 text-neon-green' src={it.src} alt={it.label}></img></a>)}
           </div>
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-2 py-5 sm:flex-row sm:px-6">
             <p className="wrap-break-words font-mono text-sm text-text-muted">

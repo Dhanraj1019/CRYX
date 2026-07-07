@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function Terminal() {
   const [output, setOutput] = useState([]);
   const [boot, setBoot] = useState(true);
   const inputRef = useRef(null);
   const outputRef = useRef(null);
-
+  const username=useSelector((state)=>state.auth?.user?.username) || "guest";
   const commands = {
     help: "Available commands: whoami,about, mission, status, team, ls, pwd, clear",
     about: "CRYX is the premier Cybersecurity Club — where code meets defense.",
@@ -13,7 +14,7 @@ function Terminal() {
     status: "[SYSTEMS ONLINE] — All nodes operational. Threat level: LOW",
     team: "4 active operatives | 34 total members | 12 events completed",
     ls: "drwxr-x--- events/\n drwxr-x--- members/\n drwxr-x--- resources/\n -rw-r----- README.md",
-    pwd: "/home/guest/cryx",
+    pwd: `/home/${username}/cryx`,
   };
 
   useEffect(() => {
@@ -42,7 +43,7 @@ function Terminal() {
 
     setOutput((prev) => [
       ...prev,
-      { type: "cmd", text: `guest@cryx:~$ ${trimmed}` },
+      { type: "cmd", text: `${username}@cryx:~$ ${trimmed}` },
       { type: "result", text: result },
     ]);
   }
@@ -144,7 +145,7 @@ function Terminal() {
               className={
                 line.type === "cmd"
                   ? "break-all text-neon-green"
-                  : "whitespace-pre-wrap break-words pl-2 text-text-primary"
+                  : "whitespace-pre-wrap wrao-break-words pl-2 text-text-primary"
               }
             >
               {line.text}
@@ -154,7 +155,7 @@ function Terminal() {
 
         {/* INPUT */}
         <div className="mt-3 flex min-w-0 items-center text-neon-green">
-          <span className="mr-2 shrink-0">guest@cryx:~$</span>
+          <span className="mr-2 shrink-0">{username}@cryx:~$</span>
           <input
             ref={inputRef}
             type="text"

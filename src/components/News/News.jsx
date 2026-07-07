@@ -1,116 +1,241 @@
-import { useState } from "react";
-
-const newsEntries = [
-  { id: 1, time: "[10:42]", text: "Microsoft patches Exchange vulnerability", sev: "high" },
-  { id: 2, time: "[09:15]", text: "CISA issues ransomware advisory", sev: "high" },
-  { id: 3, time: "[08:00]", text: "New Linux malware discovered", sev: "med" },
-  { id: 4, time: "[Yesterday]", text: "Chrome emergency update released", sev: "med" },
-  { id: 5, time: "[Yesterday]", text: "GitHub phishing campaign", sev: "low" },
-];
-
+import { useEffect, useState } from "react";
+import { motion,useAnimationControls  } from "framer-motion";
 const sevColor = {
   high: "bg-red-500",
-  med:  "bg-amber-400",
-  low:  "bg-emerald-400",
+  med: "bg-amber-400",
+  low: "bg-emerald-400",
 };
 
 export default function CyberNewsLog() {
+  const [loader,setLoader] = useState(false);
   const [hovered, setHovered] = useState(null);
+  const [newsEntries, setNewsEntries] = useState([]);
+  const controls = useAnimationControls();
+  // Detect severity from title
+  const getSeverity = (title) => {
+    const text = title.toLowerCase();
 
-  return (
+    if (
+      text.includes("critical") ||
+      text.includes("ransomware") ||
+      text.includes("exploit") ||
+      text.includes("0-day") ||
+      text.includes("zero-day") ||
+      text.includes("vulnerability") ||
+      text.includes("breach") ||
+      text.includes("cve")
+    ) {
+      return "high";
+    }
+
+    if (
+      text.includes("malware") ||
+      text.includes("phishing") ||
+      text.includes("attack") ||
+      text.includes("hack") ||
+      text.includes("trojan")
+    ) {
+      return "med";
+    }
+
+    return "low";
+  };
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoader(true);
+        const res = await fetch("http://localhost:5000/api/news");
+        const data = await res.json();
+
+        const formatted = data.map((el, index) => ({
+          id: index,
+          title: el.title,
+          url: el.guid || el.link,
+          date: new Date(el.pubDate).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+          }),
+          sev: getSeverity(el.title),
+        }));
+
+        setNewsEntries(formatted);
+        setLoader(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  const [paused, setPaused] = useState(false);
+
+  const scrollingNews =
+  newsEntries.length > 5
+    ? [...newsEntries, ...newsEntries]
+    : newsEntries;
+
+  return loader ? <div id="news" className="py-8 text-center text-emerald-600 animate-pulse">
+            Fetching latest cyber intelligence...
+          </div> : (
     <div
+      id="news"
       className="relative mx-auto w-full max-w-4xl min-w-0 font-mono text-emerald-400"
       style={{ background: "#050d0f" }}
     >
-      {/* Outer border with corner accent */}
       <div
         className="relative overflow-hidden rounded-sm border border-emerald-900"
         style={{ boxShadow: "0 0 0 1px #064e3b22" }}
       >
-        {/* Top scanning line */}
         <div
           className="absolute top-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, #10b981 50%, transparent 100%)",
+            background:
+              "linear-gradient(90deg, transparent 0%, #10b981 50%, transparent 100%)",
             opacity: 0.6,
           }}
         />
 
-        {/* Corner accents */}
         <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-emerald-400" />
         <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-emerald-400" />
 
-        {/* Header bar */}
-        <div className="flex min-w-0 items-center gap-2 border-b border-emerald-900 bg-black/40 px-4 py-2.5">
-          <span className="text-emerald-400 text-sm">{">"}</span>
-          <span className="min-w-0 truncate text-sm tracking-widest text-emerald-400">latest_cyber_news.log</span>
+        {/* Header */}
+        <div className="flex items-center gap-2 border-b border-emerald-900 bg-black/40 px-4 py-2.5">
+          <span>{">"}</span>
+          <span className="truncate text-sm tracking-widest">
+            latest_cyber_news.log
+          </span>
         </div>
 
-        {/* Stats row */}
+        {/* Stats */}
         <div className="grid grid-cols-3 divide-x divide-emerald-900 border-b border-emerald-900">
           {[
-            { val: "5",  label: "ALERTS"   },
-            { val: "2",  label: "CRITICAL"  },
-            { val: "48h", label: "WINDOW"   },
+            { val: newsEntries.length, label: "ALERTS" },
+            {
+              val: newsEntries.filter((n) => n.sev === "high").length,
+              label: "CRITICAL",
+            },
+            { val: "RSS", label: "SOURCE" },
           ].map(({ val, label }) => (
-            <div key={label} className="flex flex-col items-center justify-center py-4 gap-1 bg-black/20">
+            <div
+              key={label}
+              className="flex flex-col items-center justify-center py-4 gap-1 bg-black/20"
+            >
               <span
-                className="font-mono font-bold text-emerald-300 leading-none"
-                style={{ fontFamily: "'Orbitron', monospace", fontSize: "1.5rem" }}
+                className="font-bold text-emerald-300"
+                style={{
+                  fontFamily: "'Orbitron', monospace",
+                  fontSize: "1.5rem",
+                }}
               >
                 {val}
               </span>
-              <span className="text-emerald-700 tracking-widest text-xs">{label}</span>
+              <span className="text-xs tracking-widest text-emerald-700">
+                {label}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* News entries */}
-        <ul>
-          {newsEntries.map((entry, i) => (
-            <li
-              key={entry.id}
-              onMouseEnter={() => setHovered(entry.id)}
-              onMouseLeave={() => setHovered(null)}
-              className={[
-                "flex min-w-0 items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150 sm:items-center sm:gap-4 sm:px-5",
-                i !== newsEntries.length - 1 ? "border-b border-emerald-900/50" : "",
-                hovered === entry.id ? "bg-emerald-950/40" : "bg-transparent",
-              ].join(" ")}
+        {/* News */}
+        <div>
+          {/* Top Fade */}
+          <div className="absolute top-0 left-0 w-full h-8 bg-liner-to-b from-[#050d0f] to-transparent z-10 pointer-events-none" />
+
+          {/* Bottom Fade */}
+          <div className="absolute bottom-0 left-0 w-full h-8 bg-liner-to-t from-[#050d0f] to-transparent z-10 pointer-events-none" />
+
+          <div
+            className="h-88.75 overflow-hidden"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <motion.div
+              animate={
+                paused
+                  ? {}
+                  : {
+                      y: ["0%", "-50%"],
+                    }
+              }
+              transition={{
+                duration: newsEntries.length * 4,
+                ease: "linear",
+                repeat: Infinity,
+              }}
             >
-              {/* Severity dot */}
-              <span
-                className={`w-2 h-2 rounded-full flex-shrink-0 ${sevColor[entry.sev]}`}
-                style={{ boxShadow: hovered === entry.id ? `0 0 6px currentColor` : "none" }}
-              />
+              <ul>
+                {scrollingNews.map((entry, i) => (
+                  <li
+                    key={`${entry.id}-${i}`}
+                    onMouseEnter={() => setHovered(entry.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={() => window.open(entry.url, "_blank")}
+                    className={[
+                      "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150 sm:items-center sm:gap-4 sm:px-5",
+                      "border-b border-emerald-900/50",
+                      hovered === entry.id
+                        ? "bg-emerald-950/40"
+                        : "bg-transparent",
+                    ].join(" ")}
+                  >
+                    {/* Severity */}
+                    <span
+                      className={`w-2 h-2 rounded-full shrink-0 ${sevColor[entry.sev]}`}
+                    />
 
-              {/* Timestamp */}
-              <span className="w-20 flex-shrink-0 text-sm tracking-wide text-emerald-700 sm:w-24">
-                {entry.time}
-              </span>
+                    {/* Date */}
+                    <span className="w-20 shrink-0 text-sm text-emerald-700">
+                      [{entry.date}]
+                    </span>
 
-              {/* Text */}
-              <span
-                className={`min-w-0 flex-1 break-words text-sm tracking-wide transition-colors duration-150 ${
-                  hovered === entry.id ? "text-emerald-300" : "text-emerald-400/80"
-                }`}
-              >
-                {entry.text}
-              </span>
+                    {/* Title */}
+                    <span
+                      className={`flex-1 text-sm wrap-break-words transition-colors ${
+                        hovered === entry.id
+                          ? "text-emerald-300"
+                          : "text-emerald-400/80"
+                      }`}
+                    >
+                      {entry.title}
+                    </span>
 
-              {/* Arrow */}
-              <span
-                className={`text-sm transition-all duration-150 ${
-                  hovered === entry.id
-                    ? "text-emerald-300 translate-x-1"
-                    : "text-emerald-800"
-                }`}
-              >
-                →
-              </span>
-            </li>
-          ))}
-        </ul>
+                    {/* Badge */}
+                    <span
+                      className={`hidden sm:block text-[10px] uppercase px-2 py-1 rounded border ${
+                        entry.sev === "high"
+                          ? "border-red-500 text-red-400"
+                          : entry.sev === "med"
+                          ? "border-amber-400 text-amber-300"
+                          : "border-emerald-400 text-emerald-300"
+                      }`}
+                    >
+                      {entry.sev}
+                    </span>
+
+                    {/* Arrow */}
+                    <span
+                      className={`transition-all ${
+                        hovered === entry.id
+                          ? "text-emerald-300 translate-x-1"
+                          : "text-emerald-800"
+                      }`}
+                    >
+                      →
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+
+        {newsEntries.length === 0 && (
+          <div className="py-8 text-center text-emerald-600 animate-pulse">
+            Fetching latest cyber intelligence...
+          </div>
+        )}
       </div>
     </div>
   );

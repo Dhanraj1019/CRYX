@@ -74,8 +74,13 @@ export default function Home() {
         <Terminal />
       </section>
 
-      <div className='h-px gradient-line my-12 md:my-16 opacity-30'></div>
-      {/* <CyberNewsLog/> */}
+      {/* <div className='h-px gradient-line my-12 md:my-16 opacity-30'></div> */}
+      <section>
+        <HorizontalLine title="CyberSecurity News" status="Keep Eye"/>
+        <div className='py-4'>
+          <CyberNewsLog/>
+        </div>
+      </section>
 
       <section>
         <HorizontalLine title="CRYX EVENT ARCHIVE..." status= "Keep Eye" />

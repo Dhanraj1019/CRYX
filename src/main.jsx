@@ -21,6 +21,7 @@ import CybersecurityRoadmap from './Pages/pagex/CybersecurityRoadmap.jsx'
 import WeeklyLabs from './Pages/pagex/WeeklyLabs.jsx'
 import Notification from './components/Notification.jsx'
 import EventDetails from './components/Marquee/EventDetails.jsx'
+import CyberNewsLog from './components/News/News.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -116,6 +117,10 @@ const router = createBrowserRouter([
       {
         path:"/*",
         element:<UnderDevelopment header="Modal" content="// Theme customization coming soon..." />
+      },
+      {
+        path:"/news",
+        element:<CyberNewsLog/>
       }
     ]
   }
