@@ -29,12 +29,12 @@ export default function PlatformSection({ platform, index,onDelete }) {
   return (
     <section
       id={platform.id}
-      className="animate-fade-in"
+      className="min-w-0 scroll-mt-28 animate-fade-in"
       style={{ animationDelay: `${index * 0.15}s` }}
     >
       {/* Section Header */}
       <div className="mb-6 sm:mb-8">
-        <div className="flex items-center gap-3 sm:gap-4 mb-4">
+        <div className="mb-4 flex min-w-0 items-center gap-3 sm:gap-4">
           {/* Platform logo badge */}
           <div
             className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-sm flex items-center justify-center font-mono font-bold text-sm sm:text-base tracking-wider border"
@@ -51,7 +51,7 @@ export default function PlatformSection({ platform, index,onDelete }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h2
-                className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-wider"
+                className="min-w-0 break-words font-mono text-xl font-bold tracking-wider sm:text-2xl md:text-3xl"
                 style={{
                   color: platform.color,
                   textShadow: `0 0 6px ${platform.color}30`,
@@ -60,7 +60,7 @@ export default function PlatformSection({ platform, index,onDelete }) {
                 {platform.name}
               </h2>
               <span
-                className="font-mono text-xs px-2 py-0.5 rounded-sm"
+                className="shrink-0 rounded-sm px-2 py-0.5 font-mono text-xs"
                 style={{
                   color: platform.color,
                   background: platform.bgColor,
@@ -71,7 +71,7 @@ export default function PlatformSection({ platform, index,onDelete }) {
               </span>
               
             </div>
-            <p className="font-mono text-xs text-text-muted tracking-wider mt-0.5">
+            <p className="mt-0.5 break-words font-mono text-xs tracking-wider text-text-muted">
               {platform.tagline}
             </p>
           </div>
@@ -92,13 +92,13 @@ export default function PlatformSection({ platform, index,onDelete }) {
         </div>
 
         {/* Difficulty Filter */}
-        <div className="flex items-center gap-2 mt-4 flex-wrap">
+        <div className="mt-4 flex min-w-0 flex-wrap items-center gap-2">
           <span className="font-mono text-xs text-text-muted tracking-wider uppercase">Filter:</span>
           {difficulties.map((d) => (
             <button
               key={d}
               onClick={() => setFilterDiff(d)}
-              className="font-mono text-xs px-3 py-1 rounded-sm border transition-all duration-300 cursor-pointer"
+              className="min-h-9 cursor-pointer rounded-sm border px-3 py-1 font-mono text-xs transition-all duration-300 focus-visible:ring-2"
               style={
                 filterDiff === d
                   ? {
@@ -126,7 +126,7 @@ export default function PlatformSection({ platform, index,onDelete }) {
 
       {/* Lab Cards Grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((lab) => (
             <LabCard key={lab.id} lab={lab} platform={pro_plat} onDelete= {onDelete}/>
           ))}

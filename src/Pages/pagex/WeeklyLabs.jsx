@@ -103,12 +103,12 @@ export default function WeeklyLabs() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 py-6 animate-fade-in">
+    <div className="mx-auto max-w-7xl min-w-0 px-3 py-6 animate-fade-in sm:px-4 md:px-8">
       <Top features={features} />
       {user_status==="admin" &&
-        <div className="flex justify-center pb-4 gap-6">
-          <Button onClick={()=>navigate("/add-lab")} className="w-1/6 hover:shadow-green-400" children="Add Lab"/>
-          <Button onClick={()=>navigate("/add-platform")} className="w-1/6 text-blue-600 border-blue-600 hover:shadow-blue-500" children="Add Platform"/>
+        <div className="flex flex-col justify-center gap-3 pb-4 sm:flex-row sm:gap-6">
+          <Button onClick={()=>navigate("/add-lab")} className="w-full hover:shadow-green-400 sm:w-auto sm:min-w-36" children="+ Lab"/>
+          <Button onClick={()=>navigate("/add-platform")} className="w-full border-blue-600 text-blue-600 hover:shadow-blue-500 sm:w-auto sm:min-w-36" children="+ Platform"/>
         </div>
       }
       {/* Gradient divider */}

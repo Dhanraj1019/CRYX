@@ -42,14 +42,14 @@ export default function AppBar() {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 glass-strong border-b border-border-subtle shadow-[0_1px_8px_rgba(52,211,153,0.08)] animate-slide-down">
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:px-6">
         {/* Logo */}
-        <Link to="/home" className="shrink-0">
+        <Link to="/home" className="min-w-0 shrink-0">
           <Logo />
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden min-w-0 items-center gap-1 md:flex lg:gap-2">
           {navitems.map((item) => {
             if (item.title === "login" || item.title === "signup") {
               if (loginstatus) return null;
@@ -58,7 +58,7 @@ export default function AppBar() {
                   <button
                     key={item.title}
                     onClick={() => navigate(item.href)}
-                    className="font-mono text-xs font-semibold tracking-widest uppercase px-4.5 py-2 border border-neon-green/35 text-neon-green rounded-sm hover:bg-neon-green/10 hover:border-neon-green hover:shadow-[0_0_10px_rgba(52,211,153,0.2)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer ml-2"
+                    className="ml-2 min-h-11 rounded-sm border border-neon-green/35 px-3 py-2 font-mono text-xs font-semibold uppercase tracking-widest text-neon-green transition-all duration-300 hover:scale-[1.02] hover:border-neon-green hover:bg-neon-green/10 hover:shadow-[0_0_10px_rgba(52,211,153,0.2)] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary lg:px-4"
                   >
                     {item.title}
                   </button>
@@ -68,7 +68,7 @@ export default function AppBar() {
                   <button
                     key={item.title}
                     onClick={() => navigate(item.href)}
-                    className="font-mono text-xs font-bold tracking-widest uppercase px-4.5 py-2 bg-neon-green border border-neon-green text-black rounded-sm hover:shadow-[0_0_12px_rgba(52,211,153,0.35)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer ml-1"
+                    className="ml-1 min-h-11 rounded-sm border border-neon-green bg-neon-green px-3 py-2 font-mono text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_12px_rgba(52,211,153,0.35)] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary lg:px-4"
                   >
                     {item.title}
                   </button>
@@ -87,7 +87,7 @@ export default function AppBar() {
                   }
                   setMobileOpen(false);
                 }}
-                className="font-mono text-sm tracking-wider uppercase px-4 py-2 text-text-primary hover:text-neon-green transition-all duration-300 relative group cursor-pointer"
+                className="group relative min-h-11 max-w-36 cursor-pointer truncate px-2 py-2 font-mono text-xs uppercase tracking-wider text-text-primary transition-all duration-300 hover:text-neon-green focus-visible:ring-2 focus-visible:ring-neon-green lg:max-w-none lg:px-4 lg:text-sm"
               >
                 {item.title}
                 <span className="absolute bottom-0 left-4 right-4 h-[1.5px] bg-neon-green scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center"></span>
@@ -99,11 +99,11 @@ export default function AppBar() {
         </div>
 
         {/* Mobile: Avatar + Hamburger */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
 
           {loginstatus && <button
             onClick={() => setMobileOpen((prev) => !prev)}
-            className="relative cursor-pointer w-12 h-12 rounded-full overflow-hidden border-2 border-neon-green/40 hover:border-neon-green transition-all duration-300 hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus:outline-none focus:border-neon-green"
+            className="relative h-11 w-11 cursor-pointer overflow-hidden rounded-full border-2 border-neon-green/40 transition-all duration-300 hover:border-neon-green hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus-visible:ring-2 focus-visible:ring-neon-green"
             aria-label="Open user menu"
             // aria-expanded={droverOpen}
           >
@@ -118,7 +118,7 @@ export default function AppBar() {
           </button>
           || 
           <button
-            className="flex flex-col justify-center items-center gap-1.25 w-10 h-10 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+            className="flex h-11 w-11 cursor-pointer flex-col items-center justify-center gap-1.25 rounded-sm transition-colors hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-neon-green"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label="Toggle navigation menu"
           >
@@ -143,7 +143,7 @@ export default function AppBar() {
 
       {/* Mobile Dropdown */}
       {mobileOpen && (
-        <div className="md:hidden animate-slide-down border-t border-border-subtle glass-strong px-6 py-4">
+        <div className="md:hidden animate-slide-down border-t border-border-subtle glass-strong px-3 py-4 sm:px-6">
           <div className="flex flex-col gap-2">
             {navitems.map((item) => {
               if (item.title === "login" || item.title === "signup") {
@@ -156,7 +156,7 @@ export default function AppBar() {
                         navigate(item.href);
                         setMobileOpen(false);
                       }}
-                      className="w-full font-mono text-xs font-semibold tracking-widest uppercase py-3 text-center border border-neon-green/30 text-neon-green rounded-sm hover:bg-neon-green/10 transition-all duration-200 cursor-pointer mt-1.5"
+                      className="mt-1.5 min-h-11 w-full rounded-sm border border-neon-green/30 py-3 text-center font-mono text-xs font-semibold uppercase tracking-widest text-neon-green transition-all duration-200 hover:bg-neon-green/10 active:scale-[0.99]"
                     >
                       {item.title}
                     </button>
@@ -169,7 +169,7 @@ export default function AppBar() {
                         navigate(item.href);
                         setMobileOpen(false);
                       }}
-                      className="w-full font-mono text-xs font-bold tracking-widest uppercase py-3 text-center bg-neon-green text-black border border-neon-green rounded-sm hover:shadow-[0_0_10px_rgba(52,211,153,0.3)] transition-all duration-200 cursor-pointer mt-1"
+                      className="mt-1 min-h-11 w-full rounded-sm border border-neon-green bg-neon-green py-3 text-center font-mono text-xs font-bold uppercase tracking-widest text-black transition-all duration-200 hover:shadow-[0_0_10px_rgba(52,211,153,0.3)] active:scale-[0.99]"
                     >
                       {item.title}
                     </button>
@@ -188,7 +188,7 @@ export default function AppBar() {
                     }
                     setMobileOpen(false);
                   }}
-                  className="w-full text-left font-mono text-sm tracking-wider uppercase py-2.5 px-3 text-text-primary hover:text-neon-green hover:bg-neon-green/5 transition-all duration-200 cursor-pointer rounded-sm"
+                  className="min-h-11 w-full rounded-sm px-3 py-2.5 text-left font-mono text-sm uppercase tracking-wider text-text-primary transition-all duration-200 hover:bg-neon-green/5 hover:text-neon-green active:scale-[0.99]"
                 >
                   <span className="text-neon-green/40 mr-1.5 font-bold">›</span>
                   {item.title}
@@ -205,7 +205,7 @@ export default function AppBar() {
                     navigate("/update-profile");
                     setMobileOpen(false);
                   }}
-                  className="w-full text-left font-mono text-sm tracking-wider uppercase py-2.5 px-3 text-text-primary hover:text-neon-green hover:bg-neon-green/5 transition-all duration-200 cursor-pointer rounded-sm"
+                  className="min-h-11 w-full rounded-sm px-3 py-2.5 text-left font-mono text-sm uppercase tracking-wider text-text-primary transition-all duration-200 hover:bg-neon-green/5 hover:text-neon-green active:scale-[0.99]"
                 >
                   <span className="text-neon-green/40 mr-1.5 font-bold">›</span>
                   Update Profile
@@ -216,7 +216,7 @@ export default function AppBar() {
                     navigate("/appearance");
                     setMobileOpen(false);
                   }}
-                  className="w-full text-left font-mono text-sm tracking-wider uppercase py-2.5 px-3 text-text-primary hover:text-neon-green hover:bg-neon-green/5 transition-all duration-200 cursor-pointer rounded-sm"
+                  className="min-h-11 w-full rounded-sm px-3 py-2.5 text-left font-mono text-sm uppercase tracking-wider text-text-primary transition-all duration-200 hover:bg-neon-green/5 hover:text-neon-green active:scale-[0.99]"
                 >
                   <span className="text-neon-green/40 mr-1.5 font-bold">›</span>
                   Appearance
@@ -227,7 +227,7 @@ export default function AppBar() {
                     logout();
                     setMobileOpen(false);
                   }}
-                  className="w-full font-mono text-xs font-bold tracking-widest uppercase py-3 text-center bg-neon-red/10 border border-neon-red/30 text-neon-red rounded-sm hover:bg-neon-red/20 hover:border-neon-red hover:shadow-[0_0_10px_rgba(248,113,113,0.25)] transition-all duration-200 cursor-pointer mt-2"
+                  className="mt-2 min-h-11 w-full rounded-sm border border-neon-red/30 bg-neon-red/10 py-3 text-center font-mono text-xs font-bold uppercase tracking-widest text-neon-red transition-all duration-200 hover:border-neon-red hover:bg-neon-red/20 hover:shadow-[0_0_10px_rgba(248,113,113,0.25)] active:scale-[0.99]"
                 >
                   Logout
                 </button>

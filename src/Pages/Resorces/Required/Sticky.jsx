@@ -12,8 +12,8 @@ export default function Sticky({platforms}){
     return (
         <>
             {/* ── Sticky Platform Nav ── */}
-      <div className="sticky top-16 sm:top-20 z-30 mb-8">
-        <div className="glass-strong border border-neon-green/15 rounded-sm px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 overflow-x-auto">
+      <div className="sticky top-16 z-30 mb-8 sm:top-20">
+        <div className="glass-strong flex items-center gap-2 overflow-x-auto rounded-sm border border-neon-green/15 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
           <span className="font-mono text-xs text-text-muted tracking-wider uppercase shrink-0 hidden sm:block">
             Jump to:
           </span>
@@ -28,7 +28,7 @@ export default function Sticky({platforms}){
                   ? (setActiveTab("all"), window.scrollTo({ top: 0, behavior: "smooth" }))
                   : scrollToSection(tab.id)
               }
-              className="font-mono text-xs px-3 py-1.5 rounded-sm border whitespace-nowrap transition-all duration-300 cursor-pointer shrink-0"
+              className="min-h-10 shrink-0 cursor-pointer whitespace-nowrap rounded-sm border px-3 py-1.5 font-mono text-xs transition-all duration-300 focus-visible:ring-2 focus-visible:ring-neon-green"
               style={
                 activeTab === tab.id
                   ? {

@@ -1006,10 +1006,14 @@ function NodeCard({ node, delay = 0, compact = false, onClick }) {
         cursor: "pointer",
         transition: "box-shadow 0.4s ease, border-color 0.4s ease",
         padding: compact ? "8px 14px" : isRoot || isEnd ? "18px 24px" : "12px 18px",
-        minWidth: compact ? "120px" : isRoot || isEnd ? "260px" : "200px",
+        width: compact ? "min(42vw, 160px)" : "min(100%, 340px)",
+        minWidth: 0,
         maxWidth: compact ? "160px" : isRoot || isEnd ? "340px" : "280px",
         textAlign: "center",
+        overflow: "hidden",
+        overflowWrap: "anywhere",
       }}
+      whileTap={{ scale: 0.98 }}
     >
       {/* Animated corner accents */}
       {(isRoot || isEnd) && (
@@ -1072,6 +1076,7 @@ function NodeCard({ node, delay = 0, compact = false, onClick }) {
         transition: "color 0.3s ease, text-shadow 0.3s ease",
         letterSpacing: "0.05em",
         lineHeight: 1.3,
+        overflowWrap: "anywhere",
       }}>
         {node.label}
       </div>
@@ -1085,6 +1090,7 @@ function NodeCard({ node, delay = 0, compact = false, onClick }) {
           marginTop: "5px",
           lineHeight: 1.4,
           letterSpacing: "0.03em",
+          overflowWrap: "anywhere",
         }}>
           {node.sublabel}
         </div>
@@ -1188,7 +1194,7 @@ function BranchRow({ leafIds, color, delay = 0, side = "left", onNodeClick }) {
   const rightPath = `M ${cx} 0 C ${cx} ${H / 2}, ${rightX} ${H / 2}, ${rightX} ${H}`;
 
   return (
-    <div ref={ref} style={{ width: "100%", maxWidth: 560, margin: "0 auto", position: "relative" }}>
+    <div ref={ref} style={{ width: "100%", maxWidth: 560, minWidth: 0, margin: "0 auto", position: "relative", overflow: "hidden" }}>
       {/* SVG curves */}
       <svg
         width="100%" viewBox={`0 0 ${W} ${H}`}
@@ -1220,12 +1226,12 @@ function BranchRow({ leafIds, color, delay = 0, side = "left", onNodeClick }) {
       </svg>
 
       {/* Leaf cards row */}
-      <div style={{ display: "flex", width: "100%" }}>
-        <div style={{ width: "40%", display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", width: "100%", minWidth: 0 }}>
+        <div style={{ width: "42%", minWidth: 0, display: "flex", justifyContent: "center" }}>
           {leftLeaf && <NodeCard node={leftLeaf} delay={delay + 0.2} compact onClick={() => onNodeClick(leftLeaf)} />}
         </div>
-        <div style={{ width: "20%" }} />
-        <div style={{ width: "40%", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: "16%" }} />
+        <div style={{ width: "42%", minWidth: 0, display: "flex", justifyContent: "center" }}>
           {rightLeaf && <NodeCard node={rightLeaf} delay={delay + 0.3} compact onClick={() => onNodeClick(rightLeaf)} />}
         </div>
       </div>
@@ -1283,7 +1289,9 @@ function PhaseDivider({ label, color, delay = 0 }) {
         margin: "8px 0",
         width: "100%",
         maxWidth: 560,
+        minWidth: 0,
         alignSelf: "center",
+        padding: "0 8px",
       }}
     >
       <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${color}50)` }} />
@@ -1297,7 +1305,9 @@ function PhaseDivider({ label, color, delay = 0 }) {
         border: `1px solid ${color}30`,
         borderRadius: 4,
         background: `${color}08`,
-        whiteSpace: "nowrap",
+        whiteSpace: "normal",
+        textAlign: "center",
+        overflowWrap: "anywhere",
         textShadow: `0 0 8px ${color}50`,
       }}>
         {label}
@@ -1371,19 +1381,22 @@ export default function CybersecurityRoadmap() {
       minHeight: "100vh",
       fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
       color: "#cbd5e1",
+      overflowX: "clip",
+      width: "100%",
     }}>
       {/* ── PAGE HEADER ─────────────────────────────────────────────────── */}
-      <div style={{ textAlign: "center", paddingBottom: 48, paddingTop: 16 }}>
+      <div style={{ textAlign: "center", padding: "16px 12px 48px", overflow: "hidden" }}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20 }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20, minWidth: 0 }}
         >
           <div style={{ height: 1, width: 48, background: "rgba(52,211,153,0.3)" }} />
           <span style={{
-            fontSize: "11px", letterSpacing: "0.5em", color: "rgba(52,211,153,0.6)",
+            fontSize: "11px", letterSpacing: "0.28em", color: "rgba(52,211,153,0.6)",
             textTransform: "uppercase",
+            overflowWrap: "anywhere",
           }}>
             CRYX // ROADMAP
           </span>
@@ -1401,6 +1414,7 @@ export default function CybersecurityRoadmap() {
             textShadow: "0 0 4px rgba(52,211,153,0.35), 0 0 14px rgba(52,211,153,0.15)",
             letterSpacing: "0.05em",
             margin: 0,
+            overflowWrap: "anywhere",
           }}
         >
           Cybersecurity Roadmap
@@ -1415,6 +1429,7 @@ export default function CybersecurityRoadmap() {
             fontSize: "13px",
             color: "#64748b",
             letterSpacing: "0.05em",
+            overflowWrap: "anywhere",
           }}
         >
           {"// Structured learning path · Click and explore each node"}
@@ -1427,7 +1442,7 @@ export default function CybersecurityRoadmap() {
           transition={{ duration: 0.6, delay: 0.5 }}
           style={{
             display: "flex", flexWrap: "wrap", justifyContent: "center",
-            gap: 12, marginTop: 20,
+            gap: 12, marginTop: 20, minWidth: 0,
           }}
         >
           {[
@@ -1440,6 +1455,8 @@ export default function CybersecurityRoadmap() {
             <div key={p.label} style={{
               display: "flex", alignItems: "center", gap: 6,
               fontSize: "10px", color: p.color, letterSpacing: "0.05em",
+              minWidth: 0,
+              overflowWrap: "anywhere",
             }}>
               <div style={{
                 width: 8, height: 8, borderRadius: 2,
@@ -1467,8 +1484,10 @@ export default function CybersecurityRoadmap() {
         alignItems: "center",
         gap: 0,
         paddingBottom: 80,
-        paddingLeft: 16,
-        paddingRight: 16,
+        paddingLeft: 12,
+        paddingRight: 12,
+        minWidth: 0,
+        overflow: "hidden",
       }}>
         {sequence.map((item, idx) => {
           if (item.kind === "node") {
@@ -1532,6 +1551,7 @@ export default function CybersecurityRoadmap() {
         transition={{ duration: 0.6 }}
         style={{
           maxWidth: 560,
+          width: "calc(100% - 24px)",
           margin: "0 auto 60px",
           border: "1px solid rgba(52,211,153,0.15)",
           borderRadius: 6,
@@ -1540,9 +1560,9 @@ export default function CybersecurityRoadmap() {
           backdropFilter: "blur(12px)",
         }}
       >
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", gap: 10, minWidth: 0 }}>
           <span style={{ color: "#34d399", fontSize: "12px", marginTop: 2 }}>[!]</span>
-          <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: 1.7 }}>
+          <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: 1.7, overflowWrap: "anywhere" }}>
             This roadmap is maintained by the CRYX team. The path is not strictly linear — explore
             based on your goals. Join our weekly labs to practice these skills hands-on every weekend.
           </p>
@@ -1572,7 +1592,8 @@ export default function CybersecurityRoadmap() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: 16,
+                padding: 12,
+                overflowY: "auto",
               }}
             >
               <motion.div
@@ -1584,13 +1605,15 @@ export default function CybersecurityRoadmap() {
                 style={{
                   width: "100%",
                   maxWidth: 480,
+                  maxHeight: "calc(100vh - 24px)",
                   background: "rgba(10, 14, 23, 0.95)",
                   border: `1px solid ${selectedNode.color}60`,
                   borderRadius: 8,
                   padding: 24,
                   boxShadow: `0 0 32px ${selectedNode.color}20, inset 0 0 16px ${selectedNode.color}05`,
                   position: "relative",
-                  overflow: "hidden",
+                  overflowY: "auto",
+                  overflowX: "hidden",
                 }}
               >
                 {/* Diagonal radial glow background accent */}
@@ -1617,6 +1640,11 @@ export default function CybersecurityRoadmap() {
                     fontSize: "20px",
                     cursor: "pointer",
                     transition: "color 0.2s ease",
+                    width: 40,
+                    height: 40,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                   onMouseEnter={(e) => e.target.style.color = selectedNode.color}
                   onMouseLeave={(e) => e.target.style.color = "#64748b"}
@@ -1625,14 +1653,14 @@ export default function CybersecurityRoadmap() {
                 </button>
 
                 {/* Header */}
-                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18, minWidth: 0, paddingRight: 36 }}>
                   <div style={{
                     fontSize: "32px",
                     filter: `drop-shadow(0 0 8px ${selectedNode.color}60)`
                   }}>
                     {selectedNode.icon}
                   </div>
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <span style={{
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "9px",
@@ -1640,7 +1668,8 @@ export default function CybersecurityRoadmap() {
                       color: selectedNode.color,
                       textTransform: "uppercase",
                       display: "block",
-                      marginBottom: 2
+                      marginBottom: 2,
+                      overflowWrap: "anywhere"
                     }}>
                       Module Exploration //
                     </span>
@@ -1649,7 +1678,8 @@ export default function CybersecurityRoadmap() {
                       fontSize: "18px",
                       fontWeight: 700,
                       color: "#cbd5e1",
-                      letterSpacing: "0.02em"
+                      letterSpacing: "0.02em",
+                      overflowWrap: "anywhere"
                     }}>
                       {selectedNode.label}
                     </h2>
@@ -1665,7 +1695,8 @@ export default function CybersecurityRoadmap() {
                   color: "#94a3b8",
                   lineHeight: 1.6,
                   margin: "0 0 20px 0",
-                  letterSpacing: "0.01em"
+                  letterSpacing: "0.01em",
+                  overflowWrap: "anywhere"
                 }}>
                   {details.desc}
                 </p>
@@ -1694,11 +1725,12 @@ export default function CybersecurityRoadmap() {
                             alignItems: "flex-start",
                             gap: 8,
                             fontSize: "11px",
-                            color: "#cbd5e1"
+                            color: "#cbd5e1",
+                            minWidth: 0
                           }}
                         >
                           <span style={{ color: selectedNode.color, fontFamily: "monospace" }}>[x]</span>
-                          <span style={{ lineHeight: 1.4 }}>{topic}</span>
+                          <span style={{ lineHeight: 1.4, overflowWrap: "anywhere" }}>{topic}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -1734,10 +1766,11 @@ export default function CybersecurityRoadmap() {
                             background: `rgba(255, 255, 255, 0.015)`,
                             fontSize: "11px",
                             color: "#94a3b8",
+                            minWidth: 0,
                           }}
                         >
                           <span style={{ color: selectedNode.color }}>✦</span>
-                          <span>{res}</span>
+                          <span style={{ overflowWrap: "anywhere" }}>{res}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -1761,6 +1794,7 @@ export default function CybersecurityRoadmap() {
                     borderRadius: 4,
                     cursor: "pointer",
                     transition: "all 0.3s ease",
+                    minHeight: 44,
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.background = `${selectedNode.color}20`;

@@ -71,9 +71,10 @@ export default function Notification() {
       style={{
         position:       "fixed",
         top:            "80px",           /* below the fixed AppBar */
-        right:          "20px",
+        right:          "clamp(12px, 4vw, 20px)",
+        left:           "auto",
         zIndex:         9999,
-        width:          "340px",
+        width:          "min(340px, calc(100vw - 24px))",
         fontFamily:     "'JetBrains Mono', 'Fira Code', ui-monospace, monospace",
         /* glassmorphism panel */
         background:     "rgba(10, 14, 23, 0.82)",
@@ -115,7 +116,7 @@ export default function Notification() {
       }} />
 
       {/* ── Main content row ── */}
-      <div style={{ display:"flex", alignItems:"flex-start", gap:"12px", padding:"14px 14px 18px 14px" }}>
+      <div style={{ display:"flex", alignItems:"flex-start", gap:"12px", padding:"14px 14px 18px 14px", minWidth: 0 }}>
 
         {/* Icon bubble */}
         <div style={{
@@ -175,6 +176,7 @@ export default function Notification() {
             lineHeight: 1.55,
             color:      "#94a3b8",          /* --color-text-muted-ish */
             fontFamily: "inherit",
+            overflowWrap: "anywhere",
           }}>
             {notificationData.message}
           </p>

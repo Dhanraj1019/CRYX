@@ -68,20 +68,20 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
 
   return (
     <div
-      className="relative overflow-hidden w-full py-4 group"
+      className="group relative w-full overflow-hidden py-4"
       onMouseEnter={handleHoverStart}
       onMouseLeave={handleHoverEnd}
     >
       {/* Left gradient fade */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-liner-to-r from-bg-primary to-transparent z-10 pointer-events-none" />
+      <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-12 bg-gradient-to-r from-bg-primary to-transparent sm:w-20 md:w-32" />
 
       {/* Right gradient fade */}
-      <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-liner-to-l from-bg-primary to-transparent z-10 pointer-events-none" />
+      <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-12 bg-gradient-to-l from-bg-primary to-transparent sm:w-20 md:w-32" />
 
       <motion.div
         ref={containerRef}
         style={{ x, width: "max-content", willChange: "transform" }}
-        className="flex gap-5"
+        className="flex gap-4 sm:gap-5"
       >
         {doubled.map((i, idx) => {
           const isDuplicate = idx >= images.length;
@@ -90,7 +90,7 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
             <div
               key={`${idx}-${i.imageurl}`}
               aria-hidden={isDuplicate}
-              className="relative shrink-0 overflow-hidden rounded-sm border border-border-subtle group/img hover:border-neon-cyan/60 focus-within:border-neon-cyan/60 transition-all duration-500"
+              className="group/img relative shrink-0 overflow-hidden rounded-sm border border-border-subtle transition-all duration-500 hover:border-neon-cyan/60 focus-within:border-neon-cyan/60"
               style={{ boxShadow: "0 0 0 rgba(6,182,212,0)", transition: "box-shadow 0.5s ease, border-color 0.5s ease" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.boxShadow = "0 0 20px rgba(6,182,212,0.3), 0 0 40px rgba(6,182,212,0.1)";
@@ -102,13 +102,13 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
               <img
                 src={i.publicurl}
                 alt={i.title || "CRYX event"}
-                className="h-32 w-64 sm:h-40 sm:w-80 md:h-52 md:w-104 object-cover shrink-0 transition-all duration-700 group-hover/img:scale-105 group-hover/img:brightness-50 group-focus-within/img:scale-105 group-focus-within/img:brightness-50"
+                className="h-32 w-[min(16rem,82vw)] shrink-0 object-cover transition-all duration-700 group-hover/img:scale-105 group-hover/img:brightness-50 group-focus-within/img:scale-105 group-focus-within/img:brightness-50 sm:h-40 sm:w-80 md:h-52 md:w-[26rem]"
                 draggable={false}
               />
-              <div className="absolute inset-0 bg-liner-to-b from-black/20 via-black/65 to-black/80 opacity-0 group-hover/img:opacity-100 group-focus-within/img:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <div className="absolute inset-0 flex flex-col justify-end gap-2 p-3 sm:p-4 opacity-0 translate-y-3 group-hover/img:opacity-100 group-hover/img:translate-y-0 group-focus-within/img:opacity-100 group-focus-within/img:translate-y-0 transition-all duration-500">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/65 to-black/80 opacity-0 transition-opacity duration-500 group-hover/img:opacity-100 group-focus-within/img:opacity-100" />
+              <div className="absolute inset-0 flex min-w-0 translate-y-3 flex-col justify-end gap-2 p-3 opacity-0 transition-all duration-500 group-hover/img:translate-y-0 group-hover/img:opacity-100 group-focus-within/img:translate-y-0 group-focus-within/img:opacity-100 sm:p-4">
                 <div>
-                  <h3 className="font-mono text-sm sm:text-base md:text-lg font-bold uppercase tracking-wider text-neon-green line-clamp-2">
+                  <h3 className="line-clamp-2 break-words font-mono text-sm font-bold uppercase tracking-wider text-neon-green sm:text-base md:text-lg">
                     {i.title || "Untitled Event"}
                   </h3>
                   <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-text-primary">
@@ -122,7 +122,7 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
                     <Link
                       to={registrationHref}
                       tabIndex={isDuplicate ? -1 : 0}
-                      className="w-fit rounded-sm border border-neon-cyan/70 bg-neon-cyan/10 px-3 py-1.5 font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_16px_rgba(103,232,249,0.35)] focus:outline-none focus:ring-1 focus:ring-neon-cyan"
+                    className="inline-flex min-h-9 max-w-full items-center justify-center rounded-sm border border-neon-cyan/70 bg-neon-cyan/10 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[2px] text-neon-cyan transition-all duration-300 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_16px_rgba(103,232,249,0.35)] focus-visible:ring-2 focus-visible:ring-neon-cyan sm:text-xs"
                     >
                       Details
                     </Link>
@@ -130,7 +130,7 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
                   {userRole === "admin" && (
                     <button
                       onClick={() => deleteEvent(i)}
-                      className="cursor-pointer border-2 text-red-600 border-red-500 rounded-md px-3 py-0.5 hover:shadow-2xs font-bold transition-all duration-300 hover:shadow-red-400 hover:bg-red-500 hover:text-black"
+                      className="min-h-9 cursor-pointer rounded-sm border border-red-500 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-red-500 transition-all duration-300 hover:bg-red-500 hover:text-black hover:shadow-red-400 active:scale-95 focus-visible:ring-2 focus-visible:ring-red-500"
                     >
                       Delete
                     </button>

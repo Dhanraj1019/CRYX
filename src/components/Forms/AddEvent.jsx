@@ -48,16 +48,16 @@ export default function AddEvent(){
         {/* Add Event Card */}
         <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-liner-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100"></div>
 
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
+          <div className="flex min-w-0 items-center justify-between gap-3 border-b border-border-subtle/50 bg-bg-elevated/40 px-4 py-3.5 sm:px-5">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ff5f56] transition-all duration-300"></span>
               <span className="w-3 h-3 rounded-full bg-[#ffbd2e] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ffbd2e] transition-all duration-300"></span>
               <span className="w-3 h-3 rounded-full bg-neon-green opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#34d399] transition-all duration-300"></span>
             </div>
-            <span className="text-text-muted font-mono text-xs tracking-widest flex items-center gap-1.5 select-none">
+            <span className="flex min-w-0 items-center gap-1.5 truncate font-mono text-xs tracking-widest text-text-muted select-none">
               <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-ping"></span>
               add_event.sh //
             </span>
@@ -129,7 +129,7 @@ export default function AddEvent(){
                   Description
                 </label>
                 <textarea 
-                  className="w-full rounded-sm border border-[#1e2d3d] bg-[#0d1117]/80 px-4 py-3 font-mono text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833] resize-none"
+                  className="min-h-28 w-full min-w-0 resize-y rounded-sm border border-[#1e2d3d] bg-[#0d1117]/80 px-4 py-3 font-mono text-sm text-text-primary placeholder-[#4a5568] outline-none transition-all duration-300 focus:border-neon-green focus:ring-1 focus:ring-neon-green focus:shadow-[0_0_10px_#00ff8833]"
                   id="discription" 
                   name="discription" 
                   rows="4" 

@@ -58,11 +58,11 @@ function App() {
 
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col relative overflow-x-clip">
       <BinaryBg/>
       <AppBar/>
       <div className='h-20'></div>
-      <main className='flex-1 relative z-10'>
+      <main className='flex-1 relative z-10 min-w-0'>
         <Outlet/>
       </main>
       <div className='h-20'></div>

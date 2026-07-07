@@ -19,12 +19,12 @@ export default function CyberNewsLog() {
 
   return (
     <div
-      className="relative w-full max-w-4xl mx-auto font-mono text-emerald-400"
+      className="relative mx-auto w-full max-w-4xl min-w-0 font-mono text-emerald-400"
       style={{ background: "#050d0f" }}
     >
       {/* Outer border with corner accent */}
       <div
-        className="relative border border-emerald-900 rounded-sm overflow-hidden"
+        className="relative overflow-hidden rounded-sm border border-emerald-900"
         style={{ boxShadow: "0 0 0 1px #064e3b22" }}
       >
         {/* Top scanning line */}
@@ -41,9 +41,9 @@ export default function CyberNewsLog() {
         <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-emerald-400" />
 
         {/* Header bar */}
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-emerald-900 bg-black/40">
+        <div className="flex min-w-0 items-center gap-2 border-b border-emerald-900 bg-black/40 px-4 py-2.5">
           <span className="text-emerald-400 text-sm">{">"}</span>
-          <span className="text-emerald-400 text-sm tracking-widest">latest_cyber_news.log</span>
+          <span className="min-w-0 truncate text-sm tracking-widest text-emerald-400">latest_cyber_news.log</span>
         </div>
 
         {/* Stats row */}
@@ -73,7 +73,7 @@ export default function CyberNewsLog() {
               onMouseEnter={() => setHovered(entry.id)}
               onMouseLeave={() => setHovered(null)}
               className={[
-                "flex items-center gap-4 px-5 py-3.5 cursor-pointer transition-colors duration-150",
+                "flex min-w-0 items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150 sm:items-center sm:gap-4 sm:px-5",
                 i !== newsEntries.length - 1 ? "border-b border-emerald-900/50" : "",
                 hovered === entry.id ? "bg-emerald-950/40" : "bg-transparent",
               ].join(" ")}
@@ -85,13 +85,13 @@ export default function CyberNewsLog() {
               />
 
               {/* Timestamp */}
-              <span className="text-emerald-700 text-sm w-24 flex-shrink-0 tracking-wide">
+              <span className="w-20 flex-shrink-0 text-sm tracking-wide text-emerald-700 sm:w-24">
                 {entry.time}
               </span>
 
               {/* Text */}
               <span
-                className={`flex-1 text-sm tracking-wide transition-colors duration-150 ${
+                className={`min-w-0 flex-1 break-words text-sm tracking-wide transition-colors duration-150 ${
                   hovered === entry.id ? "text-emerald-300" : "text-emerald-400/80"
                 }`}
               >

@@ -32,11 +32,11 @@ export default function Avatar() {
   }, [droverOpen]);
   const profile_logo="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   return (
-    <div className="relative" ref={avatarRef}>
+    <div className="relative shrink-0" ref={avatarRef}>
       {/* Avatar Button */}
       <button
         onClick={() => setDroverOpen((prev) => !prev)}
-        className="relative cursor-pointer w-13 h-13 rounded-full overflow-hidden border-2 border-neon-red/40 hover:border-neon-red transition-all duration-300 hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus:outline-none focus:border-neon-green"
+        className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full border-2 border-neon-red/40 transition-all duration-300 hover:border-neon-red hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus-visible:ring-2 focus-visible:ring-neon-green"
         aria-label="Open user menu"
         aria-expanded={droverOpen}
       >

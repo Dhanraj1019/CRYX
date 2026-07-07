@@ -156,8 +156,8 @@ export default function EventDetails() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-3 py-8 sm:px-4 md:px-8 md:py-12">
-      <section className="overflow-hidden rounded-sm border border-border-subtle bg-bg-elevated/30 shadow-[0_0_40px_rgba(103,232,249,0.06)]">
+    <main className="mx-auto max-w-7xl min-w-0 px-3 py-8 sm:px-4 md:px-8 md:py-12">
+      <section className="relative min-w-0 overflow-hidden rounded-sm border border-border-subtle bg-bg-elevated/30 shadow-[0_0_40px_rgba(103,232,249,0.06)]">
         <div className="relative min-h-65 md:min-h-105">
           <img
             src={event.publicurl}
@@ -165,22 +165,22 @@ export default function EventDetails() {
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/75 to-black/25"></div>
-          <div className="relative flex min-h-65 flex-col justify-end p-5 sm:p-8 md:min-h-105 md:p-10">
-            <p className="font-mono text-xs uppercase tracking-[4px] text-neon-cyan">
+          <div className="relative flex min-h-65 min-w-0 flex-col justify-end p-5 sm:p-8 md:min-h-105 md:p-10">
+            <p className="break-words font-mono text-xs uppercase tracking-[4px] text-neon-cyan">
               CRYX Event Access
             </p>
-            <h1 className="mt-3 max-w-4xl font-mono text-2xl font-bold uppercase tracking-wider text-neon-green sm:text-4xl md:text-6xl">
+            <h1 className="mt-3 max-w-4xl break-words font-mono text-2xl font-bold uppercase tracking-wider text-neon-green sm:text-4xl md:text-6xl">
               {event.title || "Untitled Event"}
             </h1>
           </div>
         </div>
 
-        <div className="grid gap-6 p-5 sm:p-8 md:grid-cols-[1.1fr_0.9fr] md:p-10">
-          <div>
+        <div className="grid min-w-0 gap-6 p-5 sm:p-8 md:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)] md:p-10">
+          <div className="min-w-0">
             <h2 className="font-mono text-sm font-bold uppercase tracking-[3px] text-neon-cyan">
               Event Details
             </h2>
-            <p className="mt-4 whitespace-pre-line font-mono text-sm leading-7 text-text-muted sm:text-base">
+            <p className="mt-4 whitespace-pre-wrap break-words font-mono text-sm leading-7 text-text-muted sm:text-base">
               {event.discription || "Full event description will be updated soon."}
             </p>
 
@@ -193,7 +193,7 @@ export default function EventDetails() {
                   {features.map((feature) => (
                     <span
                       key={feature}
-                      className="rounded-sm border border-neon-green/30 bg-neon-green/5 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-neon-green"
+                      className="max-w-full break-words rounded-sm border border-neon-green/30 bg-neon-green/5 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-neon-green"
                     >
                       {feature}
                     </span>
@@ -203,13 +203,13 @@ export default function EventDetails() {
             )}
           </div>
 
-          <aside className="border border-border-subtle bg-[#0b0f19]/70 p-5">
+          <aside className="min-w-0 border border-border-subtle bg-[#0b0f19]/70 p-5">
             <div className="space-y-5">
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[3px] text-text-muted">
                   Date
                 </p>
-                <p className="mt-1 font-mono text-base font-bold text-text-primary">
+                <p className="mt-1 break-words font-mono text-base font-bold text-text-primary">
                   {formatEventDate(event.date)}
                 </p>
               </div>
@@ -217,7 +217,7 @@ export default function EventDetails() {
                 <p className="font-mono text-[10px] uppercase tracking-[3px] text-text-muted">
                   Time
                 </p>
-                <p className="mt-1 font-mono text-base font-bold text-text-primary">
+                <p className="mt-1 break-words font-mono text-base font-bold text-text-primary">
                   {formatEventTime(event.time)}
                 </p>
               </div>
@@ -225,17 +225,17 @@ export default function EventDetails() {
                 <p className="font-mono text-[10px] uppercase tracking-[3px] text-text-muted">
                   Place
                 </p>
-                <p className="mt-1 font-mono text-base font-bold text-text-primary">
+                <p className="mt-1 break-words font-mono text-base font-bold text-text-primary">
                   {event.place || "Venue TBA"}
                 </p>
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <button
                 onClick={handelRegister}
                 disabled={registeredStatus}
-                className={`mt-8 block w-full rounded-sm px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[3px] transition-all duration-300 ${
+                className={`mt-8 block min-h-11 w-full rounded-sm px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[2px] transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green sm:tracking-[3px] ${
                   registeredStatus
                     ? "cursor-not-allowed bg-gray-600 text-gray-300 opacity-70"
                     : "cursor-pointer bg-neon-green text-black hover:shadow-[0_0_22px_rgba(52,211,153,0.45)]"
@@ -245,7 +245,7 @@ export default function EventDetails() {
               </button>
               {user.role==="admin" && <button
                 onClick={togalModalState}
-                className="mt-8 block cursor-pointer w-full rounded-sm bg-blue-600 px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[3px] text-amber-100 transition-all duration-300 hover:shadow-[0_0_22px_rgba(52,211,153,0.45)]"
+                className="mt-0 block min-h-11 w-full cursor-pointer rounded-sm bg-blue-600 px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[2px] text-amber-100 transition-all duration-300 hover:shadow-[0_0_22px_rgba(52,211,153,0.45)] active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-400 sm:mt-8 sm:tracking-[3px]"
               >
                 Registered
               </button>}

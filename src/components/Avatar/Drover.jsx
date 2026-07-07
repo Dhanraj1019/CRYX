@@ -65,7 +65,7 @@ export default function Drover({ isOpen, onClose }) {
 
   return (
     <div
-      className={`absolute right-0 top-full mt-3 w-56 z-100 transition-all duration-300 origin-top-right ${
+      className={`absolute right-0 top-full z-100 mt-3 w-[min(14rem,calc(100vw-1.5rem))] max-w-[calc(100vw-1.5rem)] origin-top-right transition-all duration-300 ${
         isOpen
           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
           : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
@@ -73,15 +73,15 @@ export default function Drover({ isOpen, onClose }) {
     >
       {/* Dropdown Card */}
       <div
-        className="border border-border-subtle bg-bg-surface/95 backdrop-blur-xl rounded-sm overflow-hidden"
+        className="overflow-hidden rounded-sm border border-border-subtle bg-bg-surface/95 backdrop-blur-xl"
         style={{
           boxShadow:
             "0 0 20px rgba(52,211,153,0.06), 0 4px 24px rgba(0,0,0,0.4)",
         }}
       >
         {/* User Info Header */}
-        <div className="px-4 py-3 border-b border-border-subtle bg-bg-elevated/50">
-          <div className="flex items-center gap-3">
+        <div className="border-b border-border-subtle bg-bg-elevated/50 px-4 py-3">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden border border-neon-green/30 shrink-0">
               <img
                 src={user.publicurl || tempurl}
@@ -89,11 +89,11 @@ export default function Drover({ isOpen, onClose }) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-neon-green font-mono text-sm font-semibold truncate">
                 {user?.email?.split("@")[0] || "agent"}
               </p>
-              <p className="text-text-dim font-mono text-[10px] tracking-wider uppercase">
+              <p className="truncate font-mono text-[10px] uppercase tracking-wider text-text-dim">
                 // {user.role}
               </p>
             </div>
@@ -106,7 +106,7 @@ export default function Drover({ isOpen, onClose }) {
             <button
               key={item.label}
               onClick={item.onClick}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 font-mono text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer ${
+              className={`flex min-h-11 w-full items-center gap-3 px-4 py-2.5 font-mono text-xs uppercase tracking-wider transition-all duration-200 ${
                 item.isDanger
                   ? "text-neon-red hover:bg-neon-red/10 hover:text-neon-red"
                   : "text-text-primary hover:bg-neon-green/8 hover:text-neon-green"
@@ -119,7 +119,7 @@ export default function Drover({ isOpen, onClose }) {
               >
                 {item.icon}
               </span>
-              {item.label}
+              <span className="min-w-0 truncate">{item.label}</span>
             </button>
           ))}
         </div>

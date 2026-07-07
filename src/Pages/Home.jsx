@@ -89,7 +89,7 @@ export default function Home() {
       </section>
 
       <section>
-        <HorizontalLine title="Future Events..." status={role?.trim()==="admin" && "Add Event" || "Keep Eye"} />
+        <HorizontalLine title="Future Events..." status={role?.trim()==="admin" && "+ Event" || "Keep Eye"} />
         {futureEvent.length === 0 ? (
           <EmptyState icon={CalendarX} message="No future events are available" />
         ) : (
@@ -98,7 +98,7 @@ export default function Home() {
       </section>
 
       <section id='about-us'>
-        <HorizontalLine title="CRYX TEAM ARCHIVE..." status={role?.trim()==="admin" && "Add Member" || "Keep Eye"} />
+        <HorizontalLine title="CRYX TEAM..." status={role?.trim()==="admin" && "+ Member" || "Keep Eye"} />
         <div className='flex flex-wrap gap-4 justify-center sm:justify-start'>
           {member.length === 0 ? (
             <EmptyState icon={UsersRound} message="No members are available" />

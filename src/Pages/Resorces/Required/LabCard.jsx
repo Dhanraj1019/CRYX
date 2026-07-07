@@ -75,7 +75,7 @@ const handelSolved=async()=>{
   // const today=Date.now();
   return (
     <div
-      className="group relative overflow-hidden border bg-bg-surface/50 backdrop-blur-sm rounded-sm transition-all duration-500 flex flex-col"
+      className="group relative flex min-w-0 flex-col overflow-hidden rounded-sm border bg-bg-surface/50 backdrop-blur-sm transition-all duration-500"
       style={{
         borderColor: hovered ? `${platform.color}50` : "rgba(52,211,153,0.1)",
         boxShadow: hovered ? `0 0 24px ${platform.color}18, 0 4px 20px rgba(0,0,0,0.3)` : "0 2px 8px rgba(0,0,0,0.2)",
@@ -98,10 +98,10 @@ const handelSolved=async()=>{
       />
 
       {/* Card content */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1">
+      <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
         {/* Header row */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center gap-2 min-w-0">
+        <div className="mb-3 flex min-w-0 flex-wrap items-start justify-between gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             {/* Platform mini badge */}
             <span
               className="font-mono text-xs font-bold px-1.5 py-0.5 rounded-sm shrink-0"
@@ -113,7 +113,7 @@ const handelSolved=async()=>{
             >
               {platform.logo}
             </span>
-            <span className="font-mono text-xs text-text-muted tracking-wider">{lab.date}</span>
+            <span className="min-w-0 break-words font-mono text-xs tracking-wider text-text-muted">{lab.date}</span>
           </div>
           {/* Difficulty */}
           <span
@@ -129,11 +129,11 @@ const handelSolved=async()=>{
             
           {
             loginStatus && user?.role==="admin" && 
-            <div className="flex gap-2">
-              <Button onClick={()=>onDelete(lab.id,lab.platform)} className="text-red-400 border-amber-600 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)">
+            <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+              <Button onClick={()=>onDelete(lab.id,lab.platform)} className="flex-1 border-amber-600 text-red-400 hover:shadow-[0_0_10px_rgba(225,11,3,0.3)] sm:flex-none">
                 Delete 
               </Button>
-              <Button onClick={()=>togalModalState()} className="text-blue-600 hover:shadow-blue-600 font-bold border-blue-600">
+              <Button onClick={()=>togalModalState()} className="flex-1 border-blue-600 font-bold text-blue-600 hover:shadow-blue-600 sm:flex-none">
                 Solved
               </Button>
             </div>
@@ -142,7 +142,7 @@ const handelSolved=async()=>{
 
         {/* Title */}
           <h4
-            className="font-mono text-base sm:text-lg font-semibold tracking-wider mb-2 transition-all duration-300"
+            className="mb-2 break-words font-mono text-base font-semibold tracking-wider transition-all duration-300 sm:text-lg"
             style={{
               color: hovered ? platform.color : "#cbd5e1",
               textShadow: hovered ? `0 0 8px ${platform.color}40` : "none",
@@ -152,16 +152,16 @@ const handelSolved=async()=>{
           </h4>
 
         {/* Description */}
-        <p className="text-text-muted font-mono text-xs leading-relaxed mb-4 flex-1">
+        <p className="mb-4 flex-1 break-words font-mono text-xs leading-relaxed text-text-muted">
           {lab.description}
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <div className="mb-4 flex flex-wrap gap-1.5">
           {lab.tags.map((tag,idx) => (
             <span
               key={`${tag}-${idx}`}
-              className="font-mono text-xs px-2 py-0.5 rounded-sm"
+              className="max-w-full break-words rounded-sm px-2 py-0.5 font-mono text-xs"
               style={{
                 color: platform.color,
                 background: `${platform.color}10`,
@@ -175,7 +175,7 @@ const handelSolved=async()=>{
 
         {/* CTA */}
         <div
-          className="flex cursor-pointer items-center gap-2 font-mono text-xs tracking-wider uppercase py-2 px-5 border-b-2 border-t-0.5 border-r-2 border-l-2 border-gray-400/20 rounded-md transition-all duration-300 hover:shadow-sm hover:shadow-gray-600"
+          className="flex min-h-11 cursor-pointer items-center gap-2 rounded-sm border border-gray-400/20 px-4 py-2 font-mono text-xs uppercase tracking-wider transition-all duration-300 hover:shadow-sm hover:shadow-gray-600 active:scale-[0.99] focus-visible:ring-2"
           style={{ color: platform.color }}
           onClick={mySolvedStatus ? handleClick : handelSolved}
         >
@@ -185,7 +185,7 @@ const handelSolved=async()=>{
           >
             ›
           </span>
-          <span>Open on {platform.name}</span>
+          <span className="min-w-0 break-words">Open on {platform.name}</span>
           <span
             className="ml-auto text-base transition-all duration-300"
             style={{ opacity: hovered ? 1 : 0.5 }}

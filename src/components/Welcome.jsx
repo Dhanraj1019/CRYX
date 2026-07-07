@@ -28,25 +28,25 @@ export default function Welcome() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full px-3 sm:px-4 py-10 md:py-20 animate-fade-in">
+    <div className="flex w-full min-w-0 flex-col items-center justify-center overflow-hidden px-3 py-10 animate-fade-in sm:px-4 md:py-20">
       {/* Decorative top line */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="h-px w-12 bg-neon-green/30"></div>
-        <span className="text-neon-green/50 font-mono text-xs tracking-[6px] uppercase">
+      <div className="mb-6 flex w-full max-w-md items-center justify-center gap-3">
+        <div className="h-px min-w-6 flex-1 bg-neon-green/30"></div>
+        <span className="shrink-0 text-center font-mono text-[10px] uppercase tracking-[3px] text-neon-green/50 sm:text-xs sm:tracking-[6px]">
           System Initialized
         </span>
-        <div className="h-px w-12 bg-neon-green/30"></div>
+        <div className="h-px min-w-6 flex-1 bg-neon-green/30"></div>
       </div>
 
       {/* Main heading */}
       <h1
-        className="font-mono text-center text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide sm:tracking-wider bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-transparent"
+        className="max-w-full break-words bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-center font-mono text-[clamp(1.35rem,9vw,4rem)] font-bold leading-tight tracking-wide text-transparent sm:tracking-wider"
         style={{
           filter: "drop-shadow(0 0 10px rgba(103,232,249,0.2))",
         }}
       >
-        <span className="block whitespace-nowrap">{typed.slice(0, FIRST_LINE.length)}</span>
-        <span className="block whitespace-nowrap">
+        <span className="block whitespace-normal">{typed.slice(0, FIRST_LINE.length)}</span>
+        <span className="block whitespace-normal">
           {typed.slice(FIRST_LINE.length + 1)}
           <span
             aria-hidden="true"
@@ -60,7 +60,7 @@ export default function Welcome() {
 
       {/* Subtitle */}
       <p
-        className={`mt-6 whitespace-nowrap font-mono text-xs sm:text-base md:text-lg tracking-[1px] sm:tracking-[4px] transition-all duration-700 select-none ${
+        className={`mt-6 max-w-full text-center font-mono text-xs tracking-[1px] transition-all duration-700 select-none sm:text-base sm:tracking-[4px] md:text-lg ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
@@ -82,7 +82,7 @@ export default function Welcome() {
 
       {/* ── CTA Buttons ─────────────────────────────────────────── */}
       <div
-        className={`mt-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 transition-all duration-700 delay-500 ${
+        className={`mt-10 flex w-full max-w-xl flex-col items-stretch gap-4 transition-all duration-700 delay-500 sm:flex-row sm:items-center sm:justify-center sm:gap-5 ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
@@ -90,7 +90,7 @@ export default function Welcome() {
         <a
           href="/roadmap"
           id="cta-roadmap"
-          className="group relative overflow-hidden font-mono text-xs sm:text-sm font-bold uppercase tracking-[3px] px-7 py-3 rounded-sm text-black"
+          className="group relative inline-flex min-h-11 max-w-full items-center justify-center overflow-hidden rounded-sm px-5 py-3 text-center font-mono text-xs font-bold uppercase tracking-[2px] text-black transition-transform duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary sm:px-7 sm:text-sm sm:tracking-[3px]"
           style={{
             background: "linear-gradient(135deg, #34d399 0%, #10b981 50%, #34d399 100%)",
             backgroundSize: "200% 200%",
@@ -109,7 +109,7 @@ export default function Welcome() {
             }}
           />
           {/* Icon + label */}
-          <span className="relative flex items-center gap-2">
+          <span className="relative flex min-w-0 items-center justify-center gap-2">
             <span className="text-base">🗺️</span>
             Explore Roadmap
           </span>
@@ -119,7 +119,7 @@ export default function Welcome() {
         <a
           href="/weeklylabs"
           id="cta-labs"
-          className="group relative font-mono text-xs sm:text-sm font-bold uppercase tracking-[3px] px-7 py-3 rounded-sm text-neon-cyan"
+          className="group relative inline-flex min-h-11 max-w-full items-center justify-center rounded-sm px-5 py-3 text-center font-mono text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-transform duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary sm:px-7 sm:text-sm sm:tracking-[3px]"
           style={{
             background: "rgba(103,232,249,0.04)",
             border: "1px dashed rgba(103,232,249,0.45)",
@@ -142,7 +142,7 @@ export default function Welcome() {
           <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-neon-cyan opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Blinking status dot */}
-          <span className="relative flex items-center gap-2">
+          <span className="relative flex min-w-0 items-center justify-center gap-2">
             <span
               className="inline-block w-1.5 h-1.5 rounded-full bg-neon-cyan animate-glow-pulse"
               style={{ boxShadow: "0 0 6px rgba(103,232,249,0.8)" }}

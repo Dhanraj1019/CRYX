@@ -80,13 +80,13 @@ export default function AddMember(){
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {/* Header Bar */}
-                    <div className="flex items-center justify-between px-5 py-3.5 bg-bg-elevated/40 border-b border-border-subtle/50">
+          <div className="flex min-w-0 items-center justify-between gap-3 border-b border-border-subtle/50 bg-bg-elevated/40 px-4 py-3.5 sm:px-5">
                         <div className="flex items-center gap-2">
                             <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ff5f56] transition-all duration-300" />
                             <span className="w-3 h-3 rounded-full bg-[#ffbd2e] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ffbd2e] transition-all duration-300" />
                             <span className="w-3 h-3 rounded-full bg-neon-green opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#34d399] transition-all duration-300" />
                         </div>
-                        <span className="text-text-muted font-mono text-xs tracking-widest flex items-center gap-1.5 select-none">
+                        <span className="flex min-w-0 items-center gap-1.5 truncate font-mono text-xs tracking-widest text-text-muted select-none">
                             <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-ping" />
                             add_member.sh //
                         </span>
@@ -121,7 +121,7 @@ export default function AddMember(){
                                 <label htmlFor="userid" className="text-xs font-semibold tracking-widest uppercase text-neon-green">
                                     Username
                                 </label>
-                                <div className="flex gap-2 items-stretch">
+                                <div className="flex min-w-0 flex-col items-stretch gap-2 sm:flex-row">
                                     <input
                                         id="userid"
                                         type="text"
@@ -141,7 +141,7 @@ export default function AddMember(){
                                                    uppercase cursor-pointer transition-all duration-300
                                                    hover:bg-neon-green/15 hover:border-neon-green/80
                                                    hover:shadow-[0_0_10px_rgba(52,211,153,0.25)] active:scale-95
-                                                   whitespace-nowrap"
+                                                   whitespace-nowrap focus-visible:ring-2 focus-visible:ring-neon-green"
                                         onClick={togalSearchResult}
                                     >
                                         Search
@@ -163,20 +163,20 @@ export default function AddMember(){
                                             onClick={() => setSearched(false)}
                                             className="flex flex-col w-full border border-neon-green/30 bg-neon-green/5 hover:border-neon-green/70 hover:bg-neon-green/10 rounded-sm cursor-pointer p-4 gap-2 transition-all duration-300 group shadow-[0_0_15px_rgba(52,211,153,0.02)]"
                                         >
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-neon-green font-mono text-xs font-bold tracking-wider uppercase">
+                                            <div className="flex min-w-0 flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                                                <span className="break-words font-mono text-xs font-bold uppercase tracking-wider text-neon-green">
                                                     [+] TARGET PROFILE FOUND
                                                 </span>
-                                                <span className="text-text-muted font-mono text-[10px] group-hover:text-neon-green/60 transition-colors">
+                                                <span className="font-mono text-[10px] text-text-muted transition-colors group-hover:text-neon-green/60">
                                                     Click to close ×
                                                 </span>
                                             </div>
                                             <div className="h-px bg-neon-green/20 w-full" />
-                                            <div className="grid grid-cols-2 gap-2 font-mono text-xs mt-1">
+                                            <div className="mt-1 grid grid-cols-1 gap-2 font-mono text-xs sm:grid-cols-2">
                                                 <div className="text-text-muted">AGENT USERNAME:</div>
-                                                <div className="text-text-primary text-right font-semibold">{searchData.username}</div>
+                                                <div className="break-all font-semibold text-text-primary sm:text-right">{searchData.username}</div>
                                                 <div className="text-text-muted">CLEARANCE ROLE:</div>
-                                                <div className="text-neon-cyan text-right uppercase tracking-wider font-bold">{searchData.role}</div>
+                                                <div className="break-words font-bold uppercase tracking-wider text-neon-cyan sm:text-right">{searchData.role}</div>
                                             </div>
                                         </div>
                                     ) : (

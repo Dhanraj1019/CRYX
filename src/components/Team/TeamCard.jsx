@@ -2,7 +2,7 @@ import Button from '../Button/Button'
 
 export default function TeamCard({ data,idx }) {
   return (
-    <div className="group w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)] relative overflow-hidden border border-neon-cyan/20 bg-bg-surface/80 backdrop-blur-sm transition-all duration-500 hover:border-neon-cyan/50 rounded-sm"
+    <div className="group relative flex w-full min-w-0 flex-col overflow-hidden rounded-sm border border-neon-cyan/20 bg-bg-surface/80 backdrop-blur-sm transition-all duration-500 hover:border-neon-cyan/50 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
       style={{
         boxShadow: "0 0 0 rgba(6,182,212,0)",
         transition: "box-shadow 0.5s ease, border-color 0.5s ease",
@@ -15,35 +15,35 @@ export default function TeamCard({ data,idx }) {
         e.currentTarget.style.boxShadow = "0 0 0 rgba(6,182,212,0)";
       }}
     >
-      <div className="flex justify-between items-center border-b border-neon-cyan/15 px-5 py-3">
-        <span className="text-text-muted font-mono text-xs tracking-wider">
+      <div className="flex min-w-0 items-center justify-between gap-3 border-b border-neon-cyan/15 px-4 py-3 sm:px-5">
+        <span className="truncate font-mono text-xs tracking-wider text-text-muted">
           ID: {`00${idx}`}
         </span>
-        <span className="flex items-center gap-2 border border-neon-green/40 px-2.5 py-1 text-neon-green text-xs font-mono tracking-wider">
+        <span className="flex shrink-0 items-center gap-2 border border-neon-green/40 px-2.5 py-1 font-mono text-xs tracking-wider text-neon-green">
           <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-glow-pulse"></span>
           ACTIVE
         </span>
       </div>
 
-      <div className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center">
+      <div className="flex min-w-0 flex-1 flex-col items-center gap-4 p-4 sm:flex-row sm:gap-5 sm:p-5">
         <div className="shrink-0 overflow-hidden rounded-sm border border-neon-cyan/20">
           <img
             src={data.publicurl}
             alt={data.username}
-            className="h-36 w-full sm:h-44 sm:w-36 object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+            className="h-36 w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 sm:h-44 sm:w-36"
           />
         </div>
 
-        <div className="flex flex-col min-w-0 w-full sm:w-auto">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-mono text-neon-cyan tracking-wider truncate text-center sm:text-left">
+        <div className="flex min-w-0 flex-1 flex-col w-full">
+          <h2 className="break-words text-center font-mono text-lg font-bold tracking-wider text-neon-cyan sm:text-left sm:text-xl md:text-2xl">
             {data.firstName && data.lastName ? data.firstName+" "+data.lastName : data.username}
           </h2>
 
-          <p className="mt-1.5 text-text-muted font-mono text-xs tracking-[3px] uppercase text-center sm:text-left">
+          <p className="mt-1.5 break-words text-center font-mono text-xs uppercase tracking-[3px] text-text-muted sm:text-left">
             {data.role || "// OPERATIVE"}
           </p>
 
-          <div className="mt-3 sm:mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
+          <div className="mt-3 flex flex-wrap justify-center gap-2 sm:mt-4 sm:justify-start">
             <Button className="text-xs px-3 py-1.5">Instagram</Button>
             <Button className="text-xs px-3 py-1.5">LinkedIn</Button>
           </div>
