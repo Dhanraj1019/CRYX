@@ -132,16 +132,48 @@ function BinaryBg() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        pointerEvents: 'none',
-        background: 'transparent',
-      }}
-    />
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: -2,
+          pointerEvents: 'none',
+          backgroundSize: '50px 50px',
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 255, 64, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 255, 64, 0.1) 1px, transparent 1px)
+          `,
+          maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 100%)',
+        }}
+      />
+      <img
+        src="/rotLogo.gif"
+        alt="Background Logo"
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: -1,
+          opacity: 0.15,
+          pointerEvents: 'none',
+          maxWidth: '60vw',
+          maxHeight: '60vh',
+        }}
+      />
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          pointerEvents: 'none',
+          background: 'transparent',
+        }}
+      />
+    </>
   );
 }
 
