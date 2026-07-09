@@ -90,12 +90,19 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
             <div
               key={`${idx}-${i.imageurl}`}
               aria-hidden={isDuplicate}
+              tabIndex={isDuplicate ? -1 : 0}
               className="group/img relative shrink-0 overflow-hidden rounded-sm border border-border-subtle transition-all duration-500 hover:border-neon-cyan/60 focus-within:border-neon-cyan/60"
-              style={{ boxShadow: "0 0 0 rgba(6,182,212,0)", transition: "box-shadow 0.5s ease, border-color 0.5s ease" }}
+              style={{ boxShadow: "0 0 0 rgba(6,182,212,0)", transition: "box-shadow 0.5s ease, border-color 0.5s ease", cursor: "pointer" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.boxShadow = "0 0 20px rgba(6,182,212,0.3), 0 0 40px rgba(6,182,212,0.1)";
               }}
               onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 0 rgba(6,182,212,0)";
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 20px rgba(6,182,212,0.3), 0 0 40px rgba(6,182,212,0.1)";
+              }}
+              onBlur={(e) => {
                 e.currentTarget.style.boxShadow = "0 0 0 rgba(6,182,212,0)";
               }}
             >
