@@ -7,7 +7,7 @@ const socials = [
   {
     label: "WHATSAPP CHANNEL",
     src: "/SocialMediaIcons/whatsapp.png",
-    href: "#",
+    href: "https://whatsapp.com/channel/0029VbDE1qU89inecrscr90W",
     border: "border-green-500/40",
     hoverBorder: "hover:border-green-400",
     text: "text-green-400",
@@ -17,7 +17,7 @@ const socials = [
   {
     label: "EMAIL",
     src: "/SocialMediaIcons/email.png",
-    href: "mailto:contact@cryx.club",
+    href: "mailto:choudharydhanraj714@gmail.com",
     border: "border-cyan-500/40",
     hoverBorder: "hover:border-cyan-400",
     text: "text-cyan-400",
@@ -27,7 +27,7 @@ const socials = [
   {
     label: "WHATSAPP GROUP",
     src: "/SocialMediaIcons/whatsapp.png",
-    href: "#",
+    href: "https://chat.whatsapp.com/Fx1FhRzo5UyDxd79dCjTpv",
     border: "border-green-500/40",
     hoverBorder: "hover:border-green-400",
     text: "text-green-400",
@@ -37,7 +37,7 @@ const socials = [
   {
     label: "INSTAGRAM",
     src: "/SocialMediaIcons/instagram.png",
-    href: "#",
+    href: "https://www.instagram.com/cryx.mnit/",
     border: "border-pink-500/40",
     hoverBorder: "hover:border-pink-400",
     text: "text-pink-400",

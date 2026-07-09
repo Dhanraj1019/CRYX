@@ -3,11 +3,13 @@ import Drover from "./Drover";
 import { useSelector } from "react-redux";
 
 export default function Avatar() {
+  const [profile_logo,setProfile_logo]=useState("https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png");
   const [droverOpen, setDroverOpen] = useState(false);
   const avatarRef = useRef(null);
   const userProfileLogo=useSelector((state)=>state.auth.user.publicurl);
-  // Close drover when clicking outside
-  // console.log("userProfileLogo = ",userProfileLogo);
+  useEffect(()=>{
+    if(userProfileLogo) setProfile_logo(userProfileLogo);
+  },[])
   useEffect(() => {
     function handleClickOutside(e) {
       if (avatarRef.current && !avatarRef.current.contains(e.target)) {
@@ -30,7 +32,6 @@ export default function Avatar() {
     }
     return () => document.removeEventListener("keydown", handleEsc);
   }, [droverOpen]);
-  const profile_logo="https://plvpgzkvaakmjdwesjjs.supabase.co/storage/v1/object/public/userimage/Fix_Images/avatarlogo.png";
   return (
     <div className="relative shrink-0" ref={avatarRef}>
       {/* Avatar Button */}
@@ -41,7 +42,7 @@ export default function Avatar() {
         aria-expanded={droverOpen}
       >
         <img
-          src={userProfileLogo || profile_logo}
+          src={profile_logo}
           alt="User avatar"
           className="w-full h-full object-cover"
           draggable={false}
