@@ -1,6 +1,6 @@
-import Parser from 'rss-parser'
+const Parser = require('rss-parser');
 const parser=new Parser();
-export const getNews = async(req, res) => {
+const getNews = async(req, res) => {
     try{
         const result = await parser.parseURL(
             "https://feeds.feedburner.com/TheHackersNews"
@@ -13,3 +13,5 @@ export const getNews = async(req, res) => {
         })
     }
 };
+
+module.exports.getNews=getNews

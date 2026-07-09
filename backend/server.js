@@ -1,8 +1,7 @@
-import express from 'express'
+const express = require("express")
 const app=express()
-import cors from 'cors'
-import newsRouter from './routers/news.route.js'
-
+const cors = require("cors")
+const newsRouter = require("./routers/news.route.js")
 const port =5000;
 app.listen(port,()=>{
     console.log(`express is listining on port ${port}`);
