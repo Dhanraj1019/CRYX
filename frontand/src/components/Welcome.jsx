@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {Link} from 'react-router-dom'
 import {
   BookOpen,
   Cpu,
@@ -11,12 +12,12 @@ import {
   Lock,
 } from "lucide-react";
 
-const FIRST_LINE = "WELCOME TO CRYX : THE";
-const SECOND_LINE = " INFOSEC CLUB";
+const FIRST_LINE = "WELCOME TO CRYX : ";
+const SECOND_LINE = "THE INFOSEC CLUB";
 const FULL_TEXT = `${FIRST_LINE} ${SECOND_LINE}`;
 
 const HEADING_CLASS =
-  "max-w-full break-words bg-gradient-to-r from-neon-green via-neon-cyan to-neon-purple bg-clip-text text-center font-mono text-[clamp(1.35rem,9vw,4rem)] font-bold leading-tight tracking-wide text-transparent sm:tracking-wider";
+"max-w-full break-words text-center font-['Michroma'] text-cyan-300 text-[clamp(1.35rem,9vw,4rem)] font-bold leading-tight tracking-[0.15em]";
 
 // icon set that pops out per word — 2 icons each, looping while hovered
 const WORD_ICONS = {
@@ -36,6 +37,7 @@ const WORD_COLORS = {
 function HoverWord({ id, label }) {
   const [active, setActive] = useState(false);
   const Icons = WORD_ICONS[id];
+  // console.log(Icons,id);
   const { text, glow } = WORD_COLORS[id];
 
   return (
@@ -45,9 +47,9 @@ function HoverWord({ id, label }) {
       onMouseLeave={() => setActive(false)}
     >
       <span className={`${text} font-bold transition-all duration-300`}>
-        {label}{" "}
+        {label}{"."}
       </span>
-
+      <BookOpen size={40} color="red" />
       <AnimatePresence>
         {active && (
           <span className="pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2">
@@ -141,7 +143,7 @@ export default function Welcome() {
     <>
       <span className="block whitespace-normal">{typed.slice(0, FIRST_LINE.length)}</span>
       <span className="block whitespace-normal">
-        {typed.slice(FIRST_LINE.length + 1)}
+        {typed.slice(FIRST_LINE.length )}
         <span
           aria-hidden="true"
           className="inline-block ml-1 text-neon-cyan"
@@ -257,10 +259,10 @@ export default function Welcome() {
         }`}
       >
         <span className="text-text-muted">// </span>
-        <HoverWord id="learn" label="Learn." />
-        <HoverWord id="hack" label="Hack." />
-        <HoverWord id="build" label="Build." />
-        <HoverWord id="secure" label="Secure." />
+        <HoverWord id="learn" label="learn"/>
+        <HoverWord id="hack" label="hack"/>
+        <HoverWord id="build" label="build"/>
+        <HoverWord id="secure" label="secure"/>
       </p>
 
       {/* Decorative bottom element */}
@@ -272,14 +274,14 @@ export default function Welcome() {
         <div className="h-px w-20 md:w-32 gradient-line"></div>
       </div>
 
-      {/* ── CTA Buttons ─────────────────────────────────────────── */}
+      {/* CTA Buttons */}
       <div
         className={`mt-10 flex w-full max-w-xl flex-col items-stretch gap-4 transition-all duration-700 delay-500 sm:flex-row sm:items-center sm:justify-center sm:gap-5 ${
           showSubtitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <a
-          href="/roadmap"
+        <Link
+          to="/roadmap"
           id="cta-roadmap"
           className="group relative inline-flex min-h-11 max-w-full items-center justify-center overflow-hidden rounded-sm px-5 py-3 text-center font-mono text-xs font-bold uppercase tracking-[2px] text-black transition-transform duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary sm:px-7 sm:text-sm sm:tracking-[3px]"
           style={{
@@ -302,10 +304,10 @@ export default function Welcome() {
             <span className="text-base">🗺️</span>
             Explore Roadmap
           </span>
-        </a>
+        </Link>
 
-        <a
-          href="/weeklylabs"
+        <Link
+          to="/weeklylabs"
           id="cta-labs"
           className="group relative inline-flex min-h-11 max-w-full items-center justify-center rounded-sm px-5 py-3 text-center font-mono text-xs font-bold uppercase tracking-[2px] text-neon-cyan transition-transform duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary sm:px-7 sm:text-sm sm:tracking-[3px]"
           style={{
@@ -336,7 +338,7 @@ export default function Welcome() {
             Weekend Labs
             <span className="text-base">⚡</span>
           </span>
-        </a>
+        </Link>
       </div>
 
       <style>{`

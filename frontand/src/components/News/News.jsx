@@ -116,7 +116,7 @@ export default function CyberNewsLog() {
               val: newsEntries.filter((n) => n.sev === "high").length,
               label: "CRITICAL",
             },
-            { val: "RSS", label: "SOURCE" },
+            { val: "RSS", label: "TheHackersNews" },
           ].map(({ val, label }) => (
             <div
               key={label}
