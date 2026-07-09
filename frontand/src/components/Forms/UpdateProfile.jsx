@@ -60,7 +60,7 @@ export default function AddMember(){
             const result = await StorageObj.deleteFile({bucket:"userimage",path:redux_data.imageurl});
           }
           const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
-          if(redux_data.role==="admin"){
+          if(redux_data.role==="admin" || redux_data.role==="exicutive"){
             const result = await DatabaseObj.updateData({table:"memberprofile",data:data2,id:data.id});
           }
           if(fnf && !fnf.error){

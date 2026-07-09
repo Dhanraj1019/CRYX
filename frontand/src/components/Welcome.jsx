@@ -36,53 +36,82 @@ const WORD_COLORS = {
 
 function HoverWord({ id, label }) {
   const [active, setActive] = useState(false);
+  const [hoverKey, setHoverKey] = useState(0);
+
   const Icons = WORD_ICONS[id];
-  // console.log(Icons,id);
   const { text, glow } = WORD_COLORS[id];
 
   return (
     <span
-      className="relative inline-block cursor-default"
-      onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
+      className="relative inline-block cursor-default overflow-visible"
+      onMouseEnter={() => {
+        setHoverKey((k) => k + 1);
+        setActive(true);
+      }}
+      onMouseLeave={() => {
+        setActive(false);
+      }}
     >
-      <span className={`${text} font-bold transition-all duration-300`}>
-        {label}{"."}
+      <span
+        className={`${text} font-bold transition-all duration-300 hover:drop-shadow-[0_0_6px_currentColor]`}
+      >
+        {label}
+        <span className="mx-1">,</span>
       </span>
-      <BookOpen size={40} color="red" />
-      <AnimatePresence>
-        {active && (
-          <span className="pointer-events-none absolute left-1/2 top-0 z-50 -translate-x-1/2">
-            {Icons.map((Icon, i) => {
-              const dir = i === 0 ? -1 : 1;
-              return (
-                <motion.span
-                  key={i}
-                  className="absolute"
-                  initial={{ opacity: 0, y: 0, x: 0, scale: 0.3 }}
-                  animate={{
-                    opacity: [0, 1, 1, 0],
-                    y: [-4, -26 - i * 8, -36 - i * 8, -46 - i * 8],
-                    x: dir * (14 + i * 10),
-                    scale: [0.3, 1, 1, 0.8],
-                    rotate: dir * 12,
+
+      <AnimatePresence mode="wait">
+        {active &&
+          Icons.map((Icon, i) => {
+            const dir = i === 0 ? -1 : 1;
+
+            return (
+              <motion.div
+                key={`${hoverKey}-${i}`}
+                className="pointer-events-none absolute left-1/2 top-1/2 z-999"
+                initial={{
+                  opacity: 0,
+                  x: 0,
+                  y: 0,
+                  scale: 0.3,
+                  rotate: 0,
+                }}
+                animate={{
+                  opacity: [0, 1, 1, 0],
+                  x: dir * (18 + i * 14),
+                  y: [0, -18, -34, -50],
+                  scale: [0.3, 1, 1, 0.8],
+                  rotate: dir * 18,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0,
+                  y: -20,
+                  transition: {
+                    duration: 0.15,
+                  },
+                }}
+                transition={{
+                  duration: 1.1,
+                  delay: i * 0.12,
+                  repeat: active ? Infinity : 0,
+                  repeatDelay: 0.3,
+                  ease: "easeOut",
+                }}
+                style={{
+                  filter: `drop-shadow(0 0 8px ${glow})`,
+                }}
+              >
+                <Icon
+                  size={22}
+                  strokeWidth={2.2}
+                  style={{
+                    color: glow,
+                    transform: "translate(-50%, -50%)",
                   }}
-                  exit={{ opacity: 0, y: -50, scale: 0.4 }}
-                  transition={{
-                    duration: 1.1,
-                    delay: i * 0.15,
-                    repeat: Infinity,
-                    repeatDelay: 0.25,
-                    ease: "easeOut",
-                  }}
-                  style={{ filter: `drop-shadow(0 0 6px ${glow})` }}
-                >
-                  <Icon size={16} strokeWidth={2.25} style={{ color: glow }} />
-                </motion.span>
-              );
-            })}
-          </span>
-        )}
+                />
+              </motion.div>
+            );
+          })}
       </AnimatePresence>
     </span>
   );
