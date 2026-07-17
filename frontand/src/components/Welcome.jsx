@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import {
   BookOpen,
   Cpu,
@@ -17,7 +17,7 @@ const SECOND_LINE = "THE INFOSEC CLUB";
 const FULL_TEXT = `${FIRST_LINE} ${SECOND_LINE}`;
 
 const HEADING_CLASS =
-"max-w-full break-words text-center font-['Michroma'] text-cyan-300 text-[clamp(1.35rem,9vw,4rem)] font-bold leading-tight tracking-[0.15em]";
+  "mx-auto w-full max-w-[95vw] text-center text-cyan-300 font-['Orbitron'] font-extrabold uppercase leading-[0.9] tracking-[0.04em] sm:tracking-[0.06em] text-[clamp(1rem,5.8vw,5.5rem)] break-normal";
 
 // icon set that pops out per word — 2 icons each, looping while hovered
 const WORD_ICONS = {
@@ -117,6 +117,54 @@ function HoverWord({ id, label }) {
   );
 }
 
+// Dynamically highlights CRYX with metallic gradient glow
+function renderLine1(typed) {
+  const part1 = typed.slice(0, 11);
+  const part2 = typed.slice(11, 15);
+  const part3 = typed.slice(15, 18);
+
+  return (
+    <>
+      <span>{part1}</span>
+      {part2 && (
+        <span className="cyber-active-green" data-text={part2}>
+          {part2}
+        </span>
+      )}
+      <span>{part3}</span>
+    </>
+  );
+}
+
+// Dynamically highlights INFOSEC with metallic gradient glow
+function renderLine2(typed, cursorOn) {
+  const line2Text = typed.slice(18);
+  const trimmed = line2Text.trimStart();
+
+  const part1 = trimmed.slice(0, 4);
+  const part2 = trimmed.slice(4, 11);
+  const part3 = trimmed.slice(11);
+
+  return (
+    <>
+      <span>{part1}</span>
+      {part2 && (
+        <span className="cyber-active-cyan" data-text={part2}>
+          {part2}
+        </span>
+      )}
+      <span>{part3}</span>
+      <span
+        aria-hidden="true"
+        className="inline-block ml-1 text-neon-cyan"
+        style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
+      >
+        _
+      </span>
+    </>
+  );
+}
+
 export default function Welcome() {
   const [typed, setTyped] = useState("");
   const [cursorOn, setCursorOn] = useState(true);
@@ -170,16 +218,9 @@ export default function Welcome() {
 
   const headingInner = (
     <>
-      <span className="block whitespace-normal">{typed.slice(0, FIRST_LINE.length)}</span>
-      <span className="block whitespace-normal">
-        {typed.slice(FIRST_LINE.length )}
-        <span
-          aria-hidden="true"
-          className="inline-block ml-1 text-neon-cyan"
-          style={{ opacity: cursorOn ? 1 : 0, transition: "opacity 80ms linear" }}
-        >
-          _
-        </span>
+      <span className="block whitespace-nowrap">{renderLine1(typed)}</span>
+      <span className="block whitespace-nowrap">
+        {renderLine2(typed, cursorOn)}
       </span>
     </>
   );
@@ -200,7 +241,7 @@ export default function Welcome() {
       {/* ── Heading + cyber scanner lens wrapper ── */}
       <div
         ref={headingWrapRef}
-        className="relative w-full"
+        className="relative mx-auto w-full max-w-7xl px-2 sm:px-6"
         onMouseEnter={() => setLensOn(true)}
         onMouseLeave={() => setLensOn(false)}
         onMouseMove={handleMouseMove}
@@ -288,16 +329,18 @@ export default function Welcome() {
         }`}
       >
         <span className="text-text-muted">// </span>
-        <HoverWord id="learn" label="learn"/>
-        <HoverWord id="hack" label="hack"/>
-        <HoverWord id="build" label="build"/>
-        <HoverWord id="secure" label="secure"/>
+        <HoverWord id="learn" label="learn" />
+        <HoverWord id="hack" label="hack" />
+        <HoverWord id="build" label="build" />
+        <HoverWord id="secure" label="secure" />
       </p>
 
       {/* Decorative bottom element */}
-      <div className={`mt-8 flex items-center gap-4 transition-all duration-700 delay-300 ${
-        showSubtitle ? "opacity-100" : "opacity-0"
-      }`}>
+      <div
+        className={`mt-8 flex items-center gap-4 transition-all duration-700 delay-300 ${
+          showSubtitle ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <div className="h-px w-20 md:w-32 gradient-line"></div>
         <div className="w-2.5 h-2.5 bg-neon-cyan rounded-full animate-glow-pulse shadow-[0_0_10px_#67e8f9]"></div>
         <div className="h-px w-20 md:w-32 gradient-line"></div>
@@ -314,9 +357,11 @@ export default function Welcome() {
           id="cta-roadmap"
           className="group relative inline-flex min-h-11 max-w-full items-center justify-center overflow-hidden rounded-sm px-5 py-3 text-center font-mono text-xs font-bold uppercase tracking-[2px] text-black transition-transform duration-300 hover:scale-[1.02] active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary sm:px-7 sm:text-sm sm:tracking-[3px]"
           style={{
-            background: "linear-gradient(135deg, #34d399 0%, #10b981 50%, #34d399 100%)",
+            background:
+              "linear-gradient(135deg, #34d399 0%, #10b981 50%, #34d399 100%)",
             backgroundSize: "200% 200%",
-            boxShadow: "0 0 14px rgba(52,211,153,0.35), 0 0 28px rgba(52,211,153,0.12)",
+            boxShadow:
+              "0 0 14px rgba(52,211,153,0.35), 0 0 28px rgba(52,211,153,0.12)",
             animation: "ctaBgShift 3s ease infinite",
           }}
         >
@@ -346,7 +391,8 @@ export default function Welcome() {
             transition: "box-shadow 0.4s ease, background 0.4s ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = "0 0 18px rgba(103,232,249,0.25), inset 0 0 12px rgba(103,232,249,0.06)";
+            e.currentTarget.style.boxShadow =
+              "0 0 18px rgba(103,232,249,0.25), inset 0 0 12px rgba(103,232,249,0.06)";
             e.currentTarget.style.background = "rgba(103,232,249,0.08)";
           }}
           onMouseLeave={(e) => {
@@ -371,6 +417,45 @@ export default function Welcome() {
       </div>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap');
+
+        /* Cyber Active Gradient Effects */
+        .cyber-active-green {
+          background: linear-gradient(90deg, #10b981, #34d399, #a7f3d0, #34d399, #10b981);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: cyber-gradient 3s linear infinite, cyber-flicker 4s infinite;
+          display: inline-block;
+          filter: drop-shadow(0 0 6px rgba(52,211,153,0.5));
+        }
+
+        .cyber-active-cyan {
+          background: linear-gradient(90deg, #06b6d4, #67e8f9, #cffafe, #67e8f9, #06b6d4);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: cyber-gradient 3s linear infinite, cyber-flicker 5s infinite;
+          display: inline-block;
+          filter: drop-shadow(0 0 6px rgba(103,232,249,0.5));
+        }
+
+        @keyframes cyber-gradient {
+          0% { background-position: 0% center; }
+          100% { background-position: 200% center; }
+        }
+
+        @keyframes cyber-flicker {
+          0%, 100% { opacity: 1; }
+          41% { opacity: 1; }
+          42% { opacity: 0.82; }
+          43% { opacity: 1; }
+          45% { opacity: 0.9; }
+          46% { opacity: 1; }
+        }
+
         @keyframes ctaBgShift {
           0%   { background-position: 0% 50%; }
           50%  { background-position: 100% 50%; }

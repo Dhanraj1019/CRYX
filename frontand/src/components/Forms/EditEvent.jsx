@@ -3,49 +3,153 @@ import Input from "../Input";
 import Button from "../Button/Button";
 import StorageObj from "../../../Supabase/storage";
 import DatabaseObj from "../../../Supabase/database";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState,useEffect } from "react";
 import Loader from '../Loader';
 import { useSelector ,useDispatch} from "react-redux";
 import { setNotification } from "../../../store/Notifucation";
-export default function AddEvent(){
+export default function EditEvent(){
   const tempurl="https://www.theclassictemplates.com/cdn/shop/articles/cyber-security-website-templates_95abbf65-cd60-40fb-8969-27337e464740.jpg?v=1772193841&width=1100"
     const {handleSubmit,register,reset}=useForm();
     const navigate=useNavigate();
     const dispatch=useDispatch();
-    const userId=useSelector((state)=>state.auth.user.id);
-    // const [loader,setLoader]=useState(false);
-    const [isAdding,setIsAdding]=useState(false);
-    const add=async(data)=>{
-        // setLoader(true);
-        setIsAdding(true);
-        // console.log("data to add event = ",data.image[0]);
-        const file=data.image[0];
-        const path=`${userId}/${file.name}`;
-        // console.log(file);
-        const result=await StorageObj.uploadFile({bucket:"eventimage",file,path});
-        // console.log(result);
-        if(result){
-            const publicurl=await StorageObj.getPublicUrl({bucket:"eventimage",path});
-            // console.log(publicurl);
-            const finalData={title:data.title,date:data.date || null,time:data.time || null,discription:data.discription || null,place:data.place || null,highlight:data.highlight || null,imageurl:path,publicurl:publicurl?.publicUrl || tempurl};
-            // console.log("finalData = ",finalData);
-            const saveResult=await DatabaseObj.insertData({table:"event",data:finalData})
-            // setLoader(false);
-            if(saveResult.success){
-                dispatch(setNotification({type:"success",message:"event added",title:"Add Event"}));
-                reset();
-                navigate("/home");
-            }
-        }else{
-          // setLoader(false);
-          dispatch(setNotification({type:"error",message:"error in event add",title:"Add Event"}));
-          // console.log("error ",result.error);
-        }
-        setIsAdding(false);
+    const userId=useSelector((state)=>state.auth?.user?.id);
+    const [loader,setLoader]=useState(false);
+    const {eventId}=useParams();
+    const [event,setEvent]=useState({});
+    const [currentImage, setCurrentImage] = useState("");
+    const [isEditing , setIsEditing]=useState(false);
+const Edit = async (data) => {
+  // setLoader(true);
+  setIsEditing(true);
+  try {
+    // Keep previous image by default
+    let imageurl = event.imageurl;
+    let publicurl = event.publicurl;
+
+    // Upload new image if selected
+    if (data.image?.length > 0) {
+      const file = data.image[0];
+      const path = `${userId}/${file.name}`;
+
+      const uploadResult = await StorageObj.uploadFile({
+        bucket: "eventimage",
+        file,
+        path,
+      });
+
+      if (!uploadResult) {
+        dispatch(
+          setNotification({
+            type: "error",
+            title: "Update Event",
+            message: "Failed to upload new event banner.",
+          })
+        );
+        setLoader(false);
+        return;
+      }
+
+      const urlResult = await StorageObj.getPublicUrl({
+        bucket: "eventimage",
+        path,
+      });
+
+      imageurl = path;
+      publicurl = urlResult?.publicUrl || tempurl;
+
+      // Delete previous image only after successful upload
+      if (event.imageurl) {
+        await StorageObj.deleteFile({
+          bucket: "eventimage",
+          path: event.imageurl,
+        });
+      }
     }
 
-    return (
+    const finalData = {
+      title: data.title,
+      discription: data.discription || null,
+      date: data.date || null,
+      time: data.time || null,
+      place: data.place || null,
+      highlight: data.highlight || null,
+      driveLink: data.driveLink || null,
+      imageurl,
+      publicurl,
+
+      // preserve registrations
+      registrations: event.registrations || [],
+    };
+
+    const result = await DatabaseObj.updateData({
+      table: "event",
+      id: eventId,
+      data: finalData,
+    });
+
+    if (result && !result.error) {
+      dispatch(
+        setNotification({
+          type: "success",
+          title: "Update Event",
+          message: "Event updated successfully.",
+        })
+      );
+
+      navigate(`/event/${eventId}`);
+    } else {
+      dispatch(
+        setNotification({
+          type: "error",
+          title: "Update Event",
+          message: "Failed to update event.",
+        })
+      );
+    }
+  } catch (err) {
+    console.error(err);
+
+    dispatch(
+      setNotification({
+        type: "error",
+        title: "Update Event",
+        message: "Something went wrong.",
+      })
+    );
+  }
+  setIsEditing(false);
+  // setLoader(false);
+};
+
+    useEffect(() => {
+        const getEvent = async () => {
+            const result = await DatabaseObj.getRow({
+                bucket: "event",
+                chake: ["id", eventId],
+            });
+            console.log("result",result);
+            console.log("eventId",eventId);
+            if (result) {
+                reset({
+                    title: result.title,
+                    date: result.date,
+                    time: result.time,
+                    place: result.place,
+                    discription: result.discription,
+                    highlight: result.highlight,
+                    driveLink: result.driveLink || "",
+                });
+
+                setCurrentImage(result.publicurl);
+                setEvent(result);
+            }
+        }
+        getEvent();
+    },[])
+
+
+    return !loader && (
     <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
       <div className="w-full max-w-xl">
         {/* Add Event Card */}
@@ -62,7 +166,7 @@ export default function AddEvent(){
             </div>
             <span className="flex min-w-0 items-center gap-1.5 truncate font-mono text-xs tracking-widest text-text-muted select-none">
               <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-ping"></span>
-              add_event.sh //
+              edit_event.sh //
             </span>
           </div>
 
@@ -98,7 +202,7 @@ export default function AddEvent(){
             </p>
 
             {/* Form */}
-            <form onSubmit={handleSubmit(add)} className="space-y-5">
+            <form onSubmit={handleSubmit(Edit)} className="space-y-5">
               <Input
                 label="Title"
                 placeholder="e.g. Cyber Security Summit"
@@ -145,27 +249,33 @@ export default function AddEvent(){
                 label="Image Banner"
                 type="file"
                 className="file:mr-4 file:py-1.5 file:px-4 file:rounded-sm file:border file:border-neon-green/20 file:text-xs file:font-mono file:bg-neon-green/5 file:text-neon-green hover:file:bg-neon-green/15 hover:file:border-neon-green/60 file:cursor-pointer file:transition-all duration-300 text-text-muted text-sm border-dashed"
-                {...register("image",{required:true})}
+                {...register("image")}
               />
 
               <Input
                 label="Highlights"
                 type="text"
                 placeholder="e.g. Hands-on labs, CTF competitions..."
-                {...register("heighlight")}
+                {...register("highlight")}
+              />
+              <Input
+                label="drivelink"
+                type="text"
+                placeholder="e.g. Hands-on labs, CTF competitions..."
+                {...register("driveLink")}
               />
 
               <Button
                 type="submit"
                 variant="filled"
-                disabled={isAdding}
+                disabled={isEditing}
                 className={`w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 flex items-center justify-center gap-2.5 ${
-                  isAdding 
+                  isEditing 
                     ? "cursor-not-allowed opacity-60" 
                     : "hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
                 }`}
               >
-                {isAdding ? (
+                {isEditing ? (
                   <div className="flex gap-1 justify-center items-center">
                     <svg 
                       className="animate-spin h-5 w-5 text-black" 
@@ -187,10 +297,10 @@ export default function AddEvent(){
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    DEPLOYING...
+                    EDITING...
                   </div>
                 ) : (
-                  "DEPLOY EVENT"
+                  "EDIT EVENT"
                 )}
               </Button>
             </form>

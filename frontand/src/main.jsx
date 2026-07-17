@@ -22,6 +22,7 @@ import WeeklyLabs from './Pages/pagex/WeeklyLabs.jsx'
 import Notification from './components/Notification.jsx'
 import EventDetails from './components/Marquee/EventDetails.jsx'
 import CyberNewsLog from './components/News/News.jsx'
+import EditEvent from './components/Forms/EditEvent.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -113,6 +114,12 @@ const router = createBrowserRouter([
         element:<UserProtect authentication={true}>
           <EventDetails/>
         </UserProtect>
+      },
+      {
+        path:"/event/edit/:eventId",
+        element:<AdminProtect>
+          <EditEvent/>
+        </AdminProtect>
       },
       {
         path:"/*",

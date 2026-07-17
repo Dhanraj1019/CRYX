@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion,useAnimationControls  } from "framer-motion";
+import conf from "../../conf/conf";
 const sevColor = {
   high: "bg-red-500",
   med: "bg-amber-400",
@@ -11,7 +12,7 @@ export default function CyberNewsLog() {
   const [hovered, setHovered] = useState(null);
   const [newsEntries, setNewsEntries] = useState([]);
   const controls = useAnimationControls();
-  // Detect severity from title
+  const backend_api=conf.RENDER_API;
   const getSeverity = (title) => {
     const text = title.toLowerCase();
 
@@ -45,7 +46,7 @@ export default function CyberNewsLog() {
     const fetchNews = async () => {
       try {
         setLoader(true);
-        const res = await fetch("http://localhost:5000/api/news");
+        const res = await fetch(`${backend_api}/api/news`);
         const data = await res.json();
 
         const formatted = data.map((el, index) => ({
@@ -131,7 +132,7 @@ export default function CyberNewsLog() {
               >
                 {val}
               </span>
-              <span className="text-xs tracking-widest text-emerald-700">
+              <span className="text-xs tracking-widest text-emerald-700 w-full px-1 text-center truncate" title={label}>
                 {label}
               </span>
             </div>

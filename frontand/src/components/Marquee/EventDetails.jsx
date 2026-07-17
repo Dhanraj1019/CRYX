@@ -6,6 +6,7 @@ import { useSelector,useDispatch } from "react-redux";
 import Button from "../Button/Button";
 import { setNotification } from "../../../store/Notifucation";
 import RegistrationsModal from './RegistrationModal'
+import { FilePen } from "lucide-react";
 const formatEventDate = (date) => {
   if (!date) return "Date TBA";
 
@@ -47,6 +48,8 @@ export default function EventDetails() {
   const [modalStatus,setModalStatus]=useState(false);
   const [modalData,setModalData]=useState([]);
   const [registeredStatus,setRegisteredStatus]=useState(false);
+  const [isPast,setIsPast]=useState(false);
+  const [registrationCount,setRegistrationCount]=useState(0);
   const user=useSelector((state)=>state.auth.user);
   useEffect(() => {
     const getEvent = async () => {
@@ -60,8 +63,13 @@ export default function EventDetails() {
 
       setEvent(result || null);
       // console.log(result);
-      console.log(result.registrations);
+      const eventDateTime = new Date(`${result.date}T${result.time}`);
+      const currentDateTime = new Date();
+
+      setIsPast(eventDateTime < currentDateTime);
+      // console.log(result.registrations);
       // console.log(user);
+      setRegistrationCount(result.registrations?.length ?? 0);
       result.registrations?.map((it)=>{
         if(it.username===user.username) {
           // console.log("in setregistredstatus ")
@@ -124,6 +132,7 @@ export default function EventDetails() {
     else{
       setEvent(d);
       // console.log(d);
+      setRegistrationCount((pre)=>pre+1);
       setRegisteredStatus(true);
       setModalData(d.registrations);
       dispatch(setNotification({type:"success",title:"registration",message:"registered successfuly"}));
@@ -146,6 +155,7 @@ export default function EventDetails() {
     }
     else{
       setEvent(d);
+      setRegistrationCount((pre)=>pre-1);
       setModalData(temp);
       if(user[data[0]]===data[1]) {
         setRegisteredStatus(false);
@@ -165,6 +175,22 @@ export default function EventDetails() {
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/75 to-black/25"></div>
+          {user.role==="admin" && <span className="w-full flex justify-end px-2 z-3000">
+              <Link
+                to={`/event/edit/${eventId}`}
+                className="group p-2 rounded-md border border-emerald-500/30 bg-black/30
+                          backdrop-blur-sm transition-all duration-300
+                          hover:border-emerald-400 hover:bg-emerald-500/10
+                          hover:shadow-[0_0_12px_rgba(16,185,129,0.6)]"
+                title="Edit Event"
+              >
+                <FilePen
+                  size={22}
+                  className="text-emerald-400 transition-all duration-300
+                            group-hover:text-emerald-300 group-hover:scale-110 group-hover:-rotate-6"
+                />
+              </Link>
+            </span>}
           <div className="relative flex min-h-65 min-w-0 flex-col justify-end p-5 sm:p-8 md:min-h-105 md:p-10">
             <p className="break-words font-mono text-xs uppercase tracking-[4px] text-neon-cyan">
               CRYX Event Access
@@ -232,7 +258,7 @@ export default function EventDetails() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <button
+              {isPast || <button
                 onClick={handelRegister}
                 disabled={registeredStatus}
                 className={`mt-8 block min-h-11 w-full rounded-sm px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[2px] transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-neon-green sm:tracking-[3px] ${
@@ -242,13 +268,20 @@ export default function EventDetails() {
                 }`}
               >
                 {registeredStatus ? "Already Registered" : "Register"}
-              </button>
+              </button>}
               {user.role==="admin" && <button
                 onClick={togalModalState}
                 className="mt-0 block min-h-11 w-full cursor-pointer rounded-sm bg-blue-600 px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[2px] text-amber-100 transition-all duration-300 hover:shadow-[0_0_22px_rgba(52,211,153,0.45)] active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-400 sm:mt-8 sm:tracking-[3px]"
               >
-                Registered
+                Registered {" "}[{registrationCount}]
               </button>}
+              {event.driveLink && 
+                <button
+                  onClick={() => window.open(event.driveLink, "_blank", "noopener,noreferrer")}
+                  className="mt-0 block min-h-11 w-full cursor-pointer rounded-sm bg-yellow-400 px-5 py-3 text-center font-mono text-sm font-bold uppercase tracking-[2px] text-black transition-all duration-300 hover:shadow-[0_0_22px_rgba(52,211,153,0.45)] active:scale-95 focus-visible:ring-2 focus-visible:ring-blue-400 sm:mt-8 sm:tracking-[3px]">
+                  GoogleDrive
+                </button>
+              }
             </div>
           </aside>
         </div>

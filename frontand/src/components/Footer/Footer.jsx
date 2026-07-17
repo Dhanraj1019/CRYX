@@ -17,7 +17,7 @@ const socials = [
   {
     label: "EMAIL",
     src: "/SocialMediaIcons/email.png",
-    href: "mailto:choudharydhanraj714@gmail.com",
+    href: "mailto:cryx.mnit@gmail.com",
     border: "border-cyan-500/40",
     hoverBorder: "hover:border-cyan-400",
     text: "text-cyan-400",
@@ -70,8 +70,8 @@ const socials = [
                   className={`
                     relative
                     flex
-                    h-16
-                    w-16
+                    h-15
+                    w-15
                     items-center
                     justify-center
                     rounded-xl

@@ -125,7 +125,7 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
                   </div>
                 </div>
                 <div className="flex justify-around items-center">
-                  {detail_status && (
+                  {/* {detail_status && ( */}
                     <Link
                       to={registrationHref}
                       tabIndex={isDuplicate ? -1 : 0}
@@ -133,7 +133,7 @@ export default function MarqueeImage({ onDelete, images = [], speed = 30, detail
                     >
                       Details
                     </Link>
-                  )}
+                  {/* )} */}
                   {userRole === "admin" && (
                     <button
                       onClick={() => deleteEvent(i)}

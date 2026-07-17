@@ -11,6 +11,7 @@ import StorageObj from "../../../Supabase/storage";
 import { setNotification } from "../../../store/Notifucation";
 export default function AddMember(){
     const [data,setdata]=useState({});
+    const [isUpdating, setIsUpdating] = useState(false);
     const redux_data=useSelector((state)=>state.auth.user);
     const dispatch=useDispatch();
     
@@ -34,6 +35,7 @@ export default function AddMember(){
     // console.log("user redux data = ",redux_data)
     const update=async(data1)=>{
         if(data1){
+          setIsUpdating(true);
           const file=data1.image;
           let data2=data;
           let fnfImage={imageurl:data.imageurl,publicurl:data.publicurl};
@@ -65,6 +67,7 @@ export default function AddMember(){
             const result = await DatabaseObj.updateData({table:"memberprofile",data:data2,id:data.id});
           }
           if(fnf && !fnf.error){
+            setIsUpdating(false);
             dispatch(setNotification({type:"success",message:"Profile updated successfully",title:"Update Profile"}));
             navigate("/");
           } else {
@@ -198,9 +201,40 @@ export default function AddMember(){
               <Button
                 type="submit"
                 variant="filled"
-                className="w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
+                disabled={isUpdating}
+                className={`w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 flex items-center justify-center gap-2.5 ${
+                  isUpdating 
+                    ? "cursor-not-allowed opacity-60" 
+                    : "hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
+                }`}
               >
-                UPDATE PROFILE
+                {isUpdating ? (
+                  <div className="flex gap-1 justify-center items-center">
+                    <svg 
+                      className="animate-spin h-5 w-5 text-black" 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24"
+                    >
+                      <circle 
+                        className="opacity-25" 
+                        cx="12" 
+                        cy="12" 
+                        r="10" 
+                        stroke="currentColor" 
+                        strokeWidth="4"
+                      ></circle>
+                      <path 
+                        className="opacity-75" 
+                        fill="currentColor" 
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    UPDATING...
+                  </div>
+                ) : (
+                  "UPDATE PROFILE"
+                )}
               </Button>
             </form>
 

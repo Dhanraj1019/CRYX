@@ -40,12 +40,22 @@ function App() {
         dispatch(stateLogin(redux_data));
       } else if (event === 'SIGNED_OUT') {
         dispatch(stateLogout());
-      } else if (event === 'PASSWORD_RECOVERY') {
-        // handle password recovery event
-      } else if (event === 'TOKEN_REFRESHED') {
+      }else if (event === 'TOKEN_REFRESHED') {
         // handle token refreshed event
       } else if (event === 'USER_UPDATED') {
-        // handle user updated event
+        console.log("he;")
+        const data = await supabase
+          .from("userprofile")
+          .select("*")
+          .eq("id", session.user.id)
+          .single();
+        if(!data.data){
+          console.log("profile not found");
+          return;
+        }
+        console.log("data = ",data);
+        const redux_data={user:data.data,session:session,role:data.data.role};
+        dispatch(stateLogin(redux_data));
       }
     })
 
