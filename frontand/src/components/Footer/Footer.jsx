@@ -25,16 +25,6 @@ const socials = [
     glow: "rgba(34,211,238,0.3)",
   },
   {
-    label: "WHATSAPP GROUP",
-    src: "/SocialMediaIcons/whatsapp.png",
-    href: "https://chat.whatsapp.com/Fx1FhRzo5UyDxd79dCjTpv",
-    border: "border-green-500/40",
-    hoverBorder: "hover:border-green-400",
-    text: "text-green-400",
-    hoverText: "group-hover:text-green-400",
-    glow: "rgba(34,197,94,0.3)",
-  },
-  {
     label: "INSTAGRAM",
     src: "/SocialMediaIcons/instagram.png",
     href: "https://www.instagram.com/cryx.mnit/",

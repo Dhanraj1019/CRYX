@@ -15,7 +15,6 @@ export default function CyberNewsLog() {
   const backend_api=conf.RENDER_API;
   const getSeverity = (title) => {
     const text = title.toLowerCase();
-
     if (
       text.includes("critical") ||
       text.includes("ransomware") ||

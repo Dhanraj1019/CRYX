@@ -58,10 +58,14 @@ export default function AddMember(){
           else{
             data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
           }
-          if(redux_data.publicurl){
+          const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
+          if(file &&
+            file.length > 0 &&
+            redux_data.publicurl &&
+            fnf &&
+            !fnf.error){
             const result = await StorageObj.deleteFile({bucket:"userimage",path:redux_data.imageurl});
           }
-          const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
           console.log(fnf);
           if(redux_data.role==="admin" || redux_data.role==="exicutive"){
             const result = await DatabaseObj.updateData({table:"memberprofile",data:data2,id:data.id});
