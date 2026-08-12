@@ -211,7 +211,7 @@ export default function AppBar() {
                   <span className="text-neon-green/40 mr-1.5 font-bold">›</span>
                   Update Profile
                 </button>
-                <button
+                {/* <button
                   key="appearance"
                   onClick={() => {
                     navigate("/appearance");
@@ -221,7 +221,7 @@ export default function AppBar() {
                 >
                   <span className="text-neon-green/40 mr-1.5 font-bold">›</span>
                   Appearance
-                </button>
+                </button> */}
                 <button
                   key="logout"
                   onClick={() => {

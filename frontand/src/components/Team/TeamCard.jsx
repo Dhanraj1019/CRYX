@@ -30,6 +30,7 @@ export default function TeamCard({ data,idx }) {
           <img
             src={data.publicurl}
             alt={data.username}
+            draggable={false}
             className="h-36 w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0 sm:h-44 sm:w-36"
           />
         </div>

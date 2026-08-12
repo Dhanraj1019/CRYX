@@ -45,6 +45,7 @@ export default function Avatar() {
         className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full border-2 border-neon-red/40 transition-all duration-300 hover:border-neon-red hover:shadow-[0_0_12px_rgba(52,211,153,0.25)] focus-visible:ring-2 focus-visible:ring-neon-green"
         aria-label="Open user menu"
         aria-expanded={droverOpen}
+        draggable={false}
       >
         <img
           src={profile_logo}
