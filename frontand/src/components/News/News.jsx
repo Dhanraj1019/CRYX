@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { motion,useAnimationControls  } from "framer-motion";
-import conf from "../../conf/conf";
+import { useEffect, useState, useRef } from "react";
+import { motion, useAnimationControls } from "framer-motion";
+import conf from '../../conf/conf'
 const sevColor = {
   high: "bg-red-500",
   med: "bg-amber-400",
@@ -8,13 +8,16 @@ const sevColor = {
 };
 
 export default function CyberNewsLog() {
-  const [loader,setLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [hovered, setHovered] = useState(null);
   const [newsEntries, setNewsEntries] = useState([]);
   const controls = useAnimationControls();
+  const containerRef = useRef(null);
   const backend_api=conf.RENDER_API;
+  // Detect severity from title
   const getSeverity = (title) => {
     const text = title.toLowerCase();
+
     if (
       text.includes("critical") ||
       text.includes("ransomware") ||
@@ -69,16 +72,51 @@ export default function CyberNewsLog() {
     fetchNews();
   }, []);
 
+  // Animation Controls logic auto-scroll ke liye
+  useEffect(() => {
+    if (newsEntries.length > 0) {
+      controls.start({
+        y: ["0%", "-50%"],
+        transition: {
+          duration: newsEntries.length * 4,
+          ease: "linear",
+          repeat: Infinity,
+        },
+      });
+    }
+  }, [newsEntries, controls]);
+
   const [paused, setPaused] = useState(false);
 
-  const scrollingNews =
-  newsEntries.length > 5
-    ? [...newsEntries, ...newsEntries]
-    : newsEntries;
+  // Jab hover ho to motion controls ko pause karna aur scroll enable rakhna
+  const handleMouseEnter = () => {
+    setPaused(true);
+    controls.stop(); // Animation ko hold/stop karega jisse manual scroll ho sake
+  };
 
-  return loader ? <div id="news" className="py-8 text-center text-emerald-600 animate-pulse">
-            Fetching latest cyber intelligence...
-          </div> : (
+  const handleMouseLeave = () => {
+    setPaused(false);
+    // Jab mouse bahar jaye to animation dobara wahin se start ho jaye
+    controls.start({
+      y: ["0%", "-50%"],
+      transition: {
+        duration: newsEntries.length * 4,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    });
+  };
+
+  const scrollingNews =
+    newsEntries.length > 5
+      ? [...newsEntries, ...newsEntries]
+      : newsEntries;
+
+  return loader ? (
+    <div id="news" className="py-8 text-center text-emerald-600 animate-pulse">
+      Fetching latest cyber intelligence...
+    </div>
+  ) : (
     <div
       id="news"
       className="relative mx-auto w-full max-w-4xl min-w-0 font-mono text-emerald-400"
@@ -131,7 +169,7 @@ export default function CyberNewsLog() {
               >
                 {val}
               </span>
-              <span className="text-xs tracking-widest text-emerald-700 w-full px-1 text-center truncate" title={label}>
+              <span className="text-xs tracking-widest text-emerald-700">
                 {label}
               </span>
             </div>
@@ -139,31 +177,36 @@ export default function CyberNewsLog() {
         </div>
 
         {/* News */}
-        <div>
+        <div className="relative">
           {/* Top Fade */}
-          <div className="absolute top-0 left-0 w-full h-8 bg-liner-to-b from-[#050d0f] to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-[#050d0f] to-transparent z-10 pointer-events-none" />
 
           {/* Bottom Fade */}
-          <div className="absolute bottom-0 left-0 w-full h-8 bg-liner-to-t from-[#050d0f] to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-[#050d0f] to-transparent z-10 pointer-events-none" />
 
+          {/* 
+            yahan humne:
+            1. 'overflow-y-auto' add kiya manual scroll ke liye.
+            2. custom scrollbar hide karne ke liye utility classes add ki hain.
+            3. height wrapper check kiya.
+          */}
           <div
-            className="h-88.75 overflow-hidden"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
+            ref={containerRef}
+            className="h-[355px] overflow-y-auto scrollbar-none"
+            style={{
+              scrollbarWidth: "none", /* Firefox */
+              msOverflowStyle: "none", /* IE/Edge */
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
+            {/* 
+              Jab custom manual scroll active ho (paused === true) 
+              tab framer-motion ki animation transform offset hat jaani chahiye taki 
+              default behavior break na ho. Isliye ternary condition lagai hai animate property me.
+            */}
             <motion.div
-              animate={
-                paused
-                  ? {}
-                  : {
-                      y: ["0%", "-50%"],
-                    }
-              }
-              transition={{
-                duration: newsEntries.length * 4,
-                ease: "linear",
-                repeat: Infinity,
-              }}
+              animate={paused ? { y: 0 } : controls}
             >
               <ul>
                 {scrollingNews.map((entry, i) => (

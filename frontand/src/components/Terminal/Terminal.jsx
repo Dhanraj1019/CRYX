@@ -101,7 +101,7 @@ function Terminal() {
       <div className="flex min-w-0 items-center justify-between gap-3 border-b border-neon-green/20 bg-bg-elevated px-3 py-2.5 shrink-0 sm:px-4">
         <div className="flex min-w-0 items-center gap-2 font-mono text-xs text-neon-green sm:text-sm">
           <span>🛡️</span>
-          <span className="truncate text-text-muted">root@cryx</span>
+          <span className="truncate text-text-muted">{username}@cryx</span>
           <span className="text-text-dim">—</span>
           <span className="hidden text-neon-green/70 sm:inline">server :~</span>
         </div>
@@ -169,7 +169,7 @@ function Terminal() {
 
       {/* BOTTOM BAR */}
       <div className="flex min-w-0 items-center gap-3 border-t border-neon-green/20 bg-bg-elevated px-3 py-1.5 shrink-0 sm:px-4">
-        <span className="truncate font-mono text-xs text-text-dim">root@cryx — server</span>
+        <span className="truncate font-mono text-xs text-text-dim">{username}@cryx — server</span>
         <span className="ml-auto flex shrink-0 items-center gap-2 font-mono text-xs text-text-dim">
           <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-glow-pulse"></span>
           CONNECTED
