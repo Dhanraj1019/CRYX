@@ -8,7 +8,8 @@ export default function Avatar() {
   const avatarRef = useRef(null);
   const userProfileLogo=useSelector((state)=>state.auth.user.publicurl);
   useEffect(()=>{
-    setProfile_logo(userProfileLogo);
+    if(userProfileLogo)
+      setProfile_logo(userProfileLogo);
   },[userProfileLogo])
   
   const setAvatar=(logo)=>setProfile_logo(logo);
