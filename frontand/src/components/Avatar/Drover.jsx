@@ -87,6 +87,7 @@ export default function Drover({ isOpen, onClose }) {
                 src={user.publicurl || tempurl}
                 alt="User"
                 className="w-full h-full object-cover"
+                draggable={false}
               />
             </div>
             <div className="min-w-0 flex-1">

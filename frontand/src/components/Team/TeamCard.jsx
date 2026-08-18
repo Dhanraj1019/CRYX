@@ -2,7 +2,7 @@ import Button from '../Button/Button'
 import {Link} from 'react-router-dom'
 export default function TeamCard({ data,idx }) {
   return (
-    <div className="group relative flex w-full min-w-0 flex-col overflow-hidden rounded-sm border border-neon-cyan/20 bg-bg-surface/80 backdrop-blur-sm transition-all duration-500 hover:border-neon-cyan/50 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
+    <div className="srink- group relative flex w-full min-w-0 flex-col overflow-hidden rounded-sm border border-neon-cyan/20 bg-bg-surface/80 backdrop-blur-sm transition-all duration-500 hover:border-neon-cyan/50 sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
       style={{
         boxShadow: "0 0 0 rgba(6,182,212,0)",
         transition: "box-shadow 0.5s ease, border-color 0.5s ease",
