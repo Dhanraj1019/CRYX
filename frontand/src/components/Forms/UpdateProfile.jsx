@@ -23,7 +23,7 @@ export default function AddMember(){
       values:{
         username: data?.username || "",
             email: data?.email || "",
-            phone: data?.phone || "",
+            phone: data?.phone || null,
             instagramid: data?.instagramid || "",
             linkdinid: data?.linkdinid || "",
             firstName:data?.firstName || "",
@@ -47,7 +47,7 @@ export default function AddMember(){
               const publicurl=await StorageObj.getPublicUrl({bucket:"userimage",path})
               if(publicurl){
                 fnfImage={imageurl:path,publicurl:publicurl.publicUrl};
-                data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
+                data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone?.trim() || null,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
               }
             } else {
               dispatch(setNotification({type:"error",message:"Failed to upload profile image",title:"Update Profile"}));
@@ -56,7 +56,7 @@ export default function AddMember(){
             }
           }
           else{
-            data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
+            data2={username:data1.username,email:data1.email,instagramid:data1.instagramid,linkdinid:data1.linkdinid,phone:data1.phone?.trim() || null,firstName:data1.firstName,lastName:data1.lastName,...fnfImage};
           }
           const fnf=await DatabaseObj.updateData({table:"userprofile",data:data2,id:data.id})
           if(file &&

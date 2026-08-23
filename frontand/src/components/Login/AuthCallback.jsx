@@ -37,17 +37,16 @@ function AuthCallback() {
 
         const authUser = session.user;
         const metadata = authUser.user_metadata || {};
-
-        // console.log("Authenticated user:", authUser);
+        console.log("auth user is = ",authUser);
         const {
           data: existingProfile,
           error: profileCheckError,
         } = await supabase
           .from("userprofile")
-          .select("id")
+          .select("*")
           .eq("id", authUser.id)
           .maybeSingle();
-
+        console.log("existingprofile = ",existingProfile);
         if (profileCheckError) {
           console.error(
             "Failed to check user profile:",
@@ -64,7 +63,12 @@ function AuthCallback() {
           // console.log("User profile already exists.");
 
           if (isMounted) {
-            navigate("/home", { replace: true });
+            if(!existingProfile.publicurl?.trim()){
+              const res=await DatabaseObj.updateData({table:"userprofile",data:{...existingProfile,publicurl:metadata.avatar_url},id:authUser.id})
+              console.log("image not find in usrprofile ",existingProfile)
+              console.log("res in update image : ",res);
+            }
+            // navigate("/home", { replace: true });
           }
 
           return;
@@ -140,8 +144,10 @@ function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div>
-      <h2>Signing you in...</h2>
+    <div className="w-full flex justify-center">
+      <div className="w-fit h-fit">
+        <h2>Signing you in...</h2>
+      </div>
     </div>
   );
 }
