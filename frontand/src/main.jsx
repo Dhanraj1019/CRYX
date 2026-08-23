@@ -23,6 +23,7 @@ import Notification from './components/Notification.jsx'
 import EventDetails from './components/Marquee/EventDetails.jsx'
 import CyberNewsLog from './components/News/News.jsx'
 import EditEvent from './components/Forms/EditEvent.jsx'
+import AuthCallback from '../src/components/Login/AuthCallback.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -128,6 +129,10 @@ const router = createBrowserRouter([
       {
         path:"/news",
         element:<CyberNewsLog/>
+      },
+      {
+        path:"/auth/callback",
+        element:<AuthCallback/>
       }
     ]
   }

@@ -18,7 +18,7 @@ export default function SignUp() {
     if(data){
       setLoader(true);
         // console.log("data in signup.jsx file = ",data);
-        const data2={...data,imageurl:tempPath,publicurl:tempPublicUrl};
+        const data2={...data,imageurl:tempPath,publicurl:tempPublicUrl,phone:data.phone?.trim() || null};
         const result=await AuthObj.saveProfile({data:data2});
         // console.log("result in signup.jsx = ",result);
         setLoader(false);
@@ -33,11 +33,22 @@ export default function SignUp() {
     }
   }
  
+  
+  const handelGoogle=async()=>{
+    try{
+      const res=await AuthObj.googleAuth();
+      console.log(res);
+
+    }catch(e){
+      console.log("error in google :",e);
+    }
+  }
+
   return !loader && (
     <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
       <div className="w-full max-w-xl">
         {/* Signup Card */}
-        <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
+        <div className="relative border border-border-subtle bg-transparent backdrop-grayscale  rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
           {/* Top Scanline Glow */}
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100"></div>
 
@@ -160,6 +171,29 @@ export default function SignUp() {
                   placeholder="user_23"
                   {...register("linkdinid")}
                 />
+              </div>
+              
+              <div
+                  onClick={handelGoogle}
+                  variant="filled"
+                  className="group cursor-pointer flex items-center justify-center gap-3 w-full h-12 mt-2
+                   bg-[#0b1016]/80 border border-[#24333a]
+                   text-[#39d89a] font-semibold tracking-widest text-sm
+                   rounded-[3px]
+                   transition-all duration-300 ease-out
+                   hover:border-neon-green
+                   hover:bg-[#0d1918]
+                   hover:shadow-[0_0_12px_rgba(52,211,153,0.18)]
+                   active:scale-[0.98]"
+                >
+                  <div>
+                    <svg className='h-10 w-10' xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48">
+                          <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    Continue with google
+                  </div>
               </div>
 
               <Button
