@@ -109,6 +109,15 @@ export default function Login() {
                 placeholder="••••••••"
                 {...register("password", { required: true })}
               />
+
+              <Button
+                type="submit"
+                variant="filled"
+                className="w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
+              >
+                AUTHENTICATE
+              </Button>
+              
               <div
                   onClick={handelGoogle}
                   variant="filled"
@@ -131,14 +140,6 @@ export default function Login() {
                     Continue with google
                   </div>
               </div>
-
-              <Button
-                type="submit"
-                variant="filled"
-                className="w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 hover:shadow-[0_0_18px_rgba(52,211,153,0.35)] active:scale-[0.98]"
-              >
-                AUTHENTICATE
-              </Button>
             </form>
 
             {/* Bottom text */}
