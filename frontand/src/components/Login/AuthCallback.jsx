@@ -68,7 +68,7 @@ function AuthCallback() {
               console.log("image not find in usrprofile ",existingProfile)
               console.log("res in update image : ",res);
             }
-            // navigate("/home", { replace: true });
+            navigate("/home", { replace: true });
           }
 
           return;
