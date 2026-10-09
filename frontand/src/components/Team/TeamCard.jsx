@@ -41,7 +41,7 @@ export default function TeamCard({ data,idx }) {
           </h2>
 
           <p className="mt-1.5 break-words text-center font-mono text-xs uppercase tracking-[3px] text-text-muted sm:text-left">
-            {data.role || "// OPERATIVE"}
+            {data.role==="exicutive" ? "executive" : "// OPERATIVE"}
           </p>
 
           <div className="mt-3 flex flex-wrap justify-center gap-2 sm:mt-4 sm:justify-start">
