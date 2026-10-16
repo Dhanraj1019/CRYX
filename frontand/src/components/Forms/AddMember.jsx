@@ -205,7 +205,11 @@ export default function AddMember(){
                                 >
                                     <option value="user" className="bg-bg-primary text-text-primary">user</option>
                                     <option value="exicutive" className="bg-bg-primary text-text-primary">executive</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">member</option>
+                                    <option value="member" className="bg-bg-primary text-text-primary">faculty advisor</option>
+                                    <option value="member" className="bg-bg-primary text-text-primary">General Secretary</option>
+                                    <option value="member" className="bg-bg-primary text-text-primary">Technical Secretary</option>
+                                    <option value="member" className="bg-bg-primary text-text-primary">Finance Secretary</option>
+                                    <option value="member" className="bg-bg-primary text-text-primary">Publicity Secretary</option>
                                 </select>
                             </div>
 
