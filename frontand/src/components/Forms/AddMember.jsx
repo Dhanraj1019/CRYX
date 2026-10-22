@@ -7,7 +7,7 @@ import Loader from '../Loader'
 import { useSelector, useDispatch } from "react-redux";
 import { setNotification } from "../../../store/Notifucation";
 
-export default function AddMember(){
+export default function AddMember() {
     const dispatch = useDispatch();
     const [searchLoader, setSearchLoader] = useState(false);
     const [searchData, setSearchData] = useState(null);
@@ -25,7 +25,7 @@ export default function AddMember(){
         setLoader(true);
         try {
             if (searchData.role === "user" && data.role !== "user") {
-                const img_public_url = data.publicurl ? data.publicurl : publicUrl;
+                const img_public_url = searchData.publicurl ? searchData.publicurl : publicUrl;
                 const result = await DatabaseObj.updateData({ table: "userprofile", data: { "role": data.role }, id: searchData.id });
                 const updated = await DatabaseObj.getRow({ bucket: "userprofile", chake: ["id", searchData.id] });
                 const fnfupdated = { ...updated, publicurl: img_public_url };
@@ -46,7 +46,7 @@ export default function AddMember(){
                 dispatch(setNotification({ type: "error", message: "No role change detected. Select a different role.", title: "Add Member" }));
             }
         } catch (err) {
-            console.log("error in add member = ", err);
+            // console.log("error in add member = ", err);
             dispatch(setNotification({ type: "error", message: "An error occurred while updating member role", title: "Add Member" }));
         }
         reset();
@@ -66,6 +66,7 @@ export default function AddMember(){
         if (error) {
             setSearchData(null);
         } else {
+            // console.log("search data is = ", data);
             setSearchData(data);
         }
         setSearchLoader(false);
@@ -75,12 +76,12 @@ export default function AddMember(){
         <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-3 sm:px-4 py-6 animate-fade-in">
             <div className="w-full max-w-md">
                 <div className="relative border border-border-subtle bg-[#0b0f19]/80 backdrop-blur-xl rounded-md overflow-hidden transition-all duration-500 hover:border-neon-green/30 group shadow-[0_0_40px_rgba(52,211,153,0.04)] hover:shadow-[0_0_50px_rgba(52,211,153,0.08)]">
-                    
+
                     {/* Top Scanline Glow */}
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
 
                     {/* Header Bar */}
-          <div className="flex min-w-0 items-center justify-between gap-3 border-b border-border-subtle/50 bg-bg-elevated/40 px-4 py-3.5 sm:px-5">
+                    <div className="flex min-w-0 items-center justify-between gap-3 border-b border-border-subtle/50 bg-bg-elevated/40 px-4 py-3.5 sm:px-5">
                         <div className="flex items-center gap-2">
                             <span className="w-3 h-3 rounded-full bg-[#ff5f56] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ff5f56] transition-all duration-300" />
                             <span className="w-3 h-3 rounded-full bg-[#ffbd2e] opacity-70 hover:opacity-100 hover:shadow-[0_0_6px_#ffbd2e] transition-all duration-300" />
@@ -205,22 +206,21 @@ export default function AddMember(){
                                 >
                                     <option value="user" className="bg-bg-primary text-text-primary">user</option>
                                     <option value="exicutive" className="bg-bg-primary text-text-primary">executive</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">faculty advisor</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">General Secretary</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">Technical Secretary</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">Finance Secretary</option>
-                                    <option value="member" className="bg-bg-primary text-text-primary">Publicity Secretary</option>
+                                    <option value="faculty advisor" className="bg-bg-primary text-text-primary">faculty advisor</option>
+                                    <option value="General Secretary" className="bg-bg-primary text-text-primary">General Secretary</option>
+                                    <option value="Technical Secretary" className="bg-bg-primary text-text-primary">Technical Secretary</option>
+                                    <option value="Finance Secretary" className="bg-bg-primary text-text-primary">Finance Secretary</option>
+                                    <option value="Publicity Secretary" className="bg-bg-primary text-text-primary">Publicity Secretary</option>
                                 </select>
                             </div>
 
                             <Button
                                 type="submit"
                                 variant="filled"
-                                className={`w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 active:scale-[0.98] ${
-                                    searchData?.id === userid
-                                        ? "cursor-not-allowed opacity-50 bg-[#ff5f56]/10 border-[#ff5f56]/30 text-[#ff5f56] hover:shadow-none"
-                                        : "hover:shadow-[0_0_18px_rgba(52,211,153,0.35)]"
-                                }`}
+                                className={`w-full py-3 mt-2 font-semibold tracking-widest text-base transition-all duration-300 active:scale-[0.98] ${searchData?.id === userid
+                                    ? "cursor-not-allowed opacity-50 bg-[#ff5f56]/10 border-[#ff5f56]/30 text-[#ff5f56] hover:shadow-none"
+                                    : "hover:shadow-[0_0_18px_rgba(52,211,153,0.35)]"
+                                    }`}
                                 disabled={searchData ? searchData.id === userid : false}
                             >
                                 {searchData?.id === userid ? "ACTION PROHIBITED" : "ENROLL MEMBER"}
