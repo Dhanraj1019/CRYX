@@ -12,7 +12,7 @@ app.use(cors(
         origin: [
             "http://localhost:5173",
             "https://cryx-iota.vercel.app",
-            "https://cryxinfosec.dev"
+            "https://www.cryxinfosec.dev"
         ],
     }
 ));
