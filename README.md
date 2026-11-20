@@ -6,7 +6,7 @@ Welcome to the official web platform of **CRYX**, the cybersecurity and informat
 
 The CRYX platform serves as the digital hub for the student security community—showcasing club initiatives, sharing real-time cybersecurity news feeds, curating structured learning roadmaps, organizing weekly security labs, and managing club events and member telemetry.
 
-🌐 **Live Application:** [https://cryx-iota.vercel.app](https://cryx-iota.vercel.app)
+🌐 **Live Application:** [https://cryxinfosec.dev](https://cryxinfosec.dev)
 
 ---
 
