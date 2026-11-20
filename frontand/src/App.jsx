@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import {login as stateLogin,logout as stateLogout} from '../store/AuthSclice';
 import supabase from '../Supabase/Supabase'
-
+import FloatingAoC from './components/Extra/FloatingAoC'
 
 function App() {
   const dispatch=useDispatch();
@@ -74,6 +74,7 @@ function App() {
       <div className='h-20'></div>
       <main className='flex-1 relative z-10 min-w-0'>
         <Outlet/>
+        <FloatingAoC/>
       </main>
       <div className='h-20'></div>
       <Footer/>
