@@ -52,7 +52,7 @@ class Auth {
             const res = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: 'https://cryx-iota.vercel.app/auth/callback'
+                    redirectTo: 'https://cryxinfosec.dev/auth/callback'
                 }
             })
             return res;
